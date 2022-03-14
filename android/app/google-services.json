@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "389584921781",
+    "project_id": "skephomecleaner",
+    "storage_bucket": "skephomecleaner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389584921781:android:b866219e08111d138b4afc",
+        "android_client_info": {
+          "package_name": "com.example.skep_home_pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389584921781-o9v9g4frie6jq383latqukl52o05q8bb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.skep_home_pro",
+            "certificate_hash": "b09c3daa740851cb45af1462b99e749f7a5e14c9"
+          }
+        },
+        {
+          "client_id": "389584921781-22huqsjguuu972bbqfjal0oq6pu1i47o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXLOOgn_Y7HWyeMZDbBpdcOuQ-TfVdQSo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389584921781-22huqsjguuu972bbqfjal0oq6pu1i47o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
