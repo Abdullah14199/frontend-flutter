@@ -2,8 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+
+  int currentIndex = 0 ;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +24,7 @@ class Dashboard extends StatelessWidget {
         backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
-            icon: const Icon(
-              Icons.alarm,
-              color: Colors.black,
-            ),
+            icon:  Image.asset("assets/images/ring.png"),
             onPressed: () {
               // do something
             },
@@ -99,23 +106,30 @@ class Dashboard extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: ImageIcon(AssetImage("assets/images/home.png")),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon: ImageIcon(AssetImage("assets/images/nosBottomNavigationBar.png")),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon: ImageIcon(AssetImage("assets/images/dashboard.png")),
+            label: '',
           ),
         ],
         // currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        // onTap: _onItemTapped,
+        selectedItemColor: constants.blue2,
+        onTap: (index) => setState(() {
+          currentIndex = index;
+        }),
+        currentIndex: currentIndex,
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: false,
       ),
     ),
     );

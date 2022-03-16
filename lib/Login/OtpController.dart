@@ -1,10 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:skep_home_pro/Dashboard/Dashboard.dart';
+import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
+import 'package:skep_home_pro/models/serviceRequestModel.dart';
+import 'package:http/http.dart' as http;
+
 
 class OtpControllerScreen extends StatefulWidget {
   final String phone;
@@ -22,6 +28,55 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
   final TextEditingController _pinOTPCodeController = TextEditingController();
   final FocusNode _pinOTPCodeFoucus =FocusNode();
   String? verificationcode ;
+
+
+
+  Future<ServiceRequestModel> fetchData(context) async{
+    final response =await http
+        .get(Uri.parse('https://staging.skephome.com/api/ServiceRequest/CheckServiceRequest'),
+        headers: {
+          HttpHeaders.authorizationHeader : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6ImUxM2YzYmVjZWFjMzc0NDcwZTA2ODNkZDVmYWZmOWJkYzkzMmZmZWE3MjY2YmE1NDI5MDUwMDM0NzRlM2JhOWNmNGM3ZGM2NzIzZDZjNjFhIiwiaWF0IjoxNjQ3MzQ4NDQ4LCJuYmYiOjE2NDczNDg0NDgsImV4cCI6MTY3ODg4NDQ0OCwic3ViIjoiNTYiLCJzY29wZXMiOltdfQ.oUr1WS1-YuWrF9VdPOsJmRMCRxZVtULJSpVRDC_cM7CjpkIztzEB2mQCt9EMvWTwj_cr6r-UYiU-S4dnOS-GaK6FV2KInbM-23Nv-tOYj8Th19_qwpRgzEJWlukv2R-05vA7FDegRJ0L4jEtfycBSDqNd6KEXaULqiYvjHuCaO0nRnyp1_QWU-5Uan0Od7vdPQ6uYLd_ecP1oYtoF1gnzPq7dkbaVHkGwDCd8NIyVBvnDxr3PLkjU6RhazptZD7zDu65-ItIlEr_0NHVqOh78MpHRoPFag531OYQIPMj8NjNdw8SRdpZnr2Rxt-XdV1pfJrzvfsZZ1oG2ydyrwnkTQqiqwPYyxsT6UlElvlXMwA9XCpzzro16W1V66paDgrv5Fp0-Ev1IngnlZhfEduEkVUA2hWd68q-a0yl6j_8s48Mcc3_nFf-HD2cyIpbkNVPJww8YJ18mxR0s-fwGdke6wq2yPCnTwqLZcjSjb_jED6IMNgY_tSUX9v5Bq1dGYm5IxtQ039suJj53YpTikSawj8-UPrj3rPjnvaHpdvChsb3Ln2zaBJXew5QEgJBX7KlRIUTn2hIXL5lEkJbfB5TbZNzK5bw5sfNQLbU4yI2nWtpMTBfscCIMB-sp9x9JM1MQQw_dLNwiJA2jCTXzFjKeExG3G8mp8OmbEEO8vrcz6Q'
+        }
+    );
+
+    var body =response.body;
+    var type = json.decode(body);
+    print(type["Checklist"][1]["type"]);
+    var visiable = json.decode(body);
+    print(visiable['Checklist'][0]["Visable"]);
+
+    final responseJson = jsonDecode(response.body);
+    if(response.statusCode == 200){
+      print(response.body);
+      if(type["Checklist"][0]["type"]==1){
+        if(visiable['Checklist'][0]["Visable"]==true){
+          if(type["Checklist"][1]["type"]==2){
+            if(visiable['Checklist'][1]["Visable"]==true){
+              if(type["Checklist"][2]["type"]==3){
+                if(visiable['Checklist'][2]["Visable"]==true){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Dashboard()),
+                  );
+                }
+              }
+            }
+          }
+        }
+      }
+      return ServiceRequestModel.fromJson(responseJson);
+    }else{
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => service_request()),
+      );
+      print(response.statusCode);
+      throw Exception('Failed to load album');
+    }
+  }
+
+  late Future<ServiceRequestModel> checkServiceRequest;
+
 
   late Timer _timer;
   int _start = 60;
@@ -66,9 +121,11 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
 
   verifyPhoneNumber() async{
     await FirebaseAuth.instance.verifyPhoneNumber
-      ( phoneNumber: "${widget.dialCodeDigits + widget.phone}",
+      ( phoneNumber: "${widget.dialCodeDigits+widget.phone}",
         verificationCompleted: (PhoneAuthCredential credential) async {
         await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
+          checkServiceRequest = fetchData(context);
+
           if(value.user != null){
             Navigator.of(context).push(MaterialPageRoute(builder: (c)=> const Dashboard()));
           }
@@ -115,7 +172,7 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
                     const SizedBox(height: 80,),
                     const Padding(
                       padding: EdgeInsets.only(left: 15),
-                      child: Text("Enter 4-digit code sent to you" , style: TextStyle(
+                      child: Text("Enter 6-digit code sent to you" , style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Ubuntu',
                         fontWeight: FontWeight.normal,
@@ -131,44 +188,42 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
                       ),),
                     ),
                     Padding(padding:const EdgeInsets.only(left: 15,right: 15,top: 20), child:
-                    Expanded(
-                      child: PinPut(
-                        fieldsCount: 6 ,
-                        textStyle: const TextStyle(fontSize: 20 , color: Colors.black),
-                        eachFieldWidth: 60,
-                        eachFieldHeight: 30,
-                        cursorColor: Colors.white,
-                        focusNode: _pinOTPCodeFoucus,
-                        controller: _pinOTPCodeController,
-                        submittedFieldDecoration: pinOTPCodeDecoration,
-                        selectedFieldDecoration: pinOTPCodeDecoration,
-                        followingFieldDecoration: pinOTPCodeDecoration,
-                        pinAnimationType: PinAnimationType.rotation,
-                        onSubmit: (pin) async{
-                          try{
-                            await FirebaseAuth.instance.
-                            signInWithCredential(PhoneAuthProvider.
-                            credential(verificationId: verificationcode! , smsCode: pin))
-                                .then((value) {
-                                  if(value.user != null){
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (c)=> const Dashboard()));
-                                  }
-                            });
-                          }
-                          catch(e){
-                            FocusScope.of(context).unfocus();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Invalid OTP"),
-                                duration: Duration(seconds: 3),
-                                ),
-                            );
-                          }
-                        },
-                      ),
+                    PinPut(
+                      fieldsCount: 6 ,
+                      textStyle: const TextStyle(fontSize: 20 , color: Colors.black),
+                      eachFieldWidth: 60,
+                      eachFieldHeight: 30,
+                      cursorColor: Colors.white,
+                      focusNode: _pinOTPCodeFoucus,
+                      controller: _pinOTPCodeController,
+                      submittedFieldDecoration: pinOTPCodeDecoration,
+                      selectedFieldDecoration: pinOTPCodeDecoration,
+                      followingFieldDecoration: pinOTPCodeDecoration,
+                      pinAnimationType: PinAnimationType.rotation,
+                      onSubmit: (pin) async{
+                        try{
+                          await FirebaseAuth.instance.
+                          signInWithCredential(PhoneAuthProvider.
+                          credential(verificationId: verificationcode! , smsCode: pin))
+                              .then((value) {
+                                if(value.user != null){
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (c)=> const Dashboard()));
+                                }
+                          });
+                        }
+                        catch(e){
+                          FocusScope.of(context).unfocus();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Invalid OTP"),
+                              duration: Duration(seconds: 3),
+                              ),
+                          );
+                        }
+                      },
                     ),),
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0 ,top:10),
-                      child: Text("$_start"),
+                      child: Text("00:$_start"),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0,top: 28),
@@ -235,7 +290,7 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
                                 ),
                               ),
                               onPressed: () {
-                                // checkUser = fetchData(context);
+                                checkServiceRequest = fetchData(context);
                               }
                           ),
                         ),

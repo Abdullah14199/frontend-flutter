@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:skep_home_pro/Dashboard/Dashboard.dart';
+import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/Login/OtpController.dart';
 import 'package:skep_home_pro/Login/registration.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
@@ -94,113 +95,109 @@ class _LoginScreenState extends State<LoginScreen> {
           body: Stack(
               children:[
                 SingleChildScrollView(
-                  child: Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:  [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text("Enter you mobile number.",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'Ubuntu'
-                      ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:  [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text("Enter you mobile number.",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Ubuntu'
                     ),
+                  ),
                 ), // const SizedBox(height: 20,),
               Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15,top: 10),
-                child: Expanded(
-                  child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Mobile Number',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: constants.grey, width: 2.0),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(width: 2,color: constants.grey),
-                              borderRadius: BorderRadius.circular(20)
-                          ),
-                        prefix: Padding(
-                          padding: const EdgeInsets.only(left: 0,right: 5, top: 0),
-                          child: CountryCodePicker(
-                              onChanged: (country){
-                                setState(() {
-                                  dialCodeDigits = country.dialCode!;
-                                });
-                              },
-                            initialSelection: "CA",
-                            showCountryOnly: false,
-                            showOnlyCountryWhenClosed: false,
-                            favorite: const ["+1","US","+92","PAK"],
-                          ),
-                        ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Mobile Number',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: constants.grey, width: 2.0),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(width: 2,color: constants.grey),
+                          borderRadius: BorderRadius.circular(20)
                       ),
-                      keyboardType: TextInputType.number,
-                      controller: _controller,
+                    prefix: Padding(
+                      padding: const EdgeInsets.only(left: 0,right: 5, top: 0),
+                      child: CountryCodePicker(
+                          onChanged: (country){
+                            setState(() {
+                              dialCodeDigits = country.dialCode!;
+                            });
+                          },
+                        initialSelection: "CA",
+                        showCountryOnly: false,
+                        showOnlyCountryWhenClosed: false,
+                        favorite: const ["+1","US","+92","PAK"],
+                      ),
+                    ),
                   ),
+                  keyboardType: TextInputType.number,
+                  controller: _controller,
                 ),
               ),
                 const SizedBox(height: 20,),
                 const Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15),
-                    child: Text("Please confirm your country code & enter your mobile number to create an account or login.",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Ubuntu',
-                      fontWeight: FontWeight.normal
-                    ),),
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: Text("Please confirm your country code & enter your mobile number to create an account or login.",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Ubuntu',
+                    fontWeight: FontWeight.normal
+                  ),),
                 ),
                 const SizedBox(height: 320,),
                 const Padding(
-                    padding: EdgeInsets.only(left: 15 , right: 15),
-                    child: Text("By continuing you may receive an SMS for verification. Message & data rates may apply." ,
-                    style: TextStyle(
-                      fontSize: 14 ,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: 'Ubuntu',
-                    ),),
+                  padding: EdgeInsets.only(left: 15 , right: 15),
+                  child: Text("By continuing you may receive an SMS for verification. Message & data rates may apply." ,
+                  style: TextStyle(
+                    fontSize: 14 ,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Ubuntu',
+                  ),),
                 ),
                 const SizedBox(height: 5,),
                 Padding(
-                    padding: const EdgeInsets.only(left: 15 , right: 15),
-                    child: Container(
-                      width: double.infinity,
-                      height: 50,
-                      child: Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: ElevatedButton.icon(
-                            icon: const Icon(Icons.arrow_back),
-                            label: const Text(
-                              "Get Started",
-                              style: TextStyle(fontSize: 14,),
+                  padding: const EdgeInsets.only(left: 15 , right: 15),
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: ElevatedButton.icon(
+                          icon: const Icon(Icons.arrow_back),
+                          label: const Text(
+                            "Get Started",
+                            style: TextStyle(fontSize: 14,),
+                          ),
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor: MaterialStateProperty.all<Color>(constants.blue),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                const RoundedRectangleBorder(
+                                    borderRadius:  BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10),bottomRight: Radius.circular(10) , bottomLeft: Radius.circular(10)),
+                                    side: BorderSide(color: constants.blue)
+                                )
                             ),
-                            style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                              backgroundColor: MaterialStateProperty.all<Color>(constants.blue),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  const RoundedRectangleBorder(
-                                      borderRadius:  BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10),bottomRight: Radius.circular(10) , bottomLeft: Radius.circular(10)),
-                                      side: BorderSide(color: constants.blue)
-                                  )
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (c) => const Registration()));
-                              // Navigator.of(context).push(MaterialPageRoute(builder: (c) =>OtpControllerScreen(
-                              //   phone: _controller.text,
-                              //   dialCodeDigits: dialCodeDigits,
-                              // ),),
-                              // );
-                              // checkUser = fetchData(context);
-                            }
-                        ),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (c) =>  service_request()));
+                            // Navigator.of(context).push(MaterialPageRoute(builder: (c) =>OtpControllerScreen(
+                            //   phone: _controller.text,
+                            //   dialCodeDigits: dialCodeDigits,
+                            // ),),
+                            // );
+                           // checkUser = fetchData(context);
+                          }
                       ),
                     ),
+                  ),
                 ),
               ],
             ),
-                  ),
           ),
         ]
       ),
