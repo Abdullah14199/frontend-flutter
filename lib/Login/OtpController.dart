@@ -153,6 +153,7 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
     );
 
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

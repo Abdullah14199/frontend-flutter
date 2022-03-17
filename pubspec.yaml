@@ -54,6 +54,8 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   image_picker: ^0.8.4+11
   http_parser: ^4.0.0
+  flutter_polyline_points: ^1.0.0
+  google_maps_flutter: ^2.1.2
 
 dev_dependencies:
   flutter_test:

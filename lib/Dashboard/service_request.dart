@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:skep_home_pro/Dashboard/areaOfWork.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/updateProfileApi.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -25,80 +27,26 @@ class _service_requestState extends State<service_request> {
 
   Future<userProfileModel>? _futureAlbum;
 
-
-  PickedFile ? _imageFile;
-  final String uploadUrl = 'http://staging.skephome.com/api/User/UpdateProfile';
-  final ImagePicker _picker = ImagePicker();
-
-  Future<String?> uploadImage(filepath, url) async {
-    var request = http.MultipartRequest('POST', Uri.parse(url));
-    request.files.add(await http.MultipartFile.fromPath('image', filepath));
-    var res = await request.send();
-    return res.reasonPhrase;
-  }
-
-  Future<void> retriveLostData() async {
-    final LostData response = await _picker.getLostData();
-    if (response.isEmpty) {
-      return;
-    }
-    if (response.file != null) {
-      setState(() {
-        _imageFile = response.file;
-      });
-    } else {
-      print('Retrieve error ' + response.exception!.code);
-    }
-  }
-
-  void _pickImage() async {
-    try {
-      final pickedFile = await _picker.getImage(source: ImageSource.camera);
-      setState(() {
-        _imageFile = pickedFile;
-      });
-    } catch (e) {
-    }
-  }
-
-  late File _file;
+  File ? _file;
   Future pickCamera() async{
-    final myFile = await ImagePicker().getImage(source: ImageSource.camera);
+    final myFile = await ImagePicker().getImage(source: ImageSource.camera , imageQuality: 60);
     setState(() {
       _file = File(myFile!.path);
       if(_file == null ) return ;
-      String base64 = base64Encode(_file.readAsBytesSync());
-      String imageName = _file.path.split("/").last ;
-
-      //_futureAlbum = Upload(_file);
-
+      _futureAlbum = editUserData(_file);
     });
   }
 
+  static Future<userProfileModel> editUserData(File? image) async {
+    String basicAuth = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6ImUxM2YzYmVjZWFjMzc0NDcwZTA2ODNkZDVmYWZmOWJkYzkzMmZmZWE3MjY2YmE1NDI5MDUwMDM0NzRlM2JhOWNmNGM3ZGM2NzIzZDZjNjFhIiwiaWF0IjoxNjQ3MzQ4NDQ4LCJuYmYiOjE2NDczNDg0NDgsImV4cCI6MTY3ODg4NDQ0OCwic3ViIjoiNTYiLCJzY29wZXMiOltdfQ.oUr1WS1-YuWrF9VdPOsJmRMCRxZVtULJSpVRDC_cM7CjpkIztzEB2mQCt9EMvWTwj_cr6r-UYiU-S4dnOS-GaK6FV2KInbM-23Nv-tOYj8Th19_qwpRgzEJWlukv2R-05vA7FDegRJ0L4jEtfycBSDqNd6KEXaULqiYvjHuCaO0nRnyp1_QWU-5Uan0Od7vdPQ6uYLd_ecP1oYtoF1gnzPq7dkbaVHkGwDCd8NIyVBvnDxr3PLkjU6RhazptZD7zDu65-ItIlEr_0NHVqOh78MpHRoPFag531OYQIPMj8NjNdw8SRdpZnr2Rxt-XdV1pfJrzvfsZZ1oG2ydyrwnkTQqiqwPYyxsT6UlElvlXMwA9XCpzzro16W1V66paDgrv5Fp0-Ev1IngnlZhfEduEkVUA2hWd68q-a0yl6j_8s48Mcc3_nFf-HD2cyIpbkNVPJww8YJ18mxR0s-fwGdke6wq2yPCnTwqLZcjSjb_jED6IMNgY_tSUX9v5Bq1dGYm5IxtQ039suJj53YpTikSawj8-UPrj3rPjnvaHpdvChsb3Ln2zaBJXew5QEgJBX7KlRIUTn2hIXL5lEkJbfB5TbZNzK5bw5sfNQLbU4yI2nWtpMTBfscCIMB-sp9x9JM1MQQw_dLNwiJA2jCTXzFjKeExG3G8mp8OmbEEO8vrcz6Q';
+    var uri = Uri.parse("http://staging.skephome.com/api/User/UpdateProfile");
+    var request =  http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = basicAuth;
 
-  // Upload(File image) async {
-  //   // final response = await http.post(
-  //   //     Uri.parse('http://staging.skephome.com/api/User/UpdateProfile'),
-  //   //     headers: {
-  //   //       HttpHeaders.authorizationHeader : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6IjYzOGQ4Y2RmZmQzMGQ0MTQ4MDI3OTc0OGMyZDJiMmVmZTU4MmU5ODYxZDhhZTEwOTlmOWI3YzQ0OWRmNmIwYTk5ZmU1M2E3MDBkYWI1ZjQ4IiwiaWF0IjoxNjQ2NzM4MzM5LCJuYmYiOjE2NDY3MzgzMzksImV4cCI6MTY3ODI3NDMzOSwic3ViIjoiMjkiLCJzY29wZXMiOltdfQ.ZXO_CzXIBw6l2y64sl7waxlEfDqektgi_FZPqRGpCsNUmXVlVlM97YMDrmdXziD-VTrPAKwVi8dkWLnqx94Ov9PuAVLyO-s8xK2rRs8FExllhfa1u-LzXVdiJOjECZ1yutyICnWl4RYaROPGcUuojAkZR5xOYh-Q182YgFwlZlgZwH3WDAv8y2SixojnJ6oRlA4MSUCkpyfTiNuuhJ3NTf_MuUt-Md48thvkdpe5Jynags2CmpsacjHY6einZbvp74F_FdDHqA7ZDgn6HKrPdTyaBE2PiWQS5ujR54odwAZXzQfZ_zbioyGgmmjm-kkf2NeURNqvwha64nxg1TbmkH6v6xrjfghPOiOYMmWhOr2fQ6RKHS0Ck4CNtlwNDDywS1I0qR0mR2cmQgMrBth70LCSbG9PwtFrECRm2d6Vd2hxCxg8wHN3QHmDD6fApDzgqAVE1KSvFBcWO1qo9ZVCdBQ_9-C7GaiwMzb09hfW8QEd1RbABoqHgQzW97uzV7-_1bPCm5kUJcAAlPwpucUXqmU-iuBRf8BzTKS_8Lmp4-TNEEZx_VgeHLuTVoMEcV7I_DXswhjmY4leZrAefMIDparZbUhgTC5Aai1SDpX7qjTq1odQMi3fI3W_UgQT24GdxllKwg4gYJ0d92MBzLDOPAYSIgMVGKtT4Vo2SvFNUeE'
-  //   //     });
-  //   Map<String, String> headers = { "Bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6IjYzOGQ4Y2RmZmQzMGQ0MTQ4MDI3OTc0OGMyZDJiMmVmZTU4MmU5ODYxZDhhZTEwOTlmOWI3YzQ0OWRmNmIwYTk5ZmU1M2E3MDBkYWI1ZjQ4IiwiaWF0IjoxNjQ2NzM4MzM5LCJuYmYiOjE2NDY3MzgzMzksImV4cCI6MTY3ODI3NDMzOSwic3ViIjoiMjkiLCJzY29wZXMiOltdfQ.ZXO_CzXIBw6l2y64sl7waxlEfDqektgi_FZPqRGpCsNUmXVlVlM97YMDrmdXziD-VTrPAKwVi8dkWLnqx94Ov9PuAVLyO-s8xK2rRs8FExllhfa1u-LzXVdiJOjECZ1yutyICnWl4RYaROPGcUuojAkZR5xOYh-Q182YgFwlZlgZwH3WDAv8y2SixojnJ6oRlA4MSUCkpyfTiNuuhJ3NTf_MuUt-Md48thvkdpe5Jynags2CmpsacjHY6einZbvp74F_FdDHqA7ZDgn6HKrPdTyaBE2PiWQS5ujR54odwAZXzQfZ_zbioyGgmmjm-kkf2NeURNqvwha64nxg1TbmkH6v6xrjfghPOiOYMmWhOr2fQ6RKHS0Ck4CNtlwNDDywS1I0qR0mR2cmQgMrBth70LCSbG9PwtFrECRm2d6Vd2hxCxg8wHN3QHmDD6fApDzgqAVE1KSvFBcWO1qo9ZVCdBQ_9-C7GaiwMzb09hfW8QEd1RbABoqHgQzW97uzV7-_1bPCm5kUJcAAlPwpucUXqmU-iuBRf8BzTKS_8Lmp4-TNEEZx_VgeHLuTVoMEcV7I_DXswhjmY4leZrAefMIDparZbUhgTC5Aai1SDpX7qjTq1odQMi3fI3W_UgQT24GdxllKwg4gYJ0d92MBzLDOPAYSIgMVGKtT4Vo2SvFNUeE"};
-  //
-  //   var request = http.MultipartRequest("POST", Uri.parse('http://staging.skephome.com/api/User/UpdateProfile'));
-  //   request.files.add(http.MultipartFile.fromBytes(
-  //       "file",
-  //       image.readAsBytesSync(),
-  //       contentType: MediaType('selfie', 'png'))
-  //   );
-  //   request.headers.addAll(headers);
-  //
-  //   var response2 = await request.send();
-  //   print(response2.statusCode);
-  //   response2.stream.transform(utf8.decoder).listen((value) {
-  //     print(value);
-  //   });
-  // }
-
+    image != null ? request.files.add(await http.MultipartFile.fromPath('selfie', image.path)) : request.fields['selfie'];
+    http.Response response = await http.Response.fromStream(await request.send());
+    return userProfileModel.fromJson(JsonDecoder().convert(utf8.decode(response.bodyBytes)));
+  }
 
 
   @override
@@ -286,8 +234,7 @@ class _service_requestState extends State<service_request> {
             )),
             onPressed: (){
               setState(() {
-                _pickImage();
-                //_futureAlbum = createAlbum(image);
+               pickCamera();
               });
             },
             style: ButtonStyle(
@@ -460,7 +407,10 @@ class _service_requestState extends State<service_request> {
               child: ElevatedButton(
                 child: Text("Set Now"),
                 onPressed: (){
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AreaOfWork()),
+                  );
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(constants.blue2),
