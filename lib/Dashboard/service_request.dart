@@ -84,86 +84,88 @@ class _service_requestState extends State<service_request> {
             ],
           ),
         ),
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                Positioned(
-                  left: 60,
-                    child: Image.asset("assets/images/service_request.png")
-                ),
-                const Positioned(
-                  top: 280,
-                  left: 40,
-                  right: 40,
-                  child: Center(
-                    child: Text(
-                      "Skep Pro Services helps you find the best.",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Ubuntu',
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Positioned(
+                    left: 60,
+                      child: Image.asset("assets/images/service_request.png")
+                  ),
+                  const Positioned(
+                    top: 280,
+                    left: 40,
+                    right: 40,
+                    child: Center(
+                      child: Text(
+                        "Skep Pro Services helps you find the best.",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Ubuntu',
+                        ),
                       ),
-                    ),
-                  ),),
-                const Positioned(
-                  top: 298,
-                  left: 60,
-                  right: 60,
-                  child: Center(
-                    child: Text(
-                      "cleaning job opportunities near you by",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Ubuntu',
+                    ),),
+                  const Positioned(
+                    top: 298,
+                    left: 60,
+                    right: 60,
+                    child: Center(
+                      child: Text(
+                        "cleaning job opportunities near you by",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Ubuntu',
+                        ),
                       ),
-                    ),
-                  ),),
-                const Positioned(
-                  top: 316,
-                  left: 60,
-                  right: 60,
-                  child: Center(
-                    child: Text(
-                      "connecting you to local homeowners.",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Ubuntu',
+                    ),),
+                  const Positioned(
+                    top: 316,
+                    left: 60,
+                    right: 60,
+                    child: Center(
+                      child: Text(
+                        "connecting you to local homeowners.",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Ubuntu',
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 70,),
-                Positioned(
-                  right: 14,
-                  left: 14,
-                  child: Container(
-                    width: double.infinity,
-                    height: 280,
-                    child: PageView(
-                      controller: _pageController,
-                      children: [
-                        _backgroundCheck('Background check' , Colors.white),
-                        _page('Profile Picture' , Colors.white),
-                      ],
+                  const SizedBox(height: 70,),
+                  Positioned(
+                    right: 14,
+                    left: 14,
+                    child: Container(
+                      width: double.infinity,
+                      height: 280,
+                      child: PageView(
+                        controller: _pageController,
+                        children: [
+                          _backgroundCheck('Background check' , Colors.white),
+                          _page('Profile Picture' , Colors.white),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Positioned(
-                top: 680,
-                left: 350,
-                right: 15,
-                child: SmoothPageIndicator(
-                  controller: _pageController,
-                  count: 2,
-                  effect: WormEffect(),
-                  onDotClicked: (index) => _pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.bounceOut),
-                ))
-          ],
+                ],
+              ),
+              Positioned(
+                  top: 680,
+                  left: 350,
+                  right: 15,
+                  child: SmoothPageIndicator(
+                    controller: _pageController,
+                    count: 2,
+                    effect: WormEffect(),
+                    onDotClicked: (index) => _pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.bounceOut),
+                  ))
+            ],
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,

@@ -56,6 +56,8 @@ dependencies:
   http_parser: ^4.0.0
   flutter_polyline_points: ^1.0.0
   google_maps_flutter: ^2.1.2
+  google_maps_utils: ^1.5.0+0
+  roundcheckbox: ^2.0.4+1
 
 dev_dependencies:
   flutter_test:
