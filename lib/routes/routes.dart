@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:skep_home_pro/Dashboard/areaOfWork.dart';
 import 'package:skep_home_pro/splash_screen/get_started.dart';
 import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 import 'package:skep_home_pro/walkthrough/first_walk_through.dart';
@@ -28,6 +29,10 @@ class AppRoutes {
       name: Routes.get_started,
       page: () => const GetStarted(),
     ),
+    GetPage(
+        name: Routes.areaOfWork,
+        page: () => const AreaOfWork(),
+    ),
 
   ];
 
@@ -38,5 +43,6 @@ class Routes {
   static const first_walk_through = '/first_walk_through';
   static const second_walk_through = '/second_walk_through';
   static const get_started = '/get_started';
+  static const areaOfWork = '/areaOfWork';
 
 }
