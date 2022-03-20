@@ -3,21 +3,23 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 
 class GoogleMapViewModel extends GetxController {
-  bool Etobicoke = false;
 
-  bool Mississauga = false;
 
-  bool Toronto = false;
+  RxBool Etobicoke = false.obs;
+
+  RxBool Mississauga = false.obs;
+
+  RxBool Toronto = false.obs;
 
   List isLoad = [];
   int count = 0;
   var polygonCoordsMissiaga = <LatLng>[];
 
 
-
   Set<Polygon> myPolygon() {
     polygonCoordsMissiaga=[];
-    if(Etobicoke){
+
+    if(Etobicoke.value){
       polygonCoordsMissiaga
           .add(LatLng(43.58212474050701, -79.53552631883628));
       polygonCoordsMissiaga
@@ -43,7 +45,7 @@ class GoogleMapViewModel extends GetxController {
     }else{
       polygonCoordsMissiaga.add(LatLng(43.58212474050701, -79.53552631883628));
     }
-    if(Mississauga)
+    if(Mississauga.value)
       {
         polygonCoordsMissiaga
             .add(LatLng(43.586217611693705, -79.5395530164152));
@@ -70,7 +72,7 @@ class GoogleMapViewModel extends GetxController {
       }else{
       polygonCoordsMissiaga.add(LatLng(43.58212474050701, -79.53552631883628));
     }
-    if(Toronto) {
+    if(Toronto.value) {
       polygonCoordsMissiaga
           .add(LatLng(43.66503794707735, -79.50012122667005));
       polygonCoordsMissiaga
@@ -96,7 +98,6 @@ class GoogleMapViewModel extends GetxController {
         points: polygonCoordsMissiaga,
         strokeWidth:3,
         strokeColor: constants.blue2));
-    update();
     return polygonSet;
   }
 }

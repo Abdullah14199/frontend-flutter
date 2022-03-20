@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:skep_home_pro/routes/routes.dart';
 
+import 'controllers/google_map_viow_model.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,9 +29,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Skep Home',
+      initialBinding: Binding(),
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.welcome,
       getPages: AppRoutes.routes,
     );
+  }
+}
+
+class Binding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(()=>GoogleMapViewModel() , fenix: true);
   }
 }
