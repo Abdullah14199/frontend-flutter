@@ -47,6 +47,7 @@ dependencies:
   modal_bottom_sheet:
   fluttertoast:
   dio: ^4.0.4
+  csc_picker: ^0.2.6
   getwidget: ^2.0.4
   lottie: ^1.2.2
   pinput: ^1.2.0
@@ -59,6 +60,7 @@ dependencies:
   google_maps_utils: ^1.5.0+0
   roundcheckbox: ^2.0.4+1
   shared_preferences: ^2.0.13
+  country_list_pick: ^1.0.1+5
 
 dev_dependencies:
   flutter_test:

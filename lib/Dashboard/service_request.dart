@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/areaOfWork.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/updateProfileApi.dart';
@@ -324,7 +325,10 @@ class _service_requestState extends State<service_request> {
             child: ElevatedButton(
               child: Text("Complete Now"),
               onPressed: (){
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => backGroundCheck()),
+                );
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(constants.blue2),
@@ -360,7 +364,7 @@ class _service_requestState extends State<service_request> {
                 child: const ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   child: LinearProgressIndicator(
-                    value: 0.7,
+                    value: 0,
                     valueColor: AlwaysStoppedAnimation<Color>(constants.yellow),
                     backgroundColor: constants.grey,
                   ),

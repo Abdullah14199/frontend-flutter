@@ -320,7 +320,7 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                       right: 2,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 30, right: 360, top: 10),
+                            left: 30, right: 380, top: 8),
                         child: RoundCheckBox(
                           onTap: (value) {
                             controller.Etobicoke.value = value!;
@@ -328,7 +328,7 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                           },
                           size: 40,
                           isChecked: controller.Etobicoke.value,
-                          checkedColor: constants.blue2,
+                          checkedColor: Colors.green,
                           uncheckedColor: Colors.white,
                         ),
                       )),
@@ -338,7 +338,7 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                       right: 2,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 30, right: 360, top: 10),
+                            left: 30, right: 380, top: 8),
                         child: RoundCheckBox(
                           onTap: (value) {
                             controller.Mississauga.value = value!;
@@ -346,7 +346,7 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                           },
                           size: 40,
                           isChecked: controller.Mississauga.value,
-                          checkedColor: constants.blue2,
+                          checkedColor: Colors.green,
                           uncheckedColor: Colors.white,
                         ),
                       )),
@@ -356,7 +356,7 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                       right: 2,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 30, right: 360, top: 10),
+                            left: 30, right: 380, top: 8),
                         child: RoundCheckBox(
                           onTap: (value) {
                             controller.Toronto.value = value!;
@@ -364,7 +364,7 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                           },
                           size: 40,
                           isChecked: controller.Toronto.value,
-                          checkedColor: constants.blue2,
+                          checkedColor: Colors.green,
                           uncheckedColor: Colors.white,
                         ),
                       )),
