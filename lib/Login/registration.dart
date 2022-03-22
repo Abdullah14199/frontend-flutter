@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:http/http.dart' as http;
@@ -10,7 +11,10 @@ import '../Dashboard/Dashboard.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 class Registration extends StatefulWidget {
-  const Registration({Key? key}) : super(key: key);
+
+  final String phone;
+  const Registration({required this.phone});
+
 
   @override
   State<Registration> createState() => _RegistrationState();
@@ -18,6 +22,10 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   DateTime selectedDate = DateTime.utc(1950);
+
+
+
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -42,7 +50,7 @@ class _RegistrationState extends State<Registration> {
   DateTime? birthdate;
 
   Future<CallApi> createAlbum(
-      String first_name, String last_name, String email, String date , String address) async {
+      String first_name, String last_name, String email, String date , String address ) async {
     final response = await http.post(
       Uri.parse('http://staging.skephome.com/api/Auth/Register'),
       headers: <String, String>{
@@ -57,12 +65,15 @@ class _RegistrationState extends State<Registration> {
         'address' : address ,
         'lat': "43.651070",
         'lng': "-79.347015",
-        'phone' : "1551213128",
+        'phone' : widget.phone,
       }),
     );
     var body =response.body;
     var BarearToken = jsonDecode(body);
     print(BarearToken['accessToken']);
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('token', BarearToken['accessToken']);
 
     if (response.statusCode == 200) {
       // then parse the JSON.
@@ -378,7 +389,7 @@ class _RegistrationState extends State<Registration> {
               ),
             ),
             Positioned(
-              top: 700,
+              top: 550,
               left: 15,
               right: 15,
               child: Container(

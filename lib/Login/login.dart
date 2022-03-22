@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Dashboard/Dashboard.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/Login/OtpController.dart';
@@ -13,22 +14,29 @@ import 'package:http/http.dart' as http;
 
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
+
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+
+
+
 
   TextEditingController _controller = TextEditingController();
   String dialCodeDigits = "+00";
   String phone = "";
 
+
+
   Future<userModelSplash> fetchData(context) async{
     final response =await http
-        .get(Uri.parse('https://staging.skephome.com/api/Auth/ExistingUser/0${_controller.text}'),
+        .get(Uri.parse('https://staging.skephome.com/api/Auth/ExistingUser/${_controller.text}'),
         headers: {
-          HttpHeaders.authorizationHeader : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6IjUxODMzYTE0YmIzMGQ5OWU5NGNiODgyMzk0ZjU3NjgxZDBjYjY4NDRkYTlhYmVkY2Y1MDgyMzc1NDJjNGNmYWE4NTkyNzFkOGY1ZmMwOWU4IiwiaWF0IjoxNjQ3OTU3ODI5LCJuYmYiOjE2NDc5NTc4MjksImV4cCI6MTY3OTQ5MzgyOSwic3ViIjoiODIiLCJzY29wZXMiOltdfQ.o-m4r7LQWsBm8Gdor-R_TMwseCDdhTi6aN72aoLDUOEEQ4OOWu6oLqsKbjAbZl4-aZFoaJmoPna7JI3rSPOgYrjgF52r3j19Oq8gLWWTujTaMd8lEBO1ufS83sdxYtSeMu5GyrgonqnojIrbGbbxFnQVYIXgoReLB_FMOAiYHLSn_gh3QyvWUDQPXbMOrwNyv5zG10jsDzlCsoOOUcIQ3NuPN9jEEJSais2asBYuWq0deWYuwP7pWPQMM8uhiEYZj1RGoxM11mDWq9ny4vqvd9UNzMFyJfd1gX7jNgX0bVrqJcsG8IULylqRYQHBidyMX3UQNAYpV7TQIa9wguXfAvH9Zc2Vb0Jj7Luwkd2GyiBy82283gOkeW7O3YRB8_fxmlQ2gf8ubyUUsHlkXwKi-EZNaDKTRJoxnQD8y4Gd4bL4Oh4oL_s4VP38slynJw7bpauQzXpXZtQQB4af4QVfYvng8wuaBBiMU3ixXARLoDEUklj2tX6LG1DzCHp5JQ199hMT8I_5uCiYw66jWdP38Y2piJx4689OlCxjt9C6CJzLBjXAibHBvf8epPbHF6XpVic87GLGbKcElXDOcCp9WCP-yhMHPRxBnQ3zqMKdgCWFNMyYQ567SmvlRg665Q2-ov4iSgrRV6kyLPv32aHRw5AwE8GRh_pmFBPHttN8DjI'
+          HttpHeaders.authorizationHeader : 'Bearer $token'
         }
     );
 
@@ -41,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if(response.statusCode == 200){
       print(response.body);
+      print(token);
       if(userType['user_type']=="cleaner"){
         if(message['message'] == true){
           Navigator.push(
@@ -50,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }else{
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Registration()),
+            MaterialPageRoute(builder: (context) =>  Registration(phone: _controller.text,)),
           );
         }
       }else{
@@ -81,8 +90,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   }
 
+  String ? token = "";
   @override
   Widget build(BuildContext context) {
+
+    SharedPreferences.getInstance().then((sharedPrefValue){
+      setState(() {
+        token = sharedPrefValue.getString('token')!;
+      });
+    });
+
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -187,14 +204,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (c) =>  Registration()));
-                            // Navigator.of(context).push(MaterialPageRoute(builder: (c) =>OtpControllerScreen(
-                            //   phone: _controller.text,
-                            //   dialCodeDigits: dialCodeDigits,
-                            // ),),
-                            // );
+                           //Navigator.of(context).push(MaterialPageRoute(builder: (c) =>  Registration(phone: _controller.text,)));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (c) =>OtpControllerScreen(
+                              phone: _controller.text,
+                              dialCodeDigits: dialCodeDigits,
+                            ),),
+                            );
                             // print(phone);
-                           //checkUser = fetchData(context);
+                            // print(token);
+                            //  checkUser = fetchData(context);
                           }
                       ),
                     ),
