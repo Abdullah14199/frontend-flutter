@@ -61,6 +61,7 @@ dependencies:
   roundcheckbox: ^2.0.4+1
   shared_preferences: ^2.0.13
   country_list_pick: ^1.0.1+5
+  flutter_holo_date_picker: ^1.0.3
 
 dev_dependencies:
   flutter_test:

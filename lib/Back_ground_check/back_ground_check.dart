@@ -4,9 +4,12 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
+import 'package:skep_home_pro/Back_ground_check/getStartBGCheck.dart';
+import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 
 import '../models/cleanerBGModel.dart';
+import '../routes/routes.dart';
 
 class backGroundCheck extends StatefulWidget {
   const backGroundCheck({Key? key}) : super(key: key);
@@ -24,11 +27,11 @@ RxBool publicTransport = false.obs;
 
 
 
-Future<CallApiBG> createAlbum(String gender, String codeCountry ) async {
+Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async {
   final response = await http.post(
     Uri.parse('http://staging.skephome.com/api/Cleaner/CleanerBackground'),
     headers: <String, String>{
-      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6ImUxM2YzYmVjZWFjMzc0NDcwZTA2ODNkZDVmYWZmOWJkYzkzMmZmZWE3MjY2YmE1NDI5MDUwMDM0NzRlM2JhOWNmNGM3ZGM2NzIzZDZjNjFhIiwiaWF0IjoxNjQ3MzQ4NDQ4LCJuYmYiOjE2NDczNDg0NDgsImV4cCI6MTY3ODg4NDQ0OCwic3ViIjoiNTYiLCJzY29wZXMiOltdfQ.oUr1WS1-YuWrF9VdPOsJmRMCRxZVtULJSpVRDC_cM7CjpkIztzEB2mQCt9EMvWTwj_cr6r-UYiU-S4dnOS-GaK6FV2KInbM-23Nv-tOYj8Th19_qwpRgzEJWlukv2R-05vA7FDegRJ0L4jEtfycBSDqNd6KEXaULqiYvjHuCaO0nRnyp1_QWU-5Uan0Od7vdPQ6uYLd_ecP1oYtoF1gnzPq7dkbaVHkGwDCd8NIyVBvnDxr3PLkjU6RhazptZD7zDu65-ItIlEr_0NHVqOh78MpHRoPFag531OYQIPMj8NjNdw8SRdpZnr2Rxt-XdV1pfJrzvfsZZ1oG2ydyrwnkTQqiqwPYyxsT6UlElvlXMwA9XCpzzro16W1V66paDgrv5Fp0-Ev1IngnlZhfEduEkVUA2hWd68q-a0yl6j_8s48Mcc3_nFf-HD2cyIpbkNVPJww8YJ18mxR0s-fwGdke6wq2yPCnTwqLZcjSjb_jED6IMNgY_tSUX9v5Bq1dGYm5IxtQ039suJj53YpTikSawj8-UPrj3rPjnvaHpdvChsb3Ln2zaBJXew5QEgJBX7KlRIUTn2hIXL5lEkJbfB5TbZNzK5bw5sfNQLbU4yI2nWtpMTBfscCIMB-sp9x9JM1MQQw_dLNwiJA2jCTXzFjKeExG3G8mp8OmbEEO8vrcz6Q',
+      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6IjUxODMzYTE0YmIzMGQ5OWU5NGNiODgyMzk0ZjU3NjgxZDBjYjY4NDRkYTlhYmVkY2Y1MDgyMzc1NDJjNGNmYWE4NTkyNzFkOGY1ZmMwOWU4IiwiaWF0IjoxNjQ3OTU3ODI5LCJuYmYiOjE2NDc5NTc4MjksImV4cCI6MTY3OTQ5MzgyOSwic3ViIjoiODIiLCJzY29wZXMiOltdfQ.o-m4r7LQWsBm8Gdor-R_TMwseCDdhTi6aN72aoLDUOEEQ4OOWu6oLqsKbjAbZl4-aZFoaJmoPna7JI3rSPOgYrjgF52r3j19Oq8gLWWTujTaMd8lEBO1ufS83sdxYtSeMu5GyrgonqnojIrbGbbxFnQVYIXgoReLB_FMOAiYHLSn_gh3QyvWUDQPXbMOrwNyv5zG10jsDzlCsoOOUcIQ3NuPN9jEEJSais2asBYuWq0deWYuwP7pWPQMM8uhiEYZj1RGoxM11mDWq9ny4vqvd9UNzMFyJfd1gX7jNgX0bVrqJcsG8IULylqRYQHBidyMX3UQNAYpV7TQIa9wguXfAvH9Zc2Vb0Jj7Luwkd2GyiBy82283gOkeW7O3YRB8_fxmlQ2gf8ubyUUsHlkXwKi-EZNaDKTRJoxnQD8y4Gd4bL4Oh4oL_s4VP38slynJw7bpauQzXpXZtQQB4af4QVfYvng8wuaBBiMU3ixXARLoDEUklj2tX6LG1DzCHp5JQ199hMT8I_5uCiYw66jWdP38Y2piJx4689OlCxjt9C6CJzLBjXAibHBvf8epPbHF6XpVic87GLGbKcElXDOcCp9WCP-yhMHPRxBnQ3zqMKdgCWFNMyYQ567SmvlRg665Q2-ov4iSgrRV6kyLPv32aHRw5AwE8GRh_pmFBPHttN8DjI',
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept' : 'application/json'
     },
@@ -39,6 +42,14 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ) async {
   );
   if (response.statusCode == 200) {
     // then parse the JSON.
+    print(response.body);
+    print(response.statusCode);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => service_request()),
+    );
+
     print("klsjaddhklaslkasd");
     return CallApiBG.fromJson(jsonDecode(response.body));
   } else {
@@ -55,7 +66,7 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ) async {
 
 class _backGroundCheckState extends State<backGroundCheck> {
   String genderBool = '';
-  String CountryCode = '';
+  String CountryCodeValue = '';
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +199,9 @@ class _backGroundCheckState extends State<backGroundCheck> {
             child: CountryCodePicker(
               onChanged: (countryCode) {
                 print;
-                print(countryCode);
+                CountryCodeValue = countryCode.code!;
+                print(CountryCodeValue);
+
                 } ,
               initialSelection: 'US',
               favorite: ['+1','US'],
@@ -368,7 +381,7 @@ class _backGroundCheckState extends State<backGroundCheck> {
             ),
           ),
           Positioned(
-            top: 780,
+            top: 750,
             right: 15,
             left: 15,
             child: Container(
@@ -378,8 +391,9 @@ class _backGroundCheckState extends State<backGroundCheck> {
                 textDirection: TextDirection.rtl,
                 child: ElevatedButton(
                   onPressed: () {
-                    print(genderBool + CountryCode);
-                    createAlbum(genderBool, CountryCode);
+                    print(genderBool + CountryCodeValue);
+                    createAlbum(genderBool, CountryCodeValue , context);
+
                   },
                   child: Text(
                     "Complete",
@@ -391,7 +405,7 @@ class _backGroundCheckState extends State<backGroundCheck> {
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(constants.blue),
+                        MaterialStateProperty.all<Color>(constants.blue2),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         const RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(

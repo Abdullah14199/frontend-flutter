@@ -22,12 +22,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextEditingController _controller = TextEditingController();
   String dialCodeDigits = "+00";
+  String phone = "";
 
   Future<userModelSplash> fetchData(context) async{
     final response =await http
-        .get(Uri.parse('https://staging.skephome.com/api/Auth/ExistingUser/1551221522'),
+        .get(Uri.parse('https://staging.skephome.com/api/Auth/ExistingUser/0${_controller.text}'),
         headers: {
-          HttpHeaders.authorizationHeader : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6IjYzOGQ4Y2RmZmQzMGQ0MTQ4MDI3OTc0OGMyZDJiMmVmZTU4MmU5ODYxZDhhZTEwOTlmOWI3YzQ0OWRmNmIwYTk5ZmU1M2E3MDBkYWI1ZjQ4IiwiaWF0IjoxNjQ2NzM4MzM5LCJuYmYiOjE2NDY3MzgzMzksImV4cCI6MTY3ODI3NDMzOSwic3ViIjoiMjkiLCJzY29wZXMiOltdfQ.ZXO_CzXIBw6l2y64sl7waxlEfDqektgi_FZPqRGpCsNUmXVlVlM97YMDrmdXziD-VTrPAKwVi8dkWLnqx94Ov9PuAVLyO-s8xK2rRs8FExllhfa1u-LzXVdiJOjECZ1yutyICnWl4RYaROPGcUuojAkZR5xOYh-Q182YgFwlZlgZwH3WDAv8y2SixojnJ6oRlA4MSUCkpyfTiNuuhJ3NTf_MuUt-Md48thvkdpe5Jynags2CmpsacjHY6einZbvp74F_FdDHqA7ZDgn6HKrPdTyaBE2PiWQS5ujR54odwAZXzQfZ_zbioyGgmmjm-kkf2NeURNqvwha64nxg1TbmkH6v6xrjfghPOiOYMmWhOr2fQ6RKHS0Ck4CNtlwNDDywS1I0qR0mR2cmQgMrBth70LCSbG9PwtFrECRm2d6Vd2hxCxg8wHN3QHmDD6fApDzgqAVE1KSvFBcWO1qo9ZVCdBQ_9-C7GaiwMzb09hfW8QEd1RbABoqHgQzW97uzV7-_1bPCm5kUJcAAlPwpucUXqmU-iuBRf8BzTKS_8Lmp4-TNEEZx_VgeHLuTVoMEcV7I_DXswhjmY4leZrAefMIDparZbUhgTC5Aai1SDpX7qjTq1odQMi3fI3W_UgQT24GdxllKwg4gYJ0d92MBzLDOPAYSIgMVGKtT4Vo2SvFNUeE'
+          HttpHeaders.authorizationHeader : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6IjUxODMzYTE0YmIzMGQ5OWU5NGNiODgyMzk0ZjU3NjgxZDBjYjY4NDRkYTlhYmVkY2Y1MDgyMzc1NDJjNGNmYWE4NTkyNzFkOGY1ZmMwOWU4IiwiaWF0IjoxNjQ3OTU3ODI5LCJuYmYiOjE2NDc5NTc4MjksImV4cCI6MTY3OTQ5MzgyOSwic3ViIjoiODIiLCJzY29wZXMiOltdfQ.o-m4r7LQWsBm8Gdor-R_TMwseCDdhTi6aN72aoLDUOEEQ4OOWu6oLqsKbjAbZl4-aZFoaJmoPna7JI3rSPOgYrjgF52r3j19Oq8gLWWTujTaMd8lEBO1ufS83sdxYtSeMu5GyrgonqnojIrbGbbxFnQVYIXgoReLB_FMOAiYHLSn_gh3QyvWUDQPXbMOrwNyv5zG10jsDzlCsoOOUcIQ3NuPN9jEEJSais2asBYuWq0deWYuwP7pWPQMM8uhiEYZj1RGoxM11mDWq9ny4vqvd9UNzMFyJfd1gX7jNgX0bVrqJcsG8IULylqRYQHBidyMX3UQNAYpV7TQIa9wguXfAvH9Zc2Vb0Jj7Luwkd2GyiBy82283gOkeW7O3YRB8_fxmlQ2gf8ubyUUsHlkXwKi-EZNaDKTRJoxnQD8y4Gd4bL4Oh4oL_s4VP38slynJw7bpauQzXpXZtQQB4af4QVfYvng8wuaBBiMU3ixXARLoDEUklj2tX6LG1DzCHp5JQ199hMT8I_5uCiYw66jWdP38Y2piJx4689OlCxjt9C6CJzLBjXAibHBvf8epPbHF6XpVic87GLGbKcElXDOcCp9WCP-yhMHPRxBnQ3zqMKdgCWFNMyYQ567SmvlRg665Q2-ov4iSgrRV6kyLPv32aHRw5AwE8GRh_pmFBPHttN8DjI'
         }
     );
 
@@ -55,16 +56,17 @@ class _LoginScreenState extends State<LoginScreen> {
       }else{
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const GetStarted()),
+          MaterialPageRoute(builder: (context) => OtpControllerScreen(phone: _controller.text, dialCodeDigits: dialCodeDigits)),
         );
       }
       return userModelSplash.fromJson(responseJson);
     }
     else{
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const GetStarted()),
-      );
+      print(response.statusCode);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const GetStarted()),
+      // );
       throw Exception('Failed to load album');
     }
   }
@@ -126,6 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onChanged: (country){
                             setState(() {
                               dialCodeDigits = country.dialCode!;
+                              // _controller.text = phone;
                             });
                           },
                         initialSelection: "CA",
@@ -149,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontWeight: FontWeight.normal
                   ),),
                 ),
-                const SizedBox(height: 320,),
+                const SizedBox(height: 490,),
                 const Padding(
                   padding: EdgeInsets.only(left: 15 , right: 15),
                   child: Text("By continuing you may receive an SMS for verification. Message & data rates may apply." ,
@@ -175,22 +178,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           style: ButtonStyle(
                             foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                            backgroundColor: MaterialStateProperty.all<Color>(constants.blue),
+                            backgroundColor: MaterialStateProperty.all<Color>(constants.blue2),
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 const RoundedRectangleBorder(
                                     borderRadius:  BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10),bottomRight: Radius.circular(10) , bottomLeft: Radius.circular(10)),
-                                    side: BorderSide(color: constants.blue)
+                                    side: BorderSide(color: constants.blue2)
                                 )
                             ),
                           ),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (c) =>  service_request()));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (c) =>  Registration()));
                             // Navigator.of(context).push(MaterialPageRoute(builder: (c) =>OtpControllerScreen(
                             //   phone: _controller.text,
                             //   dialCodeDigits: dialCodeDigits,
                             // ),),
                             // );
-                           // checkUser = fetchData(context);
+                            // print(phone);
+                           //checkUser = fetchData(context);
                           }
                       ),
                     ),
