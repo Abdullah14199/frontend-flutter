@@ -1,8 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
-import 'package:google_api_headers/google_api_headers.dart';
-import 'package:google_maps_webservice/places.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
@@ -10,8 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:skep_home_pro/models/userModelSignUp.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-import '../Plugins/AddressSearch.dart';
-import '../Plugins/Suggestions.dart';
 
 class Registration extends StatefulWidget {
   final String phone;
@@ -289,10 +284,17 @@ class _RegistrationState extends State<Registration> {
               top: 310,
               left: 15,
               right: 15,
-              child: TextField(
+              child: TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Required";
+                  } else {
+                    return null;
+                  }
+                },
                 controller: _controllerAddress,
                 onTap: () async {
-                  
+
                 },
                 // with some styling
                 decoration: InputDecoration(

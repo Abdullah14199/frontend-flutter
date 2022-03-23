@@ -15,29 +15,32 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
-class service_request extends StatefulWidget {
+import '../models/InformationUser.dart';
+import '../models/UserModel.dart';
 
+class service_request extends StatefulWidget {
   @override
   State<service_request> createState() => _service_requestState();
 }
 
 var Email;
 
-
 class _service_requestState extends State<service_request> {
-
   double _value = 0.5;
-  int currentIndex = 0 ;
+  int currentIndex = 0;
+
   PageController _pageController = PageController();
 
   Future<userProfileModel>? _futureAlbum;
 
-  File ? _file;
-  Future pickCamera() async{
-    final myFile = await ImagePicker().getImage(source: ImageSource.camera , imageQuality: 60);
+  File? _file;
+
+  Future pickCamera() async {
+    final myFile = await ImagePicker()
+        .getImage(source: ImageSource.camera, imageQuality: 60);
     setState(() {
       _file = File(myFile!.path);
-      if(_file == null ) return ;
+      if (_file == null) return;
       _futureAlbum = editUserData(_file);
     });
   }
@@ -45,75 +48,135 @@ class _service_requestState extends State<service_request> {
   static Future<userProfileModel> editUserData(File? image) async {
     String basicAuth = 'Bearer $token';
     var uri = Uri.parse("http://staging.skephome.com/api/User/UpdateProfile");
-    var request =  http.MultipartRequest("POST", uri);
+    var request = http.MultipartRequest("POST", uri);
     request.headers['Authorization'] = basicAuth;
 
-    image != null ? request.files.add(await http.MultipartFile.fromPath('selfie', image.path)) : request.fields['selfie'];
-    http.Response response = await http.Response.fromStream(await request.send());
+    image != null
+        ? request.files
+            .add(await http.MultipartFile.fromPath('selfie', image.path))
+        : request.fields['selfie'];
+    http.Response response =
+        await http.Response.fromStream(await request.send());
     print(response.body);
     var body = response.body;
     Email = json.decode(body);
     print(Email['email']);
-    return userProfileModel.fromJson(JsonDecoder().convert(utf8.decode(response.bodyBytes)));
+    return userProfileModel
+        .fromJson(JsonDecoder().convert(utf8.decode(response.bodyBytes)));
   }
 
-  Future<CertnModel> createAlbum() async {
-    final response = await http.post(
-      Uri.parse('https://demo-api.certn.co/hr/v1/applications/quick/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json',
-        'Authorization' : 'Barear eb61ad0d8242c9ec232c74afadc18d685fccc650'
-      },
-      body: jsonEncode(<String, String>
-      {
-        "request_enhanced_criminal_record_check": "true" ,
-        "request_enhanced_identity_verification": "true" ,
-        "email": Email,
-        "first_name": "Andrew",
-        "last_name": "McLeod",
-        "date_of_birth": "1987-03-04",
-        "birth_city": "Victoria",
-        "birth_province_state": "BC",
-        "birth_country": "CA",
-        "gender": "M",
-        "phone_number": "250-555-5555",
-        "address": "4412 King Alfred Court",
-        "city": "Victoria",
-        "province_state": "BC",
-        "country": "CA" ,
-        "offense": "332",
-        "date_of_sentence": "2000-01-01",
-        "court_location": "Victoria, BC, Canada",
-        "description": "null",
-        "offense": "348",
-        "date_of_sentence": "2000-01-01",
-        "court_location": "Victoria, BC, Canada",
-        "description": "Break, enter, and theft",
-        "rcmp_consent_given": "true",
-      }),
-    );
-    var body =response.body;
-    if (response.statusCode == 200) {
-      // then parse the JSON.
-      print(body);
-      return CertnModel.fromJson(jsonDecode(response.body));
-    }
-    else {
-      // If the server did not return a 201 CREATED response,
-      // then throw an exception.
+  void createAlbum() async {
+    await getDataUser().then((value) async {
+      final response = await http.post(
+        Uri.parse('https://demo-api.certn.co/hr/v1/applications/quick/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Barear eb61ad0d8242c9ec232c74afadc18d685fccc650'
+        },
+        body: jsonEncode(<String, dynamic>{
+          "request_enhanced_criminal_record_check": true,
+          "request_enhanced_identity_verification": true,
+          "email": value.email,
+          "information": {
+            "first_name": value.firstName,
+            "last_name": value.lastName,
+            "date_of_birth": value.dateOfBirth,
+            "birth_city": "Victoria",
+            "birth_province_state": "BC",
+            "birth_country": value.countryInti,
+            "gender": value.gender,
+            "phone_number": value.phone,
+            "addresses": [{
+              "address": "4412 King Alfred Court",
+              "city": "Victoria",
+              "province_state": "BC",
+              "country": "CA"
+            }
+            ],
+            "convictions": [{
+              "offense": "332",
+              "date_of_sentence": "2000-01-01",
+              "court_location": "Victoria, BC, Canada",
+              "description": "Robbery; Theft over 200"
+            }, {
+              "offense": "348",
+              "date_of_sentence": "2000-01-01",
+              "court_location": "Victoria, BC, Canada",
+              "description": "Break, enter, and theft"
+            }
+            ],
+            "rcmp_consent_given": true
+          }
+        })
+        // body: InformationUser(
+        //   requestEnhancedCriminalRecordCheck: true,
+        //   requestEnhancedIdentityVerification: true,
+        //   email: value.email!,
+        //   information: Information(
+        //       birthCountry: "",
+        //       firstName: value.firstName!,
+        //       gender: value.gender!,
+        //       phoneNumber: value.phone!,
+        //       lastName: value.lastName!,
+        //       birthCity: '',
+        //       birthProvinceState: '',
+        //       convictions: [],
+        //       dateOfBirth: value.dateOfBirth!,
+        //       rcmpConsentGiven: true,
+        //       addresses: [Addresses(country: '', address: '', city: '', provinceState: '')]),
+        // ).toJson(),
+      );
+      var body = response.body;
+      if (response.statusCode == 200) {
+        // then parse the JSON.
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Text(body);
+            });
 
-      print(response.statusCode);
+        print(body);
+        return CertnModel.fromJson(jsonDecode(response.body));
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Text('Error response');
+            });
+        print(response.statusCode);
+        print(response.body);
+        throw Exception('${response.statusCode} ${response.body}');
+      }
+    }).catchError((onError){
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Text('${onError}');
+          });
+    });
+  }
+
+  Future<User> getDataUser() async {
+    final response = await http.get(
+        Uri.parse('http://staging.skephome.com/api/User/MyProfile'),
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+    if (response.statusCode == 200) {
+      print(response.body);
+      return User.fromJson(jsonDecode(response.body));
+    } else {
       print(response.body);
       throw Exception('Failed to create album.');
     }
   }
 
-
   @override
-    Widget build(BuildContext context) {
-
-    SharedPreferences.getInstance().then((sharedPrefValue){
+  Widget build(BuildContext context) {
+    //getDataUser();
+    SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
         token = sharedPrefValue.getString('token')!;
         //print(token);
@@ -137,19 +200,24 @@ class _service_requestState extends State<service_request> {
           iconTheme: const IconThemeData(color: Colors.black),
           title: const Padding(
             padding: EdgeInsets.only(left: 70),
-            child: Text("Request Details" , style: TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Ubuntu',
-            ),),
+            child: Text(
+              "Request Details",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Ubuntu',
+              ),
+            ),
           ),
         ),
         drawer: Drawer(
           backgroundColor: Colors.black,
           child: ListView(
             children: const <Widget>[
-              UserAccountsDrawerHeader(accountName: Text("Abdullah Mohy"), accountEmail: Text("Abdullah.m@skephome.com"))
+              UserAccountsDrawerHeader(
+                  accountName: Text("Abdullah Mohy"),
+                  accountEmail: Text("Abdullah.m@skephome.com"))
             ],
           ),
         ),
@@ -159,9 +227,8 @@ class _service_requestState extends State<service_request> {
               Column(
                 children: [
                   Positioned(
-                    left: 60,
-                      child: Image.asset("assets/images/service_request.png")
-                  ),
+                      left: 60,
+                      child: Image.asset("assets/images/service_request.png")),
                   const Positioned(
                     top: 280,
                     left: 40,
@@ -175,7 +242,8 @@ class _service_requestState extends State<service_request> {
                           fontFamily: 'Ubuntu',
                         ),
                       ),
-                    ),),
+                    ),
+                  ),
                   const Positioned(
                     top: 298,
                     left: 60,
@@ -189,7 +257,8 @@ class _service_requestState extends State<service_request> {
                           fontFamily: 'Ubuntu',
                         ),
                       ),
-                    ),),
+                    ),
+                  ),
                   const Positioned(
                     top: 316,
                     left: 60,
@@ -205,7 +274,9 @@ class _service_requestState extends State<service_request> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 70,),
+                  const SizedBox(
+                    height: 70,
+                  ),
                   Positioned(
                     right: 14,
                     left: 14,
@@ -215,8 +286,8 @@ class _service_requestState extends State<service_request> {
                       child: PageView(
                         controller: _pageController,
                         children: [
-                          _backgroundCheck('Background check' , Colors.white),
-                          _page('Profile Picture' , Colors.white),
+                          _backgroundCheck('Background check', Colors.white),
+                          _page('Profile Picture', Colors.white),
                         ],
                       ),
                     ),
@@ -231,7 +302,10 @@ class _service_requestState extends State<service_request> {
                     controller: _pageController,
                     count: 2,
                     effect: WormEffect(),
-                    onDotClicked: (index) => _pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.bounceOut),
+                    onDotClicked: (index) => _pageController.animateToPage(
+                        index,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.bounceOut),
                   ))
             ],
           ),
@@ -245,7 +319,8 @@ class _service_requestState extends State<service_request> {
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage("assets/images/nosBottomNavigationBar.png")),
+              icon: ImageIcon(
+                  AssetImage("assets/images/nosBottomNavigationBar.png")),
               label: '',
             ),
             BottomNavigationBarItem(
@@ -268,102 +343,8 @@ class _service_requestState extends State<service_request> {
 
   _page(String s, Color color) {
     return Container(
-      color: color,
-      child: Stack(
-          children:[
-          Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            width: double.infinity,
-            height: 3,
-            color: constants.grey,
-          )),
-      Positioned(
-        top: 15,
-        left: 15,
-        right: 15,
-        child: Text(s ,
-          style:
-          const TextStyle(
-              color: Colors.black ,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Ubuntu' ,
-              fontSize: 14),
-        ),
-      ),
-      Positioned(
-          top: 15,
-          left: 300,
-          right: 20,
-          child: ElevatedButton(
-            child: const Text("Upload Now" ,textAlign: TextAlign.center ,style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Ubuntu',
-            )),
-            onPressed: (){
-              setState(() {
-               pickCamera();
-              });
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(constants.blue2),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  const RoundedRectangleBorder(
-                      borderRadius:  BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10),bottomRight: Radius.circular(10) , bottomLeft: Radius.circular(10)),
-                      side: BorderSide(color: constants.blue2)
-                  )
-              ),
-            ),
-          ),
-      ),
-      const Positioned(
-        top: 36,
-        left: 15,
-        right: 15,
-        child: Text("Take a real profile picture" ,
-          style:
-          TextStyle(
-              color: constants.blue2 ,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Ubuntu' ,
-              fontSize: 14),
-        ),
-      ),
-      const Positioned(
-        top: 70,
-        left: 15,
-        right: 15,
-        child: Text("Your photo will make it easier for homeowners to Recognize you." ,
-          style:
-          TextStyle(
-              color: constants.grey ,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Ubuntu' ,
-              fontSize: 14),
-        ),
-      ),
-            const Positioned(
-                top: 257,
-                right: 30,
-                left: 320,
-                child: Text("2/2" , style: TextStyle(
-                  fontSize: 14 ,
-                  fontFamily: 'Ubuntu',
-                  fontWeight: FontWeight.normal,
-                ),))
-          ]
-      )
-    );
-}
-
-  _backgroundCheck(String s, Color color) {
-    return Container(
-      color: color,
-      child: Stack(
-        children:[
+        color: color,
+        child: Stack(children: [
           Positioned(
               top: 0,
               left: 0,
@@ -377,75 +358,174 @@ class _service_requestState extends State<service_request> {
             top: 15,
             left: 15,
             right: 15,
-            child: Text(s ,
-              style:
-              const TextStyle(
-                  color: Colors.black ,
+            child: Text(
+              s,
+              style: const TextStyle(
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Ubuntu' ,
+                  fontFamily: 'Ubuntu',
                   fontSize: 14),
             ),
           ),
           Positioned(
             top: 15,
-            left: 250,
-            right: 15,
+            left: 300,
+            right: 20,
             child: ElevatedButton(
-              child: Text("Complete Now"),
-              onPressed: (){
-                createAlbum();
+              child: const Text("Upload Now",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Ubuntu',
+                  )),
+              onPressed: () {
+                setState(() {
+                  pickCamera();
+                });
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(constants.blue2),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     const RoundedRectangleBorder(
-                        borderRadius:  BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10),bottomRight: Radius.circular(10) , bottomLeft: Radius.circular(10)),
-                        side: BorderSide(color: constants.blue2)
-                    )
-                ),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10)),
+                        side: BorderSide(color: constants.blue2))),
               ),
-            )
+            ),
           ),
           const Positioned(
             top: 36,
             left: 15,
             right: 15,
-            child: Text("3 steps left" ,
-              style:
-              TextStyle(
-                  color: constants.blue2 ,
+            child: Text(
+              "Take a real profile picture",
+              style: TextStyle(
+                  color: constants.blue2,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Ubuntu' ,
+                  fontFamily: 'Ubuntu',
+                  fontSize: 14),
+            ),
+          ),
+          const Positioned(
+            top: 70,
+            left: 15,
+            right: 15,
+            child: Text(
+              "Your photo will make it easier for homeowners to Recognize you.",
+              style: TextStyle(
+                  color: constants.grey,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Ubuntu',
+                  fontSize: 14),
+            ),
+          ),
+          const Positioned(
+              top: 257,
+              right: 30,
+              left: 320,
+              child: Text(
+                "2/2",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Ubuntu',
+                  fontWeight: FontWeight.normal,
+                ),
+              ))
+        ]));
+  }
+
+  _backgroundCheck(String s, Color color) {
+    return Container(
+      color: color,
+      child: Stack(
+        children: [
+          Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                width: double.infinity,
+                height: 3,
+                color: constants.grey,
+              )),
+          Positioned(
+            top: 15,
+            left: 15,
+            right: 15,
+            child: Text(
+              s,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Ubuntu',
                   fontSize: 14),
             ),
           ),
           Positioned(
-              top: 70,
-              left:15 ,
+              top: 15,
+              left: 250,
               right: 15,
-              child: Container(
-                width: 40,
-                height: 10,
-                child: const ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  child: LinearProgressIndicator(
-                    value: 0,
-                    valueColor: AlwaysStoppedAnimation<Color>(constants.yellow),
-                    backgroundColor: constants.grey,
-                  ),
+              child: ElevatedButton(
+                child: Text("Complete Now"),
+                onPressed: () {
+                  createAlbum();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(constants.blue2),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10)),
+                          side: BorderSide(color: constants.blue2))),
+                ),
+              )),
+          const Positioned(
+            top: 36,
+            left: 15,
+            right: 15,
+            child: Text(
+              "3 steps left",
+              style: TextStyle(
+                  color: constants.blue2,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Ubuntu',
+                  fontSize: 14),
+            ),
+          ),
+          Positioned(
+            top: 70,
+            left: 15,
+            right: 15,
+            child: Container(
+              width: 40,
+              height: 10,
+              child: const ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                child: LinearProgressIndicator(
+                  value: 0,
+                  valueColor: AlwaysStoppedAnimation<Color>(constants.yellow),
+                  backgroundColor: constants.grey,
                 ),
               ),
+            ),
           ),
           const Positioned(
             top: 90,
             left: 15,
             right: 15,
-            child: Text("You’ll have to complete this and be approved before starting Receiving new jobs. " ,
-              style:
-              TextStyle(
-                  color: constants.grey ,
+            child: Text(
+              "You’ll have to complete this and be approved before starting Receiving new jobs. ",
+              style: TextStyle(
+                  color: constants.grey,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Ubuntu' ,
+                  fontFamily: 'Ubuntu',
                   fontSize: 14),
             ),
           ),
@@ -462,12 +542,12 @@ class _service_requestState extends State<service_request> {
             top: 160,
             left: 15,
             right: 15,
-            child: Text("Area of work" ,
-              style:
-              const TextStyle(
-                  color: Colors.black ,
+            child: Text(
+              "Area of work",
+              style: const TextStyle(
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Ubuntu' ,
+                  fontFamily: 'Ubuntu',
                   fontSize: 14),
             ),
           ),
@@ -477,7 +557,7 @@ class _service_requestState extends State<service_request> {
               right: 15,
               child: ElevatedButton(
                 child: Text("Set Now"),
-                onPressed: (){
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const AreaOfWork()),
@@ -487,23 +567,24 @@ class _service_requestState extends State<service_request> {
                   backgroundColor: MaterialStateProperty.all(constants.blue2),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       const RoundedRectangleBorder(
-                          borderRadius:  BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10),bottomRight: Radius.circular(10) , bottomLeft: Radius.circular(10)),
-                          side: BorderSide(color: constants.blue2)
-                      )
-                  ),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10)),
+                          side: BorderSide(color: constants.blue2))),
                 ),
-              )
-          ),
+              )),
           const Positioned(
             top: 181,
             left: 15,
             right: 15,
-            child: Text("Select multiple working areas" ,
-              style:
-              TextStyle(
-                  color: constants.blue2 ,
+            child: Text(
+              "Select multiple working areas",
+              style: TextStyle(
+                  color: constants.blue2,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Ubuntu' ,
+                  fontFamily: 'Ubuntu',
                   fontSize: 14),
             ),
           ),
@@ -511,12 +592,12 @@ class _service_requestState extends State<service_request> {
             top: 215,
             left: 15,
             right: 15,
-            child: Text("We will help you with finding the best working opportunities In your selected working areas" ,
-              style:
-              TextStyle(
-                  color: constants.grey ,
+            child: Text(
+              "We will help you with finding the best working opportunities In your selected working areas",
+              style: TextStyle(
+                  color: constants.grey,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Ubuntu' ,
+                  fontFamily: 'Ubuntu',
                   fontSize: 14),
             ),
           ),
@@ -524,15 +605,16 @@ class _service_requestState extends State<service_request> {
               top: 257,
               right: 30,
               left: 320,
-              child: Text("1/2" , style: TextStyle(
-                fontSize: 14 ,
-                fontFamily: 'Ubuntu',
-                fontWeight: FontWeight.normal,
-              ),))
-
-        ] ,
+              child: Text(
+                "1/2",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Ubuntu',
+                  fontWeight: FontWeight.normal,
+                ),
+              ))
+        ],
       ),
     );
   }
 }
-
