@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final response =await http
         .get(Uri.parse('https://staging.skephome.com/api/Auth/ExistingUser/${_controller.text}'),
         headers: {
-          HttpHeaders.authorizationHeader : 'Bearer $token'
+          HttpHeaders.authorizationHeader : 'Bearer'
         }
     );
 
@@ -49,12 +49,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if(response.statusCode == 200){
       print(response.body);
-      print(token);
+      // print(token);
       if(userType['user_type']=="cleaner"){
         if(message['message'] == true){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Dashboard()),
+            MaterialPageRoute(builder: (context) =>Registration(phone: _controller.text)),
           );
         }else{
           Navigator.push(
@@ -90,15 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   }
 
-  String ? token = "";
   @override
   Widget build(BuildContext context) {
 
-    SharedPreferences.getInstance().then((sharedPrefValue){
-      setState(() {
-        token = sharedPrefValue.getString('token')!;
-      });
-    });
+
 
     return SafeArea(
         child: Scaffold(
@@ -205,14 +200,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           onPressed: () {
                            //Navigator.of(context).push(MaterialPageRoute(builder: (c) =>  Registration(phone: _controller.text,)));
-                            Navigator.of(context).push(MaterialPageRoute(builder: (c) =>OtpControllerScreen(
-                              phone: _controller.text,
-                              dialCodeDigits: dialCodeDigits,
-                            ),),
-                            );
+                           //  Navigator.of(context).push(MaterialPageRoute(builder: (c) =>OtpControllerScreen(
+                           //    phone: _controller.text,
+                           //    dialCodeDigits: dialCodeDigits,
+                           //  ),),
+                           //  );
                             // print(phone);
                             // print(token);
-                            //  checkUser = fetchData(context);
+                              checkUser = fetchData(context);
                           }
                       ),
                     ),

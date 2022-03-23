@@ -1,31 +1,31 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:skep_home_pro/models/userModelSignUp.dart';
-
-import '../Dashboard/Dashboard.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
+import '../Plugins/AddressSearch.dart';
+import '../Plugins/Suggestions.dart';
+
 class Registration extends StatefulWidget {
-
   final String phone;
-  const Registration({required this.phone});
 
+  const Registration({required this.phone});
 
   @override
   State<Registration> createState() => _RegistrationState();
 }
 
+const kGoogleApiKey = "AIzaSyCCHzYB_WUozqkw2mntxWDwzCAxLfKqZWM";
+
 class _RegistrationState extends State<Registration> {
   DateTime selectedDate = DateTime.utc(1950);
-
-
-
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -47,10 +47,12 @@ class _RegistrationState extends State<Registration> {
 
   Future<CallApi>? _futureAlbum;
 
+  String location = "Search Location";
+
   DateTime? birthdate;
 
-  Future<CallApi> createAlbum(
-      String first_name, String last_name, String email, String date , String address ) async {
+  Future<CallApi> createAlbum(String first_name, String last_name, String email,
+      String date, String address) async {
     final response = await http.post(
       Uri.parse('http://staging.skephome.com/api/Auth/Register'),
       headers: <String, String>{
@@ -62,13 +64,13 @@ class _RegistrationState extends State<Registration> {
         'last_name': last_name,
         'email': email,
         'date_of_birth': date,
-        'address' : address ,
+        'address': address,
         'lat': "43.651070",
         'lng': "-79.347015",
-        'phone' : widget.phone,
+        'phone': widget.phone,
       }),
     );
-    var body =response.body;
+    var body = response.body;
     var BarearToken = jsonDecode(body);
     print(BarearToken['accessToken']);
 
@@ -77,12 +79,10 @@ class _RegistrationState extends State<Registration> {
 
     if (response.statusCode == 200) {
       // then parse the JSON.
-
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const backGroundCheck()),
       );
-
       print(response.body);
       return CallApi.fromJson(jsonDecode(response.body));
     } else {
@@ -289,21 +289,18 @@ class _RegistrationState extends State<Registration> {
               top: 310,
               left: 15,
               right: 15,
-              child:TextFormField(
+              child: TextField(
                 controller: _controllerAddress,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Required";
-                  } else {
-                    return null;
-                  }
+                onTap: () async {
+                  
                 },
+                // with some styling
                 decoration: InputDecoration(
                   fillColor: constants.grey,
                   labelText: "Address",
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                    const BorderSide(width: 3, color: constants.grey),
+                        const BorderSide(width: 3, color: constants.grey),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   errorBorder: OutlineInputBorder(
@@ -315,9 +312,10 @@ class _RegistrationState extends State<Registration> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   focusedBorder: OutlineInputBorder(
-                      borderSide:
-                      const BorderSide(width: 2, color: constants.grey),
-                      borderRadius: BorderRadius.circular(15)),
+                    borderSide:
+                        const BorderSide(width: 2, color: constants.grey),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                 ),
               ),
             ),
@@ -424,16 +422,17 @@ class _RegistrationState extends State<Registration> {
                         if (_controllerFirstName.text.isEmpty ||
                             _controllerLastName.text.isEmpty ||
                             _controllerEmail.text.isEmpty ||
-                        _controllerAddress.text.isEmpty) {
+                            _controllerAddress.text.isEmpty) {
                           validate();
                         } else {
                           setState(() {
                             _futureAlbum = createAlbum(
-                                _controllerFirstName.text,
-                                _controllerLastName.text,
-                                _controllerEmail.text,
-                                _controllerDate.text,
-                            _controllerAddress.text ,);
+                              _controllerFirstName.text,
+                              _controllerLastName.text,
+                              _controllerEmail.text,
+                              _controllerDate.text,
+                              _controllerAddress.text,
+                            );
                           });
                         }
                       }),

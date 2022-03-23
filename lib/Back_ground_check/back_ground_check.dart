@@ -4,10 +4,9 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
-import 'package:skep_home_pro/Back_ground_check/getStartBGCheck.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
-
 import '../models/cleanerBGModel.dart';
 import '../routes/routes.dart';
 
@@ -31,7 +30,7 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
   final response = await http.post(
     Uri.parse('http://staging.skephome.com/api/Cleaner/CleanerBackground'),
     headers: <String, String>{
-      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6IjUxODMzYTE0YmIzMGQ5OWU5NGNiODgyMzk0ZjU3NjgxZDBjYjY4NDRkYTlhYmVkY2Y1MDgyMzc1NDJjNGNmYWE4NTkyNzFkOGY1ZmMwOWU4IiwiaWF0IjoxNjQ3OTU3ODI5LCJuYmYiOjE2NDc5NTc4MjksImV4cCI6MTY3OTQ5MzgyOSwic3ViIjoiODIiLCJzY29wZXMiOltdfQ.o-m4r7LQWsBm8Gdor-R_TMwseCDdhTi6aN72aoLDUOEEQ4OOWu6oLqsKbjAbZl4-aZFoaJmoPna7JI3rSPOgYrjgF52r3j19Oq8gLWWTujTaMd8lEBO1ufS83sdxYtSeMu5GyrgonqnojIrbGbbxFnQVYIXgoReLB_FMOAiYHLSn_gh3QyvWUDQPXbMOrwNyv5zG10jsDzlCsoOOUcIQ3NuPN9jEEJSais2asBYuWq0deWYuwP7pWPQMM8uhiEYZj1RGoxM11mDWq9ny4vqvd9UNzMFyJfd1gX7jNgX0bVrqJcsG8IULylqRYQHBidyMX3UQNAYpV7TQIa9wguXfAvH9Zc2Vb0Jj7Luwkd2GyiBy82283gOkeW7O3YRB8_fxmlQ2gf8ubyUUsHlkXwKi-EZNaDKTRJoxnQD8y4Gd4bL4Oh4oL_s4VP38slynJw7bpauQzXpXZtQQB4af4QVfYvng8wuaBBiMU3ixXARLoDEUklj2tX6LG1DzCHp5JQ199hMT8I_5uCiYw66jWdP38Y2piJx4689OlCxjt9C6CJzLBjXAibHBvf8epPbHF6XpVic87GLGbKcElXDOcCp9WCP-yhMHPRxBnQ3zqMKdgCWFNMyYQ567SmvlRg665Q2-ov4iSgrRV6kyLPv32aHRw5AwE8GRh_pmFBPHttN8DjI',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept' : 'application/json'
     },
@@ -62,14 +61,26 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
   }
 }
 
+var token = "";
 
 
 class _backGroundCheckState extends State<backGroundCheck> {
   String genderBool = '';
   String CountryCodeValue = '';
 
+
   @override
   Widget build(BuildContext context) {
+
+
+    SharedPreferences.getInstance().then((sharedPrefValue){
+      setState(() {
+        token = sharedPrefValue.getString('token')!;
+        //print(token);
+      });
+    });
+
+
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,

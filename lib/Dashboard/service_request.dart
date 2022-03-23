@@ -4,10 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/areaOfWork.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
+import 'package:skep_home_pro/models/CertnModel.dart';
 import 'package:skep_home_pro/models/updateProfileApi.dart';
+import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -18,6 +21,7 @@ class service_request extends StatefulWidget {
   State<service_request> createState() => _service_requestState();
 }
 
+var Email;
 
 
 class _service_requestState extends State<service_request> {
@@ -39,7 +43,7 @@ class _service_requestState extends State<service_request> {
   }
 
   static Future<userProfileModel> editUserData(File? image) async {
-    String basicAuth = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6IjUxODMzYTE0YmIzMGQ5OWU5NGNiODgyMzk0ZjU3NjgxZDBjYjY4NDRkYTlhYmVkY2Y1MDgyMzc1NDJjNGNmYWE4NTkyNzFkOGY1ZmMwOWU4IiwiaWF0IjoxNjQ3OTU3ODI5LCJuYmYiOjE2NDc5NTc4MjksImV4cCI6MTY3OTQ5MzgyOSwic3ViIjoiODIiLCJzY29wZXMiOltdfQ.o-m4r7LQWsBm8Gdor-R_TMwseCDdhTi6aN72aoLDUOEEQ4OOWu6oLqsKbjAbZl4-aZFoaJmoPna7JI3rSPOgYrjgF52r3j19Oq8gLWWTujTaMd8lEBO1ufS83sdxYtSeMu5GyrgonqnojIrbGbbxFnQVYIXgoReLB_FMOAiYHLSn_gh3QyvWUDQPXbMOrwNyv5zG10jsDzlCsoOOUcIQ3NuPN9jEEJSais2asBYuWq0deWYuwP7pWPQMM8uhiEYZj1RGoxM11mDWq9ny4vqvd9UNzMFyJfd1gX7jNgX0bVrqJcsG8IULylqRYQHBidyMX3UQNAYpV7TQIa9wguXfAvH9Zc2Vb0Jj7Luwkd2GyiBy82283gOkeW7O3YRB8_fxmlQ2gf8ubyUUsHlkXwKi-EZNaDKTRJoxnQD8y4Gd4bL4Oh4oL_s4VP38slynJw7bpauQzXpXZtQQB4af4QVfYvng8wuaBBiMU3ixXARLoDEUklj2tX6LG1DzCHp5JQ199hMT8I_5uCiYw66jWdP38Y2piJx4689OlCxjt9C6CJzLBjXAibHBvf8epPbHF6XpVic87GLGbKcElXDOcCp9WCP-yhMHPRxBnQ3zqMKdgCWFNMyYQ567SmvlRg665Q2-ov4iSgrRV6kyLPv32aHRw5AwE8GRh_pmFBPHttN8DjI';
+    String basicAuth = 'Bearer $token';
     var uri = Uri.parse("http://staging.skephome.com/api/User/UpdateProfile");
     var request =  http.MultipartRequest("POST", uri);
     request.headers['Authorization'] = basicAuth;
@@ -47,12 +51,75 @@ class _service_requestState extends State<service_request> {
     image != null ? request.files.add(await http.MultipartFile.fromPath('selfie', image.path)) : request.fields['selfie'];
     http.Response response = await http.Response.fromStream(await request.send());
     print(response.body);
+    var body = response.body;
+    Email = json.decode(body);
+    print(Email['email']);
     return userProfileModel.fromJson(JsonDecoder().convert(utf8.decode(response.bodyBytes)));
+  }
+
+  Future<CertnModel> createAlbum() async {
+    final response = await http.post(
+      Uri.parse('https://demo-api.certn.co/hr/v1/applications/quick/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization' : 'Barear eb61ad0d8242c9ec232c74afadc18d685fccc650'
+      },
+      body: jsonEncode(<String, String>
+      {
+        "request_enhanced_criminal_record_check": "true" ,
+        "request_enhanced_identity_verification": "true" ,
+        "email": Email,
+        "first_name": "Andrew",
+        "last_name": "McLeod",
+        "date_of_birth": "1987-03-04",
+        "birth_city": "Victoria",
+        "birth_province_state": "BC",
+        "birth_country": "CA",
+        "gender": "M",
+        "phone_number": "250-555-5555",
+        "address": "4412 King Alfred Court",
+        "city": "Victoria",
+        "province_state": "BC",
+        "country": "CA" ,
+        "offense": "332",
+        "date_of_sentence": "2000-01-01",
+        "court_location": "Victoria, BC, Canada",
+        "description": "null",
+        "offense": "348",
+        "date_of_sentence": "2000-01-01",
+        "court_location": "Victoria, BC, Canada",
+        "description": "Break, enter, and theft",
+        "rcmp_consent_given": "true",
+      }),
+    );
+    var body =response.body;
+    if (response.statusCode == 200) {
+      // then parse the JSON.
+      print(body);
+      return CertnModel.fromJson(jsonDecode(response.body));
+    }
+    else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+
+      print(response.statusCode);
+      print(response.body);
+      throw Exception('Failed to create album.');
+    }
   }
 
 
   @override
     Widget build(BuildContext context) {
+
+    SharedPreferences.getInstance().then((sharedPrefValue){
+      setState(() {
+        token = sharedPrefValue.getString('token')!;
+        //print(token);
+      });
+    });
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -326,10 +393,7 @@ class _service_requestState extends State<service_request> {
             child: ElevatedButton(
               child: Text("Complete Now"),
               onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => backGroundCheck()),
-                );
+                createAlbum();
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(constants.blue2),
