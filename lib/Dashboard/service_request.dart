@@ -14,6 +14,7 @@ import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:url_launcher/link.dart';
 
 import '../models/InformationUser.dart';
 import '../models/UserModel.dart';
@@ -24,6 +25,19 @@ class service_request extends StatefulWidget {
 }
 
 var Email;
+var First_name;
+var Last_name;
+var Gender;
+var Date_of_birth;
+var CountryCode;
+var Phone_Number;
+
+
+var IDCertn;
+var IDInfo;
+
+var Url_redrict ;
+
 
 class _service_requestState extends State<service_request> {
   double _value = 0.5;
@@ -67,81 +81,88 @@ class _service_requestState extends State<service_request> {
 
   void createAlbum() async {
     await getDataUser().then((value) async {
+      print(value.email);
       final response = await http.post(
-        Uri.parse('https://demo-api.certn.co/hr/v1/applications/quick/'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Barear eb61ad0d8242c9ec232c74afadc18d685fccc650'
-        },
-        body: jsonEncode(<String, dynamic>{
-          "request_enhanced_criminal_record_check": true,
-          "request_enhanced_identity_verification": true,
-          "email": value.email,
-          "information": {
-            "first_name": value.firstName,
-            "last_name": value.lastName,
-            "date_of_birth": value.dateOfBirth,
-            "birth_city": "Victoria",
-            "birth_province_state": "BC",
-            "birth_country": value.countryInti,
-            "gender": value.gender,
-            "phone_number": value.phone,
-            "addresses": [{
-              "address": "4412 King Alfred Court",
-              "city": "Victoria",
-              "province_state": "BC",
-              "country": "CA"
+          Uri.parse('https://demo-api.certn.co/hr/v1/applications/quick/'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer eb61ad0d8242c9ec232c74afadc18d685fccc650'
+          },
+          body: jsonEncode(<String, dynamic>{
+            "request_enhanced_criminal_record_check": true,
+            "request_enhanced_identity_verification": true,
+            "email": Email,
+            "information": {
+              "first_name": First_name,
+              "last_name": Last_name,
+              "date_of_birth": "1987-03-04",
+              "birth_city": "Victoria",
+              "birth_province_state": "BC",
+              "birth_country": "AR",
+              "gender": Gender,
+              "phone_number": Phone_Number,
+              "addresses": [{
+                "address": "4412 King Alfred Court",
+                "city": "Victoria",
+                "province_state": "BC",
+                "country": "CA"
+              }],
+              "convictions": [{
+                "offense": "332",
+                "date_of_sentence": "2000-01-01",
+                "court_location": "Victoria, BC, Canada",
+                "description": "Robbery; Theft over 200"
+              }, {
+                "offense": "348",
+                "date_of_sentence": "2000-01-01",
+                "court_location": "Victoria, BC, Canada",
+                "description": "Break, enter, and theft"
+              }
+              ],
+              "rcmp_consent_given": true
             }
-            ],
-            "convictions": [{
-              "offense": "332",
-              "date_of_sentence": "2000-01-01",
-              "court_location": "Victoria, BC, Canada",
-              "description": "Robbery; Theft over 200"
-            }, {
-              "offense": "348",
-              "date_of_sentence": "2000-01-01",
-              "court_location": "Victoria, BC, Canada",
-              "description": "Break, enter, and theft"
-            }
-            ],
-            "rcmp_consent_given": true
-          }
-        })
-        // body: InformationUser(
-        //   requestEnhancedCriminalRecordCheck: true,
-        //   requestEnhancedIdentityVerification: true,
-        //   email: value.email!,
-        //   information: Information(
-        //       birthCountry: "",
-        //       firstName: value.firstName!,
-        //       gender: value.gender!,
-        //       phoneNumber: value.phone!,
-        //       lastName: value.lastName!,
-        //       birthCity: '',
-        //       birthProvinceState: '',
-        //       convictions: [],
-        //       dateOfBirth: value.dateOfBirth!,
-        //       rcmpConsentGiven: true,
-        //       addresses: [Addresses(country: '', address: '', city: '', provinceState: '')]),
-        // ).toJson(),
+          })
       );
       var body = response.body;
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         // then parse the JSON.
+
+        var id_certn = jsonDecode(body);
+        IDCertn = id_certn["id"];
+
+        var url = jsonDecode(body);
+        Url_redrict = url['enhanced_identity_verification']['redirect_url'];
+
+        // postCertn();
+
         showDialog(
             context: context,
             builder: (context) {
-              return Text(body);
+              return AlertDialog(
+                title: const Text('Sorry.'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text("$Url_redrict"),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Approve'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
             });
-
         print(body);
         return CertnModel.fromJson(jsonDecode(response.body));
       } else {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
-
         showDialog(
             context: context,
             builder: (context) {
@@ -160,26 +181,98 @@ class _service_requestState extends State<service_request> {
     });
   }
 
+  Future<CertnModel> postCertn() async {
+    final response = await http.post(
+      Uri.parse('https://staging.skephome.com/api/Auth/CertnID/{$IDInfo}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(<String, String>{
+        'certn_id': IDCertn,
+      }),
+    );
+    var body = response.body;
+    if (response.statusCode == 200) {
+      // then parse the JSON.
+      print(body);
+      print("Succeed");
+      return CertnModel.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      print(response.statusCode);
+      print(response.body);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Sorry.'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[
+                    Text('The email has already been taken.'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Approve'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+      print("Hohohohoh");
+      throw Exception('Failed to create album.');
+    }
+  }
+
+
   Future<User> getDataUser() async {
     final response = await http.get(
         Uri.parse('http://staging.skephome.com/api/User/MyProfile'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
     if (response.statusCode == 200) {
+      var body = response.body;
+
+      var email = jsonDecode(body);
+      Email = email['user']['email'];
+      var firstName = jsonDecode(body);
+      First_name =firstName['user']['first_name'];
+      var lastName = jsonDecode(body);
+      Last_name = lastName['user']['last_name'] ;
+      var dateOfBirth = jsonDecode(body);
+      Date_of_birth = dateOfBirth['user']['date_of_birth'] ;
+      var gender = jsonDecode(body);
+      Gender = gender['user']['gender'] ;
+      var phone = jsonDecode(body);
+      Phone_Number= phone['user']['phone'];
+
+      var id_info = jsonDecode(body);
+      IDInfo = id_info['id'];
+
+
       print(response.body);
       return User.fromJson(jsonDecode(response.body));
     } else {
       print(response.body);
-      throw Exception('Failed to create album.');
+      print(response.statusCode);
+      throw Exception(response.statusCode);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    //getDataUser();
+
+
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
         token = sharedPrefValue.getString('token')!;
-        //print(token);
+        // print(token);
       });
     });
 
@@ -469,21 +562,26 @@ class _service_requestState extends State<service_request> {
               top: 15,
               left: 250,
               right: 15,
-              child: ElevatedButton(
-                child: Text("Complete Now"),
-                onPressed: () {
-                  createAlbum();
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(constants.blue2),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                              bottomLeft: Radius.circular(10)),
-                          side: BorderSide(color: constants.blue2))),
+              child: Link(
+                target: LinkTarget.self,
+                uri: Uri.parse(Url_redrict),
+                builder: (context , followLink) => ElevatedButton(
+                  child: Text("Complete Now"),
+                  onPressed: () {
+                    createAlbum();
+                    followLink;
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(constants.blue2),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10)),
+                            side: BorderSide(color: constants.blue2))),
+                  ),
                 ),
               )),
           const Positioned(

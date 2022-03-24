@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/Dashboard.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/Login/OtpController.dart';
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final response =await http
         .get(Uri.parse('https://staging.skephome.com/api/Auth/ExistingUser/${_controller.text}'),
         headers: {
-          HttpHeaders.authorizationHeader : 'Bearer'
+          HttpHeaders.authorizationHeader : 'Bearer $token'
         }
     );
 
@@ -54,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if(message['message'] == true){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>service_request()),
+            MaterialPageRoute(builder: (context) =>Registration(phone: _controller.text)),
           );
         }else{
           Navigator.push(
