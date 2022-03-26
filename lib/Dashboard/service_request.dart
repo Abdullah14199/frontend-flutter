@@ -15,6 +15,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/InformationUser.dart';
 import '../models/UserModel.dart';
@@ -27,9 +28,7 @@ class service_request extends StatefulWidget {
 var Email;
 var First_name;
 var Last_name;
-var Gender;
 var Date_of_birth;
-var CountryCode;
 var Phone_Number;
 
 
@@ -96,10 +95,10 @@ class _service_requestState extends State<service_request> {
             "information": {
               "first_name": First_name,
               "last_name": Last_name,
-              "date_of_birth": "1987-03-04",
+              "date_of_birth": Date_of_birth,
               "birth_city": "Victoria",
               "birth_province_state": "BC",
-              "birth_country": "AR",
+              "birth_country": CodeCountry2,
               "gender": Gender,
               "phone_number": Phone_Number,
               "addresses": [{
@@ -134,30 +133,10 @@ class _service_requestState extends State<service_request> {
         var url = jsonDecode(body);
         Url_redrict = url['enhanced_identity_verification']['redirect_url'];
 
-        // postCertn();
+         postCertn();
 
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Sorry.'),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text("$Url_redrict"),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Approve'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            });
+        _launchURL();
+
         print(body);
         return CertnModel.fromJson(jsonDecode(response.body));
       } else {
@@ -166,20 +145,20 @@ class _service_requestState extends State<service_request> {
         showDialog(
             context: context,
             builder: (context) {
-              return Text('Error response');
+              return Text('${response.statusCode} ${response.body}');
             });
         print(response.statusCode);
         print(response.body);
         throw Exception('${response.statusCode} ${response.body}');
       }
-    }).catchError((onError){
-      showDialog(
-          context: context,
-          builder: (context) {
-            return Text('${onError}');
-          });
     });
   }
+
+  void _launchURL() async {
+    String url = Url_redrict;
+    if (!await launch(url)) throw 'Could not launch $url';
+  }
+
 
   Future<CertnModel> postCertn() async {
     final response = await http.post(
@@ -194,10 +173,16 @@ class _service_requestState extends State<service_request> {
       }),
     );
     var body = response.body;
+    var respSt= response.statusCode;
     if (response.statusCode == 200) {
       // then parse the JSON.
       print(body);
       print("Succeed");
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Text(body);
+          });
       return CertnModel.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 201 CREATED response,
@@ -207,24 +192,7 @@ class _service_requestState extends State<service_request> {
       showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              title: const Text('Sorry.'),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: const <Widget>[
-                    Text('The email has already been taken.'),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Approve'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
+            return Text(respSt.toString());
           });
       print("Hohohohoh");
       throw Exception('Failed to create album.');
@@ -253,7 +221,7 @@ class _service_requestState extends State<service_request> {
       Phone_Number= phone['user']['phone'];
 
       var id_info = jsonDecode(body);
-      IDInfo = id_info['id'];
+      IDInfo = id_info['user']['id'];
 
 
       print(response.body);
@@ -562,20 +530,17 @@ class _service_requestState extends State<service_request> {
               top: 15,
               left: 250,
               right: 15,
-              child: Link(
-                target: LinkTarget.self,
-                uri: Uri.parse(Url_redrict),
-                builder: (context , followLink) => ElevatedButton(
+              child: ElevatedButton(
                   child: Text("Complete Now"),
                   onPressed: () {
-                    createAlbum();
-                    followLink;
+                      createAlbum();
+                      // postCertn();
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(constants.blue2),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shape:MaterialStateProperty.all<RoundedRectangleBorder>(
                         const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
+                          borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10),
                                 bottomRight: Radius.circular(10),
@@ -583,7 +548,7 @@ class _service_requestState extends State<service_request> {
                             side: BorderSide(color: constants.blue2))),
                   ),
                 ),
-              )),
+              ),
           const Positioned(
             top: 36,
             left: 15,

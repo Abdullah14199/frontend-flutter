@@ -23,7 +23,8 @@ RxBool myOwnCar = false.obs;
 RxBool otherNotSure = false.obs;
 RxBool publicTransport = false.obs;
 
-
+var Gender;
+var CodeCountry2;
 
 
 Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async {
@@ -43,6 +44,14 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
     // then parse the JSON.
     print(response.body);
     print(response.statusCode);
+
+    var body = response.body;
+
+    var gender = jsonDecode(body);
+    Gender = gender['user']['gender'] ;
+
+    var Codecountry = jsonDecode(body);
+    CodeCountry2 = Codecountry['user']['country_inti'] ;
 
     Navigator.push(
       context,
@@ -392,7 +401,7 @@ class _backGroundCheckState extends State<backGroundCheck> {
             ),
           ),
           Positioned(
-            top: 750,
+            top: 650,
             right: 15,
             left: 15,
             child: Container(

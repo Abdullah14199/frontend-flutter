@@ -1,5 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_place/google_place.dart' as place;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
@@ -7,7 +11,7 @@ import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:skep_home_pro/models/userModelSignUp.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-
+import 'package:google_maps_webservice/places.dart';
 
 class Registration extends StatefulWidget {
   final String phone;
@@ -19,6 +23,7 @@ class Registration extends StatefulWidget {
 }
 
 const kGoogleApiKey = "AIzaSyCCHzYB_WUozqkw2mntxWDwzCAxLfKqZWM";
+
 
 class _RegistrationState extends State<Registration> {
   DateTime selectedDate = DateTime.utc(1950);
@@ -33,6 +38,7 @@ class _RegistrationState extends State<Registration> {
       setState(() {
         selectedDate = picked;
       });
+    _controllerDate.text = picked.toString().substring(0,10);
   }
 
   final TextEditingController _controllerFirstName = TextEditingController();
@@ -49,6 +55,7 @@ class _RegistrationState extends State<Registration> {
 
   Future<CallApi> createAlbum(String first_name, String last_name, String email,
       String date, String address) async {
+    print(_controllerDate.text);
     final response = await http.post(
       Uri.parse('http://staging.skephome.com/api/Auth/Register'),
       headers: <String, String>{
@@ -59,7 +66,7 @@ class _RegistrationState extends State<Registration> {
         'first_name': first_name,
         'last_name': last_name,
         'email': email,
-        'date_of_birth': date,
+        'date_of_birth': _controllerDate.text,
         'address': address,
         'lat': "43.651070",
         'lng': "-79.347015",
@@ -115,6 +122,59 @@ class _RegistrationState extends State<Registration> {
   }
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  final homeScaffoldKey = GlobalKey<ScaffoldState>();
+  final searchScaffoldKey = GlobalKey<ScaffoldState>();
+  final Mode _mode = Mode.overlay;
+
+
+
+
+
+  Future<void> _handlePressButton() async {
+    // show input autocomplete with selected mode
+    // then get the Prediction selected
+    Prediction? p = await PlacesAutocomplete.show(
+        offset: 0,
+        radius: 10000,
+        strictbounds: false,
+        region: "en",
+        language: "en",
+        context: context,
+        mode: _mode,
+        apiKey: kGoogleApiKey,
+        types: ["(cities)"],
+        hint: "Search City",
+      components: countrys,
+    );
+    print(p!.description);
+    displayPrediction(p);
+  }
+
+
+  Future<Null> displayPrediction(Prediction p) async {
+    if (p != null) {
+      // get detail (lat/lng)
+      GoogleMapsPlaces _places = GoogleMapsPlaces(
+        apiKey: kGoogleApiKey,
+        apiHeaders: await GoogleApiHeaders().getHeaders(),
+      );
+      PlacesDetailsResponse detail = await _places.getDetailsByPlaceId(p.placeId!);
+      // final lat = detail.result.geometry!.location.lat;
+      // final lng = detail.result.geometry!.location.lng;
+      print('p.descriptionp.description${p.description}');
+      _controllerAddress.text = p.description!;
+
+
+
+    }
+  }
+
+  void onError(PlacesAutocompleteResponse response) {
+    homeScaffoldKey.currentState!.showSnackBar(
+      SnackBar(content: Text(response.errorMessage!)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -295,8 +355,9 @@ class _RegistrationState extends State<Registration> {
                 },
                 controller: _controllerAddress,
                 onTap: () async {
-
+                  await _handlePressButton();
                 },
+
                 // with some styling
                 decoration: InputDecoration(
                   fillColor: constants.grey,
@@ -455,4 +516,16 @@ class _RegistrationState extends State<Registration> {
       print("Not Validate");
     }
   }
+  List<Component> countrys=[];
+
+  void listBuildCountry(){
+    for(int i =0;i<constants.listBuildCodeCountry.length;i++){
+      countrys.add(Component(Component.country, constants.listBuildCodeCountry[i]));
+    }
+    print(countrys);
+  }
+
 }
+
+
+
