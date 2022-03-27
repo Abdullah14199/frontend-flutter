@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
@@ -10,14 +9,9 @@ import 'package:skep_home_pro/Dashboard/areaOfWork.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/CertnModel.dart';
 import 'package:skep_home_pro/models/updateProfileApi.dart';
-import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../models/InformationUser.dart';
 import '../models/UserModel.dart';
 
 class service_request extends StatefulWidget {
@@ -162,13 +156,12 @@ class _service_requestState extends State<service_request> {
 
   Future<CertnModel> postCertn() async {
     final response = await http.post(
-      Uri.parse('https://staging.skephome.com/api/Auth/CertnID/{$IDInfo}'),
+      Uri.parse('https://staging.skephome.com/api/Auth/CertnID/$IDInfo'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
         'Authorization': 'Bearer $token'
       },
-      body: jsonEncode(<String, String>{
+      body: jsonEncode(<String , String>{
         'certn_id': IDCertn,
       }),
     );
@@ -178,11 +171,6 @@ class _service_requestState extends State<service_request> {
       // then parse the JSON.
       print(body);
       print("Succeed");
-      showDialog(
-          context: context,
-          builder: (context) {
-            return Text(body);
-          });
       return CertnModel.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 201 CREATED response,
@@ -192,7 +180,7 @@ class _service_requestState extends State<service_request> {
       showDialog(
           context: context,
           builder: (context) {
-            return Text(respSt.toString());
+            return Text(IDInfo.toString() +"     "+  body);
           });
       print("Hohohohoh");
       throw Exception('Failed to create album.');

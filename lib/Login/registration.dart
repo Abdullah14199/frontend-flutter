@@ -451,7 +451,7 @@ class _RegistrationState extends State<Registration> {
               ),
             ),
             Positioned(
-              top: 550,
+              top: 700,
               left: 15,
               right: 15,
               child: Container(

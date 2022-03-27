@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skep_home_pro/Dashboard/Dashboard.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import '../models/cleanerBGModel.dart';
@@ -25,6 +26,9 @@ RxBool publicTransport = false.obs;
 
 var Gender;
 var CodeCountry2;
+var EmailUser;
+var FirstName;
+var LastName;
 
 
 Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async {
@@ -53,9 +57,18 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
     var Codecountry = jsonDecode(body);
     CodeCountry2 = Codecountry['user']['country_inti'] ;
 
+    var email = jsonDecode(body);
+    EmailUser = email['user']['email'] ;
+
+    var firstName = jsonDecode(body);
+    FirstName = firstName['user']['first_name'];
+
+    var lastName = jsonDecode(body);
+    LastName = lastName['user']['last_name'];
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => service_request()),
+      MaterialPageRoute(builder: (context) => const Dashboard()),
     );
 
     print("klsjaddhklaslkasd");
