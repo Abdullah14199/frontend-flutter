@@ -454,12 +454,7 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                             Container(
                               width: 55.0,
                               height: 55.0,
-                              child: const CircleAvatar(
-                                backgroundColor: Colors.green,
-                                foregroundColor: Colors.green,
-                                backgroundImage: NetworkImage(
-                                    "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"),
-                              ),
+                              child: Text("3:32"),
                             ),
                             SizedBox(
                               width: 5.0,
@@ -496,58 +491,6 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                                       fontSize: 10,
                                       fontFamily: 'Ubuntu',
                                       fontWeight: FontWeight.normal),
-                                ),
-                                SizedBox(height: 7,),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 73,
-                                      height: 21.94,
-                                      decoration: BoxDecoration(
-                                        color: constants.lightGrey,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          ImageIcon(AssetImage("assets/images/refresh.png")),
-                                          Text("Monthly" , style: TextStyle(fontSize: 12 , fontWeight: FontWeight.bold , fontFamily: 'Ubuntu'),),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox( width:  10,),
-                                    Container(
-                                      width: 73,
-                                      height: 21.94,
-                                      decoration: BoxDecoration(
-                                        color: constants.lightGrey,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(width: 5,),
-                                          Text("(4.3/5)" , style: TextStyle(fontSize: 10 , fontWeight: FontWeight.bold , fontFamily: 'Ubuntu'),),
-                                          ImageIcon(AssetImage("assets/images/star.png") , color: constants.yellow,),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 7,),
-                                Row(
-                                  children: [
-                                    Image.asset("assets/images/Food.png"),
-                                    SizedBox(width: 5,),
-                                    Image.asset("assets/images/Freez.png"),
-                                    SizedBox(width: 5,),
-                                    Image.asset("assets/images/Table.png"),
-                                    SizedBox(width: 5,),
-                                    Image.asset("assets/images/Window.png"),
-                                  ],
                                 ),
                               ],
                             ),
