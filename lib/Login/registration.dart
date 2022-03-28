@@ -357,7 +357,6 @@ class _RegistrationState extends State<Registration> {
                 onTap: () async {
                   await _handlePressButton();
                 },
-
                 // with some styling
                 decoration: InputDecoration(
                   fillColor: constants.grey,

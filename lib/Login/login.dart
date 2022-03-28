@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if(message['message'] == true){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>Registration(phone: _controller.text)),
+            MaterialPageRoute(builder: (context) => Dashboard()),
           );
         }else{
           Navigator.push(
