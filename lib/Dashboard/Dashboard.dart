@@ -18,6 +18,8 @@ class _DashboardState extends State<Dashboard> {
 
   bool isTextFiledFocus = false;
 
+  bool isData = true;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

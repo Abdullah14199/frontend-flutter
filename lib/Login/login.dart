@@ -200,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           onPressed: () {
-                           //Navigator.of(context).push(MaterialPageRoute(builder: (c) =>  Registration(phone: _controller.text,)));
+                           Navigator.of(context).push(MaterialPageRoute(builder: (c) =>  Registration(phone: _controller.text,)));
                            //  Navigator.of(context).push(MaterialPageRoute(builder: (c) =>OtpControllerScreen(
                            //    phone: _controller.text,
                            //    dialCodeDigits: dialCodeDigits,
@@ -208,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                            //  );
                             // print(phone);
                             // print(token);
-                              checkUser = fetchData(context);
+                              //checkUser = fetchData(context);
                           }
                       ),
                     ),

@@ -10,8 +10,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:http/http.dart' as http;
 
 import '../models/apiSplashScreenModels.dart';
+import '../models/chartsModel.dart';
 import 'TodaysList.dart';
-
 
 class TodaysSchedule extends StatefulWidget {
   const TodaysSchedule({Key? key}) : super(key: key);
@@ -20,12 +20,21 @@ class TodaysSchedule extends StatefulWidget {
   State<TodaysSchedule> createState() => _TodaysSchedule();
 }
 
-class _TodaysSchedule extends State<TodaysSchedule> {
+bool isData = true;
 
+var BookingBalance;
+var WeekBalance;
+var MonthBalance;
+var BookingCount;
+var Total_hours;
+var TodayCashIn;
+var leatestBookings;
+var chart;
+
+class _TodaysSchedule extends State<TodaysSchedule> {
   int currentIndex = 0;
 
   bool isTextFiledFocus = false;
-
 
   List names = [
     "Abdullah Mohy",
@@ -52,39 +61,66 @@ class _TodaysSchedule extends State<TodaysSchedule> {
     "starts at 3:00pm"
   ];
 
-
-
-  Future<userModelSplash> fetchData(context) async{
-    final response =await http
-        .get(Uri.parse('https://staging.skephome.com/api/Cleaner/CleanerToDaySchedule'),
-        headers: {
-          HttpHeaders.authorizationHeader : 'Bearer $token'
-        }
+  Future<ChartsModels> postCharts() async {
+    final response = await http.post(
+      Uri.parse('https://staging.skephome.com/api/Cleaner/CleanerDasboard'),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: {
+        'date': '2022-03-29',
+      },
     );
+    var body = response.body;
+    var respSt = response.statusCode;
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // then parse the JSON.
+      var bookingBalance = jsonDecode(body);
+      BookingBalance = bookingBalance['BookingBalance'];
+      WeekBalance = bookingBalance['WeekBalance'];
+      MonthBalance = bookingBalance['MonthBalance'];
+      BookingCount = bookingBalance['BookingCount'];
+      Total_hours = bookingBalance['Total_hours'];
+      TodayCashIn = bookingBalance['TodayCashIn'];
+      chart = bookingBalance['chart'];
 
-    var body =response.body;
-    final responseJson = jsonDecode(body);
+      print(body);
+      print(chart);
+      print(chart["2022-03-27"]);
 
-    if(response.statusCode == 200){
-      print(response.body);
-      return userModelSplash.fromJson(responseJson);
-    }
-    else{
+      print("Succeed");
+
+      return ChartsModels.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
       print(response.statusCode);
-      throw Exception('Failed to load album');
+      print(response.body);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Text(body + respSt.toString());
+          });
+      print("Hohohohoh");
+      throw Exception('Failed to create album.');
     }
   }
 
-
+  @override
+  void initState() {
+    super.initState();
+    postCharts();
+  }
 
   static final List<WorldPopulation> populationData = [
-    WorldPopulation('M', 54, Colors.pink),
-    WorldPopulation('T', 57, Colors.purple),
-    WorldPopulation('W', 62, Colors.yellow),
-    WorldPopulation('T', 77, Colors.amber),
-    WorldPopulation('F', 80, Colors.green),
-    WorldPopulation('S', 99, Colors.black),
-    WorldPopulation('S ', 30, Colors.red),
+    WorldPopulation('M', 40),
+    WorldPopulation('T', chart["2022-03-28"]),
+    WorldPopulation('W', chart["2022-03-29"]),
+    WorldPopulation('T', chart["2022-03-30"]),
+    WorldPopulation('F', chart["2022-03-31"]),
+    WorldPopulation('S', chart["2022-04-01"]),
+    WorldPopulation('S ', chart["2022-04-02"]),
   ];
 
   @override
@@ -96,7 +132,7 @@ class _TodaysSchedule extends State<TodaysSchedule> {
         domainFn: (WorldPopulation pops, _) => pops.year,
         measureFn: (WorldPopulation pops, _) => pops.population,
         colorFn: (WorldPopulation pops, _) =>
-            charts.ColorUtil.fromDartColor(pops.barColor),
+            charts.ColorUtil.fromDartColor(constants.yellow),
       )
     ];
 
@@ -203,8 +239,8 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                 padding: const EdgeInsets.only(top: 70, left: 20, right: 20),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: constants.lightGrey,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                      color: constants.lightGrey,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                   width: double.infinity,
                   height: 40,
                   child: Row(
@@ -217,12 +253,14 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                           color: Colors.black,
                         ),
                       ),
-                      Text("15-21 April 2021" ,
+                      Text(
+                        "27-2 March-April 2022",
                         style: TextStyle(
-                        fontSize: 12 ,
+                          fontSize: 12,
                           fontWeight: FontWeight.normal,
                           fontFamily: 'Ubuntu',
-                      ),),
+                        ),
+                      ),
                       IconButton(
                         onPressed: () {},
                         icon: const Icon(
@@ -240,7 +278,7 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "0.00",
+                      "${BookingBalance}",
                       style: TextStyle(
                           color: constants.grey,
                           fontSize: 21,
@@ -248,7 +286,7 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "0.00",
+                      "${WeekBalance}",
                       style: TextStyle(
                           color: constants.grey,
                           fontSize: 21,
@@ -256,7 +294,7 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "0.00",
+                      "${MonthBalance}",
                       style: TextStyle(
                           color: constants.grey,
                           fontSize: 21,
@@ -347,7 +385,7 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "0",
+                      "${BookingCount}",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 21,
@@ -360,7 +398,7 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                       color: constants.grey,
                     ),
                     Text(
-                      "00:00",
+                      "${Total_hours}",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 21,
@@ -373,7 +411,7 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                       color: constants.grey,
                     ),
                     Text(
-                      "\$0,00",
+                      "${TodayCashIn}",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 21,
@@ -423,7 +461,7 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                       "Latest Requests",
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 17,
+                          fontSize: 14,
                           fontFamily: 'Ubuntu',
                           fontWeight: FontWeight.bold),
                     ),
@@ -431,75 +469,117 @@ class _TodaysSchedule extends State<TodaysSchedule> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top : 580 , left: 10 , right: 10),
-                child: ListView.builder(
-                  itemCount: 10,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) => Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding:
-                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                    child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                padding: const EdgeInsets.only(top: 580, left: 10, right: 10),
+                child: isData == true
+                    ? Center(
+                      child: Text(
+                          "No data to show",
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontFamily: 'Ubuntu',
+                              fontWeight: FontWeight.normal,
+                              color: constants.lightGrey),
+                        ),
+                    )
+                    : ListView.builder(
+                        itemCount: 10,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) =>
                             Container(
-                              width: 55.0,
-                              height: 55.0,
-                              child: Text("3:32"),
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 5.0),
+                          child: Card(
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0.0),
                             ),
-                            SizedBox(
-                              width: 5.0,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 55.0,
+                                        height: 55.0,
+                                        child: Text("3:32"),
+                                      ),
+                                      Container(
+                                        width: 35,
+                                        height: 18,
+                                        decoration: BoxDecoration(
+                                          color: constants.lightGrey,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "PM",
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Ubuntu'),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 15.0,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            names[index],
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12,
+                                                fontFamily: 'Ubuntu',
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 160,
+                                          ),
+                                          Text(
+                                            "\$43",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12,
+                                                fontFamily: 'Ubuntu',
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 7,
+                                      ),
+                                      Text(
+                                        des[index],
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 10,
+                                            fontFamily: 'Ubuntu',
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      names[index],
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                          fontFamily: 'Ubuntu',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(width: 160,),
-                                    Text(
-                                      "\$43",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                          fontFamily: 'Ubuntu',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 7,),
-                                Text(
-                                  des[index],
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 10,
-                                      fontFamily: 'Ubuntu',
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ],
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
               ),
             ],
           ),
@@ -536,14 +616,9 @@ class _TodaysSchedule extends State<TodaysSchedule> {
   }
 }
 
-
-
-
-
 class WorldPopulation {
   final String year;
   final int population;
-  final Color barColor;
 
-  WorldPopulation(this.year, this.population, this.barColor);
+  WorldPopulation(this.year, this.population);
 }

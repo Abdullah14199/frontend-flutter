@@ -13,6 +13,8 @@ class TodaysList extends StatefulWidget {
   State<TodaysList> createState() => _TodaysListState();
 }
 
+bool isData = true;
+
 class _TodaysListState extends State<TodaysList> {
   int currentIndex = 0;
 
@@ -189,7 +191,7 @@ class _TodaysListState extends State<TodaysList> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 140, left: 30, right: 40),
+              padding: EdgeInsets.only(top: 140, left: 25, right: 45),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -222,7 +224,64 @@ class _TodaysListState extends State<TodaysList> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 180, right: 17, left: 17),
-              child: ListView.builder(
+              child: isData ? Column(
+                children: [
+                  Image.asset("assets/images/cleanerone.png"),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    "No Assigned Cleaning Jobs",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  const Center(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Sorry there Is no assigned cleaning Job right now, \n                              try Accept Some.",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Ubuntu',
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+
+                    },
+                    child: Container(
+                      width: 180,
+                      height: 45,
+                      decoration: const BoxDecoration(
+                          color: constants.yellow,
+                          borderRadius: BorderRadius.all(Radius.circular(18))),
+                      child: const Center(
+                        child: Text(
+                          "Accept Jobs",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Ubuntu',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ) : ListView.builder(
                 itemCount: 10,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) => Container(
