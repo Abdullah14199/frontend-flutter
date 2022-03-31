@@ -8,14 +8,9 @@ import '../Dashboard/Today\'s_Schedule.dart';
 import '../models/chartsModel.dart';
 
 
-
 class ScheduleDate extends GetxController{
-
-
-
-
-  final DateFormat formatter = DateFormat('yyyy-MM-dd');
-
+  bool hasData = true;
+  DateFormat formatter = DateFormat('yyyy-MM-dd');
   String formatted = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   int year = DateTime.now().year;
@@ -31,20 +26,35 @@ class ScheduleDate extends GetxController{
   var leatestBookings;
   var chart;
 
+  List<WorldPopulation> populationData2 =[
+    WorldPopulation("M", 40),
+    WorldPopulation("T", 20),
+    WorldPopulation("W", 30),
+    WorldPopulation("T", 80),
+    WorldPopulation("F", 10),
+    WorldPopulation("S", 50),
+    WorldPopulation("S ", 90),
+  ];
+
   List<WorldPopulation> populationData =[];
 
   void getDatePlus(){
     day = int.parse(formatted.substring(8,10))+7;
     print(formatted.substring(8,10));
-    
+    month = int.parse(formatted.substring(5,7));
+    print(month);
+
     DateTime nextMonth = DateTime(year,month,day);
     formatted = formatter.format(nextMonth);
+
     update();
   }
   void getDateMenus(){
     day = int.parse(formatted.substring(8,10))-7;
+    month = int.parse(formatted.substring(5,7));
     DateTime nextMonth = DateTime(year,month,day);
     formatted = formatter.format(nextMonth);
+
     update();
   }
 
@@ -78,8 +88,13 @@ class ScheduleDate extends GetxController{
 
       print(body);
       print(chart);
-      for(int i=0;i<6;i++) {
-        chart.forEach((key,value) => populationData.add(WorldPopulation(week[i], value)));
+      if(populationData2.isNotEmpty){
+        hasData = false ;
+      }else{
+        hasData = true ;
+        for(int i=0;i<6;i++) {
+          chart.forEach((key,value) => populationData.add(WorldPopulation(week[i], value)));
+        }
       }
 
       print("Succeed");

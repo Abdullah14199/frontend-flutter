@@ -5,11 +5,13 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
-import 'package:skep_home_pro/Dashboard/Dashboard.dart';
+import 'package:skep_home_pro/Dashboard/TodaysList.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/serviceRequestModel.dart';
 import 'package:http/http.dart' as http;
+
+import '../Dashboard/Dashboard.dart';
 
 
 class OtpControllerScreen extends StatefulWidget {
@@ -55,7 +57,7 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
                 if(visiable['Checklist'][2]["Visable"]==true){
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Dashboard()),
+                    MaterialPageRoute(builder: (context) => const TodaysList()),
                   );
                 }
               }
@@ -126,7 +128,7 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
           checkServiceRequest = fetchData(context);
 
           if(value.user != null){
-            Navigator.of(context).push(MaterialPageRoute(builder: (c)=> const Dashboard()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (c)=> const TodaysList()));
           }
         });
         },

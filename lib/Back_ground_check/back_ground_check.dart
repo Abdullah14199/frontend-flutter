@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skep_home_pro/Dashboard/Dashboard.dart';
+import 'package:skep_home_pro/Dashboard/TodaysList.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
+import '../Dashboard/Dashboard.dart';
 import '../models/cleanerBGModel.dart';
 import '../routes/routes.dart';
 
@@ -29,6 +30,8 @@ var CodeCountry2;
 var EmailUser;
 var FirstName;
 var LastName;
+var Level;
+var Level_statues;
 
 
 Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async {
@@ -65,6 +68,14 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
 
     var lastName = jsonDecode(body);
     LastName = lastName['user']['last_name'];
+
+    var level = jsonDecode(body);
+    Level = level['user']['level'];
+
+    var level_statues = jsonDecode(body);
+    Level_statues = level_statues['user']['level_status'];
+
+
 
     Navigator.push(
       context,

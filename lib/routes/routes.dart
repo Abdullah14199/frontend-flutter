@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
-import 'package:skep_home_pro/Dashboard/Dashboard.dart';
 import 'package:skep_home_pro/Dashboard/Today\'s_Schedule.dart';
 import 'package:skep_home_pro/Dashboard/areaOfWork.dart';
 import 'package:skep_home_pro/splash_screen/get_started.dart';
 import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 import 'package:skep_home_pro/walkthrough/first_walk_through.dart';
 import 'package:skep_home_pro/walkthrough/second_walk_through.dart';
+
+import '../Dashboard/Dashboard.dart';
+import '../Dashboard/TodaysList.dart';
 
 
 

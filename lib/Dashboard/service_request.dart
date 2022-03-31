@@ -25,6 +25,8 @@ var Last_name;
 var Date_of_birth;
 var Phone_Number;
 
+var Selfie;
+
 
 var IDCertn;
 var IDInfo;
@@ -41,6 +43,13 @@ class _service_requestState extends State<service_request> {
   Future<userProfileModel>? _futureAlbum;
 
   File? _file;
+
+
+  @override
+  void initState() {
+    super.initState();
+    level();
+  }
 
   Future pickCamera() async {
     final myFile = await ImagePicker()
@@ -67,6 +76,10 @@ class _service_requestState extends State<service_request> {
     print(response.body);
     var body = response.body;
     Email = json.decode(body);
+
+    var selfie = jsonDecode(body);
+    Selfie = selfie['user']['selfie'];
+
     print(Email['email']);
     return userProfileModel
         .fromJson(JsonDecoder().convert(utf8.decode(response.bodyBytes)));
@@ -225,6 +238,7 @@ class _service_requestState extends State<service_request> {
   Widget build(BuildContext context) {
 
 
+
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
         token = sharedPrefValue.getString('token')!;
@@ -260,14 +274,267 @@ class _service_requestState extends State<service_request> {
             ),
           ),
         ),
-        drawer: Drawer(
-          backgroundColor: Colors.black,
-          child: ListView(
-            children: const <Widget>[
-              UserAccountsDrawerHeader(
-                  accountName: Text("Abdullah Mohy"),
-                  accountEmail: Text("Abdullah.m@skephome.com"))
-            ],
+        drawer:ClipRRect(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(35), bottomRight: Radius.circular(35)),
+          child: Drawer(
+            backgroundColor: Colors.white,
+            child: ListView(
+              children: <Widget>[
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(35),
+                        bottomRight: Radius.circular(35)),
+                    color: constants.blue,
+                  ),
+                  child: Stack(children: [
+                    Positioned(
+                      child:
+                      Image.asset("assets/images/profile_decore_img.png"),
+                      top: 30,
+                      bottom: 20,
+                      left: -13,
+                    ),
+                    Positioned(
+                      top: 100,
+                      left: 90,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Row(
+                          children: [
+                            Text(
+                              "Edit Profile",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Image.asset(
+                                "assets/images/edit.png",
+                                color: Colors.white,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Image.asset("assets/images/skeplogomenu.png"),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage("https://staging.skephome.com/storage/${Selfie}"),
+                              radius: 35,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Hi ${FirstName} , ",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Ubuntu '),
+                                  ),
+                                  Text(
+                                    "Welcome Back",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Ubuntu '),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Positioned(
+                                        top: 2,
+                                        left: 20,
+                                        child: IconButton(
+                                          onPressed: () {},
+                                          icon: Silver == true ? Image.asset(
+                                            "assets/images/silver_badge_img.png",
+                                          ) : Gold == true ? Image.asset(
+                                            "assets/images/gold_shield_img.png",
+                                          ) :  Image.asset(
+                                            "assets/images/bronz_badge_img.png",
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 2,
+                                      ),
+                                      CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        backgroundImage: AssetImage(
+                                            "assets/images/ic_colored_great.PNG"),
+                                        radius: 10,
+                                      ),
+                                      Container(
+                                        width: 40,
+                                        height: 15,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        child: Text(
+                                          "Great",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ]),
+                ),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  selected: true,
+                  leading: Image.asset(
+                    "assets/images/homeMenu.png",
+                    color: constants.blue,
+                  ),
+                  title: Text(
+                    'Home',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 2,
+                  color: constants.grey,
+                ),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  selected: true,
+                  leading: Image.asset(
+                    "assets/images/shield.png",
+                    color: constants.blue,
+                  ),
+                  title: Text('Account verification',
+                      style: TextStyle(color: Colors.black)),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 2,
+                  color: constants.grey,
+                ),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  selected: true,
+                  leading: Image.asset(
+                    "assets/images/calendar-4.png",
+                    color: constants.blue,
+                  ),
+                  title: Text('History', style: TextStyle(color: Colors.black)),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 2,
+                  color: constants.grey,
+                ),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  selected: true,
+                  leading: Image.asset(
+                    "assets/images/credit-card.png",
+                    color: constants.blue,
+                  ),
+                  title: Text('Payment Options',
+                      style: TextStyle(color: Colors.black)),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 2,
+                  color: constants.grey,
+                ),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  selected: true,
+                  leading: Image.asset(
+                    "assets/images/address.png",
+                    color: constants.blue,
+                  ),
+                  title: Text('Area Of Work',
+                      style: TextStyle(color: Colors.black)),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 2,
+                  color: constants.grey,
+                ),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  selected: true,
+                  leading: Image.asset(
+                    "assets/images/settings.png",
+                    color: constants.blue,
+                  ),
+                  title:
+                  Text('Settings', style: TextStyle(color: Colors.black)),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 2,
+                  color: constants.grey,
+                ),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  selected: true,
+                  leading: Image.asset(
+                    "assets/images/group.png",
+                    color: constants.blue,
+                  ),
+                  title: Text('Referral Program',
+                      style: TextStyle(color: Colors.black)),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 2,
+                  color: constants.grey,
+                ),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  selected: true,
+                  leading: Image.asset(
+                    "assets/images/support.png",
+                    color: constants.blue,
+                  ),
+                  title: Text('Support Center',
+                      style: TextStyle(color: Colors.black)),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 2,
+                  color: constants.grey,
+                ),
+              ],
+            ),
           ),
         ),
         body: SingleChildScrollView(
@@ -358,33 +625,6 @@ class _service_requestState extends State<service_request> {
                   ))
             ],
           ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage("assets/images/home.png")),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(
-                  AssetImage("assets/images/nosBottomNavigationBar.png")),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage("assets/images/dashboard.png")),
-              label: '',
-            ),
-          ],
-          // currentIndex: _selectedIndex,
-          selectedItemColor: constants.blue2,
-          onTap: (index) => setState(() {
-            currentIndex = index;
-          }),
-          currentIndex: currentIndex,
-          type: BottomNavigationBarType.fixed,
-          showUnselectedLabels: false,
         ),
       ),
     );
@@ -663,9 +903,27 @@ class _service_requestState extends State<service_request> {
                   fontFamily: 'Ubuntu',
                   fontWeight: FontWeight.normal,
                 ),
-              ))
+              ),
+          ),
         ],
       ),
     );
+  }
+}
+
+bool Silver = false ;
+bool Gold = false ;
+bool Platinum = false ;
+
+void level(){
+  if(Level == 'one'){
+    Image.asset("assets/images/bronz_badge_img.png");
+    Silver = true;
+  }else if(Level == 'two'){
+    Image.asset("assets/images/bronz_badge_img.png");
+    Gold = true;
+  }else if(Level == 'three'){
+    Image.asset("assets/images/bronz_badge_img.png");
+    Platinum = true;
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
+import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:skep_home_pro/models/allCitiesModel.dart';
@@ -43,6 +44,12 @@ class _AreaOfWorkState extends State<AreaOfWork> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    level();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
@@ -68,6 +75,269 @@ class _AreaOfWorkState extends State<AreaOfWork> {
               fontWeight: FontWeight.bold,
               fontFamily: 'Ubuntu',
             ),
+          ),
+        ),
+      ),
+      drawer: ClipRRect(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(35), bottomRight: Radius.circular(35)),
+        child: Drawer(
+          backgroundColor: Colors.white,
+          child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(35),
+                      bottomRight: Radius.circular(35)),
+                  color: constants.blue,
+                ),
+                child: Stack(children: [
+                  Positioned(
+                    child:
+                    Image.asset("assets/images/profile_decore_img.png"),
+                    top: 30,
+                    bottom: 20,
+                    left: -13,
+                  ),
+                  Positioned(
+                    top: 100,
+                    left: 90,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Row(
+                        children: [
+                          Text(
+                            "Edit Profile",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Image.asset(
+                              "assets/images/edit.png",
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Image.asset("assets/images/skeplogomenu.png"),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage("https://staging.skephome.com/storage/${Selfie}"),
+                            radius: 35,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Hi ${FirstName} , ",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Ubuntu '),
+                                ),
+                                Text(
+                                  "Welcome Back",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Ubuntu '),
+                                ),
+                                Row(
+                                  children: [
+                                    Positioned(
+                                      top: 2,
+                                      left: 20,
+                                      child: IconButton(
+                                        onPressed: () {},
+                                        icon: Silver == true ? Image.asset(
+                                          "assets/images/silver_badge_img.png",
+                                        ) : Gold == true ? Image.asset(
+                                          "assets/images/gold_shield_img.png",
+                                        ) :  Image.asset(
+                                          "assets/images/bronz_badge_img.png",
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      backgroundImage: AssetImage(
+                                          "assets/images/ic_colored_great.PNG"),
+                                      radius: 10,
+                                    ),
+                                    Container(
+                                      width: 40,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                      ),
+                                      child: Text(
+                                        "Great",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ]),
+              ),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                selected: true,
+                leading: Image.asset(
+                  "assets/images/homeMenu.png",
+                  color: constants.blue,
+                ),
+                title: Text(
+                  'Home',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                height: 2,
+                color: constants.grey,
+              ),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                selected: true,
+                leading: Image.asset(
+                  "assets/images/shield.png",
+                  color: constants.blue,
+                ),
+                title: Text('Account verification',
+                    style: TextStyle(color: Colors.black)),
+              ),
+              Container(
+                width: double.infinity,
+                height: 2,
+                color: constants.grey,
+              ),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                selected: true,
+                leading: Image.asset(
+                  "assets/images/calendar-4.png",
+                  color: constants.blue,
+                ),
+                title: Text('History', style: TextStyle(color: Colors.black)),
+              ),
+              Container(
+                width: double.infinity,
+                height: 2,
+                color: constants.grey,
+              ),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                selected: true,
+                leading: Image.asset(
+                  "assets/images/credit-card.png",
+                  color: constants.blue,
+                ),
+                title: Text('Payment Options',
+                    style: TextStyle(color: Colors.black)),
+              ),
+              Container(
+                width: double.infinity,
+                height: 2,
+                color: constants.grey,
+              ),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                selected: true,
+                leading: Image.asset(
+                  "assets/images/address.png",
+                  color: constants.blue,
+                ),
+                title: Text('Area Of Work',
+                    style: TextStyle(color: Colors.black)),
+              ),
+              Container(
+                width: double.infinity,
+                height: 2,
+                color: constants.grey,
+              ),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                selected: true,
+                leading: Image.asset(
+                  "assets/images/settings.png",
+                  color: constants.blue,
+                ),
+                title:
+                Text('Settings', style: TextStyle(color: Colors.black)),
+              ),
+              Container(
+                width: double.infinity,
+                height: 2,
+                color: constants.grey,
+              ),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                selected: true,
+                leading: Image.asset(
+                  "assets/images/group.png",
+                  color: constants.blue,
+                ),
+                title: Text('Referral Program',
+                    style: TextStyle(color: Colors.black)),
+              ),
+              Container(
+                width: double.infinity,
+                height: 2,
+                color: constants.grey,
+              ),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                selected: true,
+                leading: Image.asset(
+                  "assets/images/support.png",
+                  color: constants.blue,
+                ),
+                title: Text('Support Center',
+                    style: TextStyle(color: Colors.black)),
+              ),
+              Container(
+                width: double.infinity,
+                height: 2,
+                color: constants.grey,
+              ),
+            ],
           ),
         ),
       ),
@@ -402,5 +672,23 @@ class _AreaOfWorkState extends State<AreaOfWork> {
             );
           });
         });
+  }
+}
+
+
+bool Silver = false ;
+bool Gold = false ;
+bool Platinum = false ;
+
+void level(){
+  if(Level == 'one'){
+    Image.asset("assets/images/bronz_badge_img.png");
+    Silver = true;
+  }else if(Level == 'two'){
+    Image.asset("assets/images/bronz_badge_img.png");
+    Gold = true;
+  }else if(Level == 'three'){
+    Image.asset("assets/images/bronz_badge_img.png");
+    Platinum = true;
   }
 }
