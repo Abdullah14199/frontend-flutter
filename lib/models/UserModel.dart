@@ -97,36 +97,38 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['country_code'] = this.countryCode;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['lat'] = this.lat;
-    data['lng'] = this.lng;
-    data['fcm_token'] = this.fcmToken;
-    data['firebase_uid'] = this.firebaseUid;
-    data['device_id'] = this.deviceId;
-    data['registration_type'] = this.registrationType;
-    data['user_type'] = this.userType;
-    data['is_verfied'] = this.isVerfied;
-    data['selfie'] = this.selfie;
-    data['gender'] = this.gender;
-    data['country_inti'] = this.countryInti;
-    data['status'] = this.status;
-    data['has_places'] = this.hasPlaces;
-    data['rate'] = this.rate;
-    data['criminal_free'] = this.criminalFree;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['email_verified'] = this.emailVerified;
-    data['cleaner_city'] = this.cleanerCity;
-    data['address'] = this.address;
-    data['certn_wizerd'] = this.certnWizerd;
-    data['level'] = this.level;
-    data['level_status'] = this.levelStatus;
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['country_code'] = countryCode;
+    data['date_of_birth'] = dateOfBirth;
+    data['lat'] = lat;
+    data['lng'] = lng;
+    data['fcm_token'] = fcmToken;
+    data['firebase_uid'] = firebaseUid;
+    data['device_id'] = deviceId;
+    data['registration_type'] = registrationType;
+    data['user_type'] = userType;
+    data['is_verfied'] = isVerfied;
+    data['selfie'] = selfie;
+    data['gender'] = gender;
+    data['country_inti'] = countryInti;
+    data['status'] = status;
+    data['has_places'] = hasPlaces;
+    data['rate'] = rate;
+    data['criminal_free'] = criminalFree;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['email_verified'] = emailVerified;
+    data['cleaner_city'] = cleanerCity;
+    data['address'] = address;
+    data['certn_wizerd'] = certnWizerd;
+    data['level'] = level;
+    data['level_status'] = levelStatus;
     return data;
   }
+
+
 }

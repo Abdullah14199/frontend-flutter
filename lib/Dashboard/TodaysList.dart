@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
+import 'package:skep_home_pro/Back_ground_check/verificationAccount.dart';
 import 'package:skep_home_pro/Dashboard/Today\'s_Schedule.dart';
+import 'package:skep_home_pro/Dashboard/areaOfWork.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/routes/routes.dart';
+import 'package:skep_home_pro/shared/cache_helper.dart';
 
 class TodaysList extends StatefulWidget {
   const TodaysList({Key? key}) : super(key: key);
@@ -16,6 +20,7 @@ class TodaysList extends StatefulWidget {
 
 bool isData = true;
 
+bool isVerified = true;
 
 
 
@@ -25,7 +30,6 @@ class _TodaysListState extends State<TodaysList> {
   @override
   void initState() {
     super.initState();
-    level();
   }
 
   int currentIndex = 0;
@@ -58,6 +62,7 @@ class _TodaysListState extends State<TodaysList> {
   bool isTextFiledFocus = false;
 
 
+
   @override
   Widget build(BuildContext context) {
 
@@ -76,6 +81,13 @@ class _TodaysListState extends State<TodaysList> {
               },
             )
           ],
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          ),
           iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
@@ -89,270 +101,6 @@ class _TodaysListState extends State<TodaysList> {
             ),
           ),
         ),
-        
-        drawer: ClipRRect(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(35), bottomRight: Radius.circular(35)),
-          child: Drawer(
-            backgroundColor: Colors.white,
-            child: ListView(
-              children: <Widget>[
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(35),
-                        bottomRight: Radius.circular(35)),
-                    color: constants.blue,
-                  ),
-                  child: Stack(children: [
-                    Positioned(
-                      child:
-                          Image.asset("assets/images/profile_decore_img.png"),
-                      top: 30,
-                      bottom: 20,
-                      left: -13,
-                    ),
-                    Positioned(
-                      top: 100,
-                      left: 90,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Row(
-                          children: [
-                            Text(
-                              "Edit Profile",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                "assets/images/edit.png",
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Image.asset("assets/images/skeplogomenu.png"),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage("https://staging.skephome.com/storage/${Selfie}"),
-                              radius: 35,
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Hi ${FirstName} , ",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Ubuntu '),
-                                  ),
-                                  Text(
-                                    "Welcome Back",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Ubuntu '),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Positioned(
-                                        top: 2,
-                                        left: 20,
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: Silver == true ? Image.asset(
-                                            "assets/images/silver_badge_img.png",
-                                          ) : Gold == true ? Image.asset(
-                                            "assets/images/gold_shield_img.png",
-                                          ) :  Image.asset(
-                                            "assets/images/bronz_badge_img.png",
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 2,
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        backgroundImage: AssetImage(
-                                            "assets/images/ic_colored_great.PNG"),
-                                        radius: 10,
-                                      ),
-                                      Container(
-                                        width: 40,
-                                        height: 15,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                        ),
-                                        child: Text(
-                                          "Great",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ]),
-                ),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  selected: true,
-                  leading: Image.asset(
-                    "assets/images/homeMenu.png",
-                    color: constants.blue,
-                  ),
-                  title: Text(
-                    'Home',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  color: constants.grey,
-                ),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  selected: true,
-                  leading: Image.asset(
-                    "assets/images/shield.png",
-                    color: constants.blue,
-                  ),
-                  title: Text('Account verification',
-                      style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  color: constants.grey,
-                ),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  selected: true,
-                  leading: Image.asset(
-                    "assets/images/calendar-4.png",
-                    color: constants.blue,
-                  ),
-                  title: Text('History', style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  color: constants.grey,
-                ),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  selected: true,
-                  leading: Image.asset(
-                    "assets/images/credit-card.png",
-                    color: constants.blue,
-                  ),
-                  title: Text('Payment Options',
-                      style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  color: constants.grey,
-                ),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  selected: true,
-                  leading: Image.asset(
-                    "assets/images/address.png",
-                    color: constants.blue,
-                  ),
-                  title: Text('Area Of Work',
-                      style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  color: constants.grey,
-                ),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  selected: true,
-                  leading: Image.asset(
-                    "assets/images/settings.png",
-                    color: constants.blue,
-                  ),
-                  title:
-                      Text('Settings', style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  color: constants.grey,
-                ),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  selected: true,
-                  leading: Image.asset(
-                    "assets/images/group.png",
-                    color: constants.blue,
-                  ),
-                  title: Text('Referral Program',
-                      style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  color: constants.grey,
-                ),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  selected: true,
-                  leading: Image.asset(
-                    "assets/images/support.png",
-                    color: constants.blue,
-                  ),
-                  title: Text('Support Center',
-                      style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  color: constants.grey,
-                ),
-              ],
-            ),
-          ),
-        ),
         body: Stack(
           children: [
             Padding(
@@ -361,7 +109,7 @@ class _TodaysListState extends State<TodaysList> {
                 width: 380,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: constants.blue,
+                  color: constants.blue2,
                   borderRadius: BorderRadius.all(
                     Radius.circular(10),
                   ),
@@ -493,7 +241,7 @@ class _TodaysListState extends State<TodaysList> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 180, right: 17, left: 17),
-              child: isData
+              child: isData == true
                   ? Column(
                       children: [
                         Image.asset("assets/images/cleanerone.png"),
@@ -749,20 +497,4 @@ class _TodaysListState extends State<TodaysList> {
     
   }
 
-}
-bool Silver = false ;
-bool Gold = false ;
-bool Platinum = false ;
-
-void level(){
-  if(Level == 'one'){
-    Image.asset("assets/images/bronz_badge_img.png");
-    Silver = true;
-  }else if(Level == 'two'){
-    Image.asset("assets/images/bronz_badge_img.png");
-    Gold = true;
-  }else if(Level == 'three'){
-    Image.asset("assets/images/bronz_badge_img.png");
-    Platinum = true;
-  }
 }

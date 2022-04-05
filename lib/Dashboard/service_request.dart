@@ -51,6 +51,53 @@ class _service_requestState extends State<service_request> {
     level();
   }
 
+  // Future<ServiceRequestModel> fetchData(context) async{
+  //   final response =await http
+  //       .get(Uri.parse('https://staging.skephome.com/api/ServiceRequest/CheckServiceRequest'),
+  //       headers: {
+  //         HttpHeaders.authorizationHeader : 'Bearer $token'
+  //       }
+  //   );
+  //
+  //   var body =response.body;
+  //   var type = json.decode(body);
+  //   print(type["Checklist"][1]["type"]);
+  //   var visiable = json.decode(body);
+  //   print(visiable['Checklist'][0]["Visable"]);
+  //   final responseJson = jsonDecode(response.body);
+  //   if(response.statusCode == 200){
+  //     print(response.body);
+  //     if(type["Checklist"][0]["type"]==1){
+  //       if(visiable['Checklist'][0]["Visable"]==true){
+  //         if(type["Checklist"][1]["type"]==2){
+  //           if(visiable['Checklist'][1]["Visable"]==true){
+  //             if(type["Checklist"][2]["type"]==3){
+  //               if(visiable['Checklist'][2]["Visable"]==true){
+  //                 Navigator.push(
+  //                   context,
+  //                   MaterialPageRoute(builder: (context) =>  Registration(phone: widget.phone)),
+  //                 );
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //     return ServiceRequestModel.fromJson(responseJson);
+  //   }else{
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => service_request()),
+  //     );
+  //     print(response.statusCode);
+  //     throw Exception('Failed to load album');
+  //   }
+  // }
+  //
+  // late Future<ServiceRequestModel> checkServiceRequest;
+
+
+
   Future pickCamera() async {
     final myFile = await ImagePicker()
         .getImage(source: ImageSource.camera, imageQuality: 60);
@@ -274,135 +321,136 @@ class _service_requestState extends State<service_request> {
             ),
           ),
         ),
-        drawer:ClipRRect(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(35), bottomRight: Radius.circular(35)),
+        drawer: ClipRRect(
           child: Drawer(
             backgroundColor: Colors.white,
             child: ListView(
               children: <Widget>[
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(35),
-                        bottomRight: Radius.circular(35)),
-                    color: constants.blue,
-                  ),
-                  child: Stack(children: [
-                    Positioned(
-                      child:
-                      Image.asset("assets/images/profile_decore_img.png"),
-                      top: 30,
-                      bottom: 20,
-                      left: -13,
+                Container(
+                  width: double.infinity,
+                  height: 150,
+                  child: DrawerHeader(
+                    decoration: const BoxDecoration(
+                      color: constants.blue2,
                     ),
-                    Positioned(
-                      top: 100,
-                      left: 90,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Row(
-                          children: [
-                            Text(
-                              "Edit Profile",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                "assets/images/edit.png",
-                                color: Colors.white,
+                    child: Stack(children: [
+                      Positioned(
+                        child:
+                        Image.asset("assets/images/profile_decore_img.png"),
+                        top: 10,
+                        bottom: 30,
+                      ),
+                      Positioned(
+                        top: 70,
+                        left: 145,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            children: [
+                              const Text(
+                                "Edit Profile",
+                                style: TextStyle(color: Colors.white),
                               ),
-                            )
-                          ],
+                              IconButton(
+                                onPressed: () {},
+                                icon: Image.asset(
+                                  "assets/images/edit.png",
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Column(
-                      children: [
-                        Image.asset("assets/images/skeplogomenu.png"),
-                        SizedBox(
-                          height: 10,
+                      Positioned(
+                        top: 15,
+                        left: 13,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              "https://staging.skephome.com/storage/${Selfie}"),
+                          radius: 30,
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage("https://staging.skephome.com/storage/${Selfie}"),
-                              radius: 35,
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Hi ${FirstName} , ",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Ubuntu '),
-                                  ),
-                                  Text(
-                                    "Welcome Back",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Ubuntu '),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Positioned(
-                                        top: 2,
-                                        left: 20,
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: Silver == true ? Image.asset(
-                                            "assets/images/silver_badge_img.png",
-                                          ) : Gold == true ? Image.asset(
-                                            "assets/images/gold_shield_img.png",
-                                          ) :  Image.asset(
-                                            "assets/images/bronz_badge_img.png",
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 2,
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        backgroundImage: AssetImage(
-                                            "assets/images/ic_colored_great.PNG"),
-                                        radius: 10,
-                                      ),
-                                      Container(
-                                        width: 40,
-                                        height: 15,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                        ),
-                                        child: Text(
-                                          "Great",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
+                      ),
+                      Positioned(
+                        top: 20,
+                        left: 100,
+                        right: 40,
+                        child: Text(
+                          "Hi ${FirstName} , ",
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Ubuntu '),
+                        ),
+                      ),
+                      Positioned(
+                        top: 40,
+                        left: 100,
+                        right: 40,
+                        child: Text(
+                          "Welcome Back",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Ubuntu '),
+                        ),
+                      ),
+                      Positioned(
+                        top: 40,
+                        left: 95,
+                        child: Container(
+                          width: 60,
+                          height: 100,
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: Silver == true
+                                ? Image.asset(
+                              "assets/images/silver_badge_img.png",
+                              width: 200,
+                              height: 69,
                             )
-                          ],
+                                : Gold == true
+                                ? Image.asset(
+                                "assets/images/gold_shield_img.png",
+                                width: 200,
+                                height: 69)
+                                : Image.asset(
+                                "assets/images/bronz_badge_img.png",
+                                width: 200,
+                                height: 69),
+                          ),
                         ),
-                      ],
-                    ),
-                  ]),
+                      ),
+                      Positioned(
+                        top: 73,
+                        left: 160,
+                        child: Container(
+                          width: 50,
+                          height: 15,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: const Text(
+                            "    Great",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 70,
+                        left: 150,
+                        child: const CircleAvatar(
+                          backgroundColor: Colors.white,
+                          backgroundImage:
+                          AssetImage("assets/images/ic_colored_great.PNG"),
+                          radius: 10,
+                        ),
+                      ),
+                    ]),
+                  ),
                 ),
                 ListTile(
                   shape: RoundedRectangleBorder(
@@ -410,9 +458,9 @@ class _service_requestState extends State<service_request> {
                   selected: true,
                   leading: Image.asset(
                     "assets/images/homeMenu.png",
-                    color: constants.blue,
+                    color: constants.blue2,
                   ),
-                  title: Text(
+                  title: const Text(
                     'Home',
                     style: TextStyle(color: Colors.black),
                   ),
@@ -428,9 +476,9 @@ class _service_requestState extends State<service_request> {
                   selected: true,
                   leading: Image.asset(
                     "assets/images/shield.png",
-                    color: constants.blue,
+                    color: constants.blue2,
                   ),
-                  title: Text('Account verification',
+                  title: const Text('Account verification',
                       style: TextStyle(color: Colors.black)),
                 ),
                 Container(
@@ -444,9 +492,10 @@ class _service_requestState extends State<service_request> {
                   selected: true,
                   leading: Image.asset(
                     "assets/images/calendar-4.png",
-                    color: constants.blue,
+                    color: constants.blue2,
                   ),
-                  title: Text('History', style: TextStyle(color: Colors.black)),
+                  title: const Text('My Bookings',
+                      style: TextStyle(color: Colors.black)),
                 ),
                 Container(
                   width: double.infinity,
@@ -459,9 +508,9 @@ class _service_requestState extends State<service_request> {
                   selected: true,
                   leading: Image.asset(
                     "assets/images/credit-card.png",
-                    color: constants.blue,
+                    color: constants.blue2,
                   ),
-                  title: Text('Payment Options',
+                  title: const Text('Payment Options',
                       style: TextStyle(color: Colors.black)),
                 ),
                 Container(
@@ -475,9 +524,9 @@ class _service_requestState extends State<service_request> {
                   selected: true,
                   leading: Image.asset(
                     "assets/images/address.png",
-                    color: constants.blue,
+                    color: constants.blue2,
                   ),
-                  title: Text('Area Of Work',
+                  title: const Text('Area Of Work',
                       style: TextStyle(color: Colors.black)),
                 ),
                 Container(
@@ -491,10 +540,10 @@ class _service_requestState extends State<service_request> {
                   selected: true,
                   leading: Image.asset(
                     "assets/images/settings.png",
-                    color: constants.blue,
+                    color: constants.blue2,
                   ),
-                  title:
-                  Text('Settings', style: TextStyle(color: Colors.black)),
+                  title: const Text('Settings',
+                      style: TextStyle(color: Colors.black)),
                 ),
                 Container(
                   width: double.infinity,
@@ -502,14 +551,15 @@ class _service_requestState extends State<service_request> {
                   color: constants.grey,
                 ),
                 ListTile(
+
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   selected: true,
                   leading: Image.asset(
                     "assets/images/group.png",
-                    color: constants.blue,
+                    color: constants.blue2,
                   ),
-                  title: Text('Referral Program',
+                  title: const Text('Referral Program',
                       style: TextStyle(color: Colors.black)),
                 ),
                 Container(
@@ -523,9 +573,9 @@ class _service_requestState extends State<service_request> {
                   selected: true,
                   leading: Image.asset(
                     "assets/images/support.png",
-                    color: constants.blue,
+                    color: constants.blue2,
                   ),
-                  title: Text('Support Center',
+                  title: const Text('Support Center',
                       style: TextStyle(color: Colors.black)),
                 ),
                 Container(

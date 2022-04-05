@@ -13,6 +13,9 @@ import 'package:skep_home_pro/models/userModelSignUp.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_maps_webservice/places.dart';
 
+import '../shared/cache_helper.dart';
+import 'login.dart';
+
 class Registration extends StatefulWidget {
   final String phone;
 
@@ -77,10 +80,15 @@ class _RegistrationState extends State<Registration> {
     var BarearToken = jsonDecode(body);
     print(BarearToken['accessToken']);
 
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString('token', BarearToken['accessToken']);
+
 
     if (response.statusCode == 200) {
+
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString('token', BarearToken['accessToken']);
+      token=pref.get('token').toString();
+      print(token);
+
       // then parse the JSON.
       Navigator.push(
         context,

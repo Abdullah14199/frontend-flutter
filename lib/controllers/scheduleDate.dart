@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 import '../Back_ground_check/back_ground_check.dart';
 import '../Dashboard/Today\'s_Schedule.dart';
 import '../models/chartsModel.dart';
@@ -61,13 +62,14 @@ class ScheduleDate extends GetxController{
 
 
 
+
   Future<ChartsModels> postCharts() async {
 
     final response = await http.post(
       Uri.parse('https://staging.skephome.com/api/Cleaner/CleanerDasboard'),
       headers: <String, String>{
         'Accept': 'application/json',
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer $www'
       },
       body: {
         'date': formatted,

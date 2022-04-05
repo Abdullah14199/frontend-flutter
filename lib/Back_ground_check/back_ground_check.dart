@@ -31,6 +31,7 @@ var EmailUser;
 var FirstName;
 var LastName;
 var Level;
+var Phone;
 var Level_statues;
 
 
@@ -72,15 +73,15 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
     var level = jsonDecode(body);
     Level = level['user']['level'];
 
+    var phone = jsonDecode(body);
+    Phone = phone['user']['phone'];
+
     var level_statues = jsonDecode(body);
     Level_statues = level_statues['user']['level_status'];
 
 
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Dashboard()),
-    );
+    Get.offNamed(Routes.dashboard);
 
     print("klsjaddhklaslkasd");
     return CallApiBG.fromJson(jsonDecode(response.body));
@@ -94,7 +95,8 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
   }
 }
 
-var token = "";
+String token = "";
+
 
 
 class _backGroundCheckState extends State<backGroundCheck> {

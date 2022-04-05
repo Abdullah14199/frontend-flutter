@@ -5,8 +5,10 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/TodaysList.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
+import 'package:skep_home_pro/Login/registration.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/serviceRequestModel.dart';
 import 'package:http/http.dart' as http;
@@ -30,54 +32,6 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
   final TextEditingController _pinOTPCodeController = TextEditingController();
   final FocusNode _pinOTPCodeFoucus =FocusNode();
   String? verificationcode ;
-
-
-
-  Future<ServiceRequestModel> fetchData(context) async{
-    final response =await http
-        .get(Uri.parse('https://staging.skephome.com/api/ServiceRequest/CheckServiceRequest'),
-        headers: {
-          HttpHeaders.authorizationHeader : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1MSIsImp0aSI6IjUxODMzYTE0YmIzMGQ5OWU5NGNiODgyMzk0ZjU3NjgxZDBjYjY4NDRkYTlhYmVkY2Y1MDgyMzc1NDJjNGNmYWE4NTkyNzFkOGY1ZmMwOWU4IiwiaWF0IjoxNjQ3OTU3ODI5LCJuYmYiOjE2NDc5NTc4MjksImV4cCI6MTY3OTQ5MzgyOSwic3ViIjoiODIiLCJzY29wZXMiOltdfQ.o-m4r7LQWsBm8Gdor-R_TMwseCDdhTi6aN72aoLDUOEEQ4OOWu6oLqsKbjAbZl4-aZFoaJmoPna7JI3rSPOgYrjgF52r3j19Oq8gLWWTujTaMd8lEBO1ufS83sdxYtSeMu5GyrgonqnojIrbGbbxFnQVYIXgoReLB_FMOAiYHLSn_gh3QyvWUDQPXbMOrwNyv5zG10jsDzlCsoOOUcIQ3NuPN9jEEJSais2asBYuWq0deWYuwP7pWPQMM8uhiEYZj1RGoxM11mDWq9ny4vqvd9UNzMFyJfd1gX7jNgX0bVrqJcsG8IULylqRYQHBidyMX3UQNAYpV7TQIa9wguXfAvH9Zc2Vb0Jj7Luwkd2GyiBy82283gOkeW7O3YRB8_fxmlQ2gf8ubyUUsHlkXwKi-EZNaDKTRJoxnQD8y4Gd4bL4Oh4oL_s4VP38slynJw7bpauQzXpXZtQQB4af4QVfYvng8wuaBBiMU3ixXARLoDEUklj2tX6LG1DzCHp5JQ199hMT8I_5uCiYw66jWdP38Y2piJx4689OlCxjt9C6CJzLBjXAibHBvf8epPbHF6XpVic87GLGbKcElXDOcCp9WCP-yhMHPRxBnQ3zqMKdgCWFNMyYQ567SmvlRg665Q2-ov4iSgrRV6kyLPv32aHRw5AwE8GRh_pmFBPHttN8DjI'
-        }
-    );
-
-    var body =response.body;
-    var type = json.decode(body);
-    print(type["Checklist"][1]["type"]);
-    var visiable = json.decode(body);
-    print(visiable['Checklist'][0]["Visable"]);
-    final responseJson = jsonDecode(response.body);
-    if(response.statusCode == 200){
-      print(response.body);
-      if(type["Checklist"][0]["type"]==1){
-        if(visiable['Checklist'][0]["Visable"]==true){
-          if(type["Checklist"][1]["type"]==2){
-            if(visiable['Checklist'][1]["Visable"]==true){
-              if(type["Checklist"][2]["type"]==3){
-                if(visiable['Checklist'][2]["Visable"]==true){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const TodaysList()),
-                  );
-                }
-              }
-            }
-          }
-        }
-      }
-      return ServiceRequestModel.fromJson(responseJson);
-    }else{
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => service_request()),
-      );
-      print(response.statusCode);
-      throw Exception('Failed to load album');
-    }
-  }
-
-  late Future<ServiceRequestModel> checkServiceRequest;
-
 
   late Timer _timer;
   int _start = 60;
@@ -125,10 +79,8 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
       ( phoneNumber: "${widget.dialCodeDigits+widget.phone}",
         verificationCompleted: (PhoneAuthCredential credential) async {
         await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
-          checkServiceRequest = fetchData(context);
-
           if(value.user != null){
-            Navigator.of(context).push(MaterialPageRoute(builder: (c)=> const TodaysList()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (c)=>  Registration(phone: widget.phone)));
           }
         });
         },
@@ -209,7 +161,7 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
                           credential(verificationId: verificationcode! , smsCode: pin))
                               .then((value) {
                                 if(value.user != null){
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (c)=> const Dashboard()));
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (c)=> Registration(phone: widget.phone)));
                                 }
                           });
                         }
@@ -292,7 +244,7 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
                                 ),
                               ),
                               onPressed: () {
-                                checkServiceRequest = fetchData(context);
+
                               }
                           ),
                         ),
