@@ -3,13 +3,21 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 import '../Back_ground_check/back_ground_check.dart';
 import '../Dashboard/Today\'s_Schedule.dart';
+import '../Dashboard/TodaysList.dart';
 import '../models/chartsModel.dart';
 
 
 class ScheduleDate extends GetxController{
+
+
+  ScheduleDate(){
+    postCharts();
+  }
+
   bool hasData = true;
   DateFormat formatter = DateFormat('yyyy-MM-dd');
   String formatted = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -17,6 +25,8 @@ class ScheduleDate extends GetxController{
   int year = DateTime.now().year;
   int month = DateTime.now().month;
   int day = DateTime.now().day;
+
+  bool chooseScreen = true;
 
   var BookingBalance;
   var WeekBalance;
@@ -26,6 +36,12 @@ class ScheduleDate extends GetxController{
   var TodayCashIn;
   var leatestBookings;
   var chart;
+
+
+  void choose(bool screen){
+    chooseScreen = screen;
+    update();
+  }
 
   List<WorldPopulation> populationData2 =[
     WorldPopulation("M", 40),
@@ -63,13 +79,13 @@ class ScheduleDate extends GetxController{
 
 
 
-  Future<ChartsModels> postCharts() async {
-
+  Future<void> postCharts() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     final response = await http.post(
       Uri.parse('https://staging.skephome.com/api/Cleaner/CleanerDasboard'),
       headers: <String, String>{
         'Accept': 'application/json',
-        'Authorization': 'Bearer $www'
+        'Authorization': 'Bearer ${pref.get('token3').toString()}'
       },
       body: {
         'date': formatted,
@@ -101,7 +117,6 @@ class ScheduleDate extends GetxController{
 
       print("Succeed");
 
-      return ChartsModels.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
@@ -116,6 +131,7 @@ class ScheduleDate extends GetxController{
       print("Hohohohoh");
       throw Exception('Failed to create album.');
     }
+    update();
   }
 
 

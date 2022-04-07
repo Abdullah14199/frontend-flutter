@@ -38,10 +38,6 @@ class AppRoutes {
         page: () => const AreaOfWork(),
     ),
     GetPage(
-      name: Routes.todaysSchedule,
-      page: () => const TodaysSchedule(),
-    ),
-    GetPage(
       name: Routes.dashboard,
       page: () => const Dashboard(),
     ),

@@ -4,32 +4,32 @@
 
 import 'dart:convert';
 
-MyBookingModel myBookingModelFromJson(String str) => MyBookingModel.fromJson(json.decode(str));
+CompleteBooking myBookingModelFromJson(String str) => CompleteBooking.fromJson(json.decode(str));
 
-String myBookingModelToJson(MyBookingModel data) => json.encode(data.toJson());
+String myBookingModelToJson(CompleteBooking data) => json.encode(data.toJson());
 
-class MyBookingModel {
-  MyBookingModel({
+class CompleteBooking {
+  CompleteBooking({
     required this.history,
     required this.schedule,
   });
 
-  List<dynamic> history;
-  List<ScheduleBooking> schedule;
+  List<dynamic> schedule;
+  List<HistoryBooking> history;
 
-  factory MyBookingModel.fromJson(Map<String, dynamic> json) => MyBookingModel(
-    history: List<dynamic>.from(json["history"].map((x) => x)),
-    schedule: List<ScheduleBooking>.from(json["schedule"].map((x) => ScheduleBooking.fromJson(x))),
+  factory CompleteBooking.fromJson(Map<String, dynamic> json) => CompleteBooking(
+    schedule  : List<dynamic>.from(json["schedule"].map((x) => x)),
+    history : List<HistoryBooking>.from(json["history"].map((x) => HistoryBooking.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "history": List<dynamic>.from(history.map((x) => x)),
-    "schedule": List<dynamic>.from(schedule.map((x) => x.toJson())),
+    "schedule": List<dynamic>.from(schedule.map((x) => x)),
+    "history": List<dynamic>.from(history.map((x) => x.toJson())),
   };
 }
 
-class ScheduleBooking {
-  ScheduleBooking({
+class HistoryBooking {
+  HistoryBooking({
     required  this.id,
     required  this.bookingStatus,
     required  this.bookingDate,
@@ -89,7 +89,7 @@ class ScheduleBooking {
   double salary;
   String homwownerPenalty;
 
-  factory ScheduleBooking.fromJson(Map<String, dynamic> json) => ScheduleBooking(
+  factory HistoryBooking.fromJson(Map<String, dynamic> json) => HistoryBooking(
     id: json["id"],
     bookingStatus: json["booking_status"],
     bookingDate: DateTime.parse(json["booking_date"]),
@@ -117,7 +117,7 @@ class ScheduleBooking {
     firebaseUid: json["firebase_uid"],
     fcmToken:  json["fcm_token"]==null?"":json["fcm_token"],
     salary: json["salary"].toDouble(),
-    homwownerPenalty: json["homwowner_penalty"],
+    homwownerPenalty: json["homwowner_penalty"]==null?"":json["homwowner_penalty"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -154,7 +154,7 @@ class ScheduleBooking {
 
 class ExtraServ {
   ExtraServ({
-   required this.id,
+    required this.id,
     required this.name,
     required this.price,
     required this.minutes,
@@ -186,8 +186,8 @@ class ExtraServ {
 
 class Pivot {
   Pivot({
-  required  this.bookingId,
-  required  this.extraServiceId,
+    required  this.bookingId,
+    required  this.extraServiceId,
   });
 
   int bookingId;

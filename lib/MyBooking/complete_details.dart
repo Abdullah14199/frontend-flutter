@@ -4,23 +4,25 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skep_home_pro/MyBooking/support_center.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
+import 'package:skep_home_pro/controllers/complete_request_controller.dart';
 import 'package:skep_home_pro/controllers/request_details_controller.dart';
+import 'package:skep_home_pro/models/complete_booking.dart';
 import 'package:skep_home_pro/models/my_booking_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 
-class RequestsDetails extends StatelessWidget {
-  RequestsDetails({Key? key, required this.scheduleBooking}) : super(key: key);
+class CompleteDetails extends StatelessWidget {
+  CompleteDetails({Key? key, required this.historyBooking}) : super(key: key);
 
-  ScheduleBooking scheduleBooking;
+  HistoryBooking historyBooking;
 
   @override
   Widget build(BuildContext context) {
-    print("CCC${scheduleBooking.id}");
-    return GetBuilder<RequestDetailsController>(
-      init: RequestDetailsController(),
+    print("CCC${historyBooking.id}");
+    return GetBuilder<CompleteRequestController>(
+      init: CompleteRequestController(),
       builder: (controller) {
-        controller.getRequestDetails(scheduleBooking.id);
+        controller.getRequestDetails(historyBooking.id);
         print(controller.log);
         return SafeArea(
           child: Scaffold(
@@ -83,12 +85,12 @@ class RequestsDetails extends StatelessWidget {
                                                   controller.log),
                                               zoom: 14),
                                           onMapCreated: (GoogleMapController
-                                              controller) {},
+                                          controller) {},
                                         ),
                                         Center(
                                           child: Container(
-                                              height: 50,
-                                              child: Lottie.asset("assets/images/map.json"),),
+                                            height: 50,
+                                            child: Lottie.asset("assets/images/map.json"),),
                                         ),
                                       ],
                                     ),
@@ -99,7 +101,7 @@ class RequestsDetails extends StatelessWidget {
                                     right: 20,
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                      MainAxisAlignment.spaceAround,
                                       children: [
                                         CircleAvatar(
                                           backgroundColor: constants.yellow,
@@ -155,7 +157,7 @@ class RequestsDetails extends StatelessWidget {
                                                     fontSize: 12,
                                                     fontFamily: 'Ubuntu',
                                                     fontWeight:
-                                                        FontWeight.bold),
+                                                    FontWeight.bold),
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -167,7 +169,7 @@ class RequestsDetails extends StatelessWidget {
                                                       fontSize: 12,
                                                       fontFamily: 'Ubuntu',
                                                       fontWeight:
-                                                          FontWeight.bold),
+                                                      FontWeight.bold),
                                                 ),
                                               ),
                                             ],
@@ -179,7 +181,7 @@ class RequestsDetails extends StatelessWidget {
                                             children: [
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                                 children: [
                                                   ImageIcon(AssetImage(
                                                       "assets/images/calendar-6.png")),
@@ -191,7 +193,7 @@ class RequestsDetails extends StatelessWidget {
                                                     style: TextStyle(
                                                         fontSize: 12,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         fontFamily: 'Ubuntu'),
                                                   ),
                                                 ],
@@ -210,7 +212,7 @@ class RequestsDetails extends StatelessWidget {
                                                     style: TextStyle(
                                                         fontSize: 10,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         fontFamily: 'Ubuntu'),
                                                   ),
                                                   SizedBox(
@@ -228,7 +230,7 @@ class RequestsDetails extends StatelessWidget {
                                                 decoration: BoxDecoration(
                                                   color: constants.lightGrey,
                                                   borderRadius:
-                                                      BorderRadius.all(
+                                                  BorderRadius.all(
                                                     Radius.circular(10),
                                                   ),
                                                 ),
@@ -244,7 +246,7 @@ class RequestsDetails extends StatelessWidget {
                                                       style: TextStyle(
                                                           fontSize: 12,
                                                           fontWeight:
-                                                              FontWeight.bold,
+                                                          FontWeight.bold,
                                                           fontFamily: 'Ubuntu'),
                                                     ),
                                                   ],
@@ -260,7 +262,7 @@ class RequestsDetails extends StatelessWidget {
                                                     style: TextStyle(
                                                         fontSize: 10,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         fontFamily: 'Ubuntu'),
                                                   ),
                                                   ImageIcon(
@@ -288,96 +290,23 @@ class RequestsDetails extends StatelessWidget {
                     ),
                     Padding(
                         padding:
-                            const EdgeInsets.only(top: 5, left: 15, right: 15),
+                        const EdgeInsets.only(top: 5, left: 15, right: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
                                 width: 300,
-                                child: controller.booking_statues == "upcoming"
-                                    ? ElevatedButton(
-                                        onPressed: () {},
-                                        child: Text("Start job"),
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  constants.green),
-                                        ),
-                                      )
-                                    : controller.booking_statues == "canceled"
-                                        ? ElevatedButton(
-                                            onPressed: () {},
-                                            child: Text("Canceld"),
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      constants.darkred),
-                                            ),
-                                          )
-                                        : controller.booking_statues ==
-                                                "pending"
-                                            ? ElevatedButton(
-                                                onPressed: () {},
-                                                child: Text("Pending"),
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          constants.yellow),
-                                                ),
-                                              )
-                                            : controller.booking_statues ==
-                                                    "under_review"
-                                                ? ElevatedButton(
-                                                    onPressed: () {},
-                                                    child: Text("Under review"),
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all(constants
-                                                                  .darkred),
-                                                    ),
-                                                  )
-                                                : controller.booking_statues ==
-                                                        "scheduled"
-                                                    ? ElevatedButton(
-                                                        onPressed: () {},
-                                                        child: Text("Schedule"),
-                                                        style: ButtonStyle(
-                                                          backgroundColor:
-                                                              MaterialStateProperty
-                                                                  .all(constants
-                                                                      .blue4),
-                                                        ),
-                                                      )
-                                                    : controller.booking_statues ==
-                                                            "completed"
-                                                        ? ElevatedButton(
-                                                            onPressed: () {},
-                                                            child: Text(
-                                                                "Complete"),
-                                                            style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty
-                                                                      .all(constants
-                                                                          .darkgrey),
-                                                            ),
-                                                          )
-                                                        : controller.booking_statues ==
-                                                                "inprogress"
-                                                            ? ElevatedButton(
-                                                                onPressed:
-                                                                    () {},
-                                                                child: Text(
-                                                                    "Complete Job"),
-                                                                style:
-                                                                    ButtonStyle(
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty.all(
-                                                                          constants
-                                                                              .red),
-                                                                ),
-                                                              )
-                                                            : const SizedBox()),
+                                child:  ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                      "Complete"),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty
+                                        .all(constants
+                                        .darkgrey),
+                                  ),
+                                )),
                             Container(
                                 width: 60,
                                 height: 45,
@@ -385,72 +314,72 @@ class RequestsDetails extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10),
                                     color: constants.yellow),
                                 child: controller.booking_statues ==
-                                        "inprogress"
+                                    "inprogress"
                                     ? IconButton(
-                                        onPressed: () {},
-                                        icon: Image.asset(
-                                          "assets/images/check_list.png",
-                                          color: Colors.white,
-                                        ),
-                                      )
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/images/check_list.png",
+                                    color: Colors.white,
+                                  ),
+                                )
                                     : controller.booking_statues == "completed"
-                                        ? IconButton(
-                                            onPressed: () {},
-                                            icon: Image.asset(
-                                              "assets/images/check_list.png",
-                                              color: Colors.white,
-                                            ),
-                                          )
-                                        : controller.booking_statues ==
-                                                "scheduled"
-                                            ? IconButton(
-                                                onPressed: () {},
-                                                icon: Image.asset(
-                                                  "assets/images/check_list.png",
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            : controller.booking_statues ==
-                                                    "under_review"
-                                                ? IconButton(
-                                                    onPressed: () {},
-                                                    icon: Image.asset(
-                                                      "assets/images/check_list.png",
-                                                      color: Colors.white,
-                                                    ),
-                                                  )
-                                                : controller.booking_statues ==
-                                                        "pending"
-                                                    ? IconButton(
-                                                        onPressed: () {},
-                                                        icon: Image.asset(
-                                                          "assets/images/check_list.png",
-                                                          color: Colors.white,
-                                                        ),
-                                                      )
-                                                    : controller.booking_statues ==
-                                                            "canceled"
-                                                        ? IconButton(
-                                                            onPressed: () {},
-                                                            icon: Image.asset(
-                                                              "assets/images/check_list.png",
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          )
-                                                        : controller.booking_statues ==
-                                                                "upcoming"
-                                                            ? IconButton(
-                                                                onPressed:
-                                                                    () {},
-                                                                icon:
-                                                                    Image.asset(
-                                                                  "assets/images/check_list.png",
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              )
-                                                            : const SizedBox())
+                                    ? IconButton(
+                                      onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/images/check_list.png",
+                                    color: Colors.white,
+                                  ),
+                                )
+                                    : controller.booking_statues ==
+                                    "scheduled"
+                                    ? IconButton(
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/images/check_list.png",
+                                    color: Colors.white,
+                                  ),
+                                )
+                                    : controller.booking_statues ==
+                                    "under_review"
+                                    ? IconButton(
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/images/check_list.png",
+                                    color: Colors.white,
+                                  ),
+                                )
+                                    : controller.booking_statues ==
+                                    "pending"
+                                    ? IconButton(
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/images/check_list.png",
+                                    color: Colors.white,
+                                  ),
+                                )
+                                    : controller.booking_statues ==
+                                    "canceled"
+                                    ? IconButton(
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/images/check_list.png",
+                                    color:
+                                    Colors.white,
+                                  ),
+                                )
+                                    : controller.booking_statues ==
+                                    "upcoming"
+                                    ? IconButton(
+                                  onPressed:
+                                      () {},
+                                  icon:
+                                  Image.asset(
+                                    "assets/images/check_list.png",
+                                    color: Colors
+                                        .white,
+                                  ),
+                                )
+                                    : const SizedBox())
                           ],
                         )),
                     Padding(
@@ -476,8 +405,8 @@ class RequestsDetails extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(scheduleBooking.placeInstructions != null ?
-                                  "${scheduleBooking.placeInstructions}" : "" ,
+                                Text(historyBooking.placeInstructions != null ?
+                                "${historyBooking.placeInstructions}" : "" ,
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontFamily: 'Ubuntu',
@@ -501,7 +430,7 @@ class RequestsDetails extends StatelessWidget {
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
 
 
@@ -607,7 +536,7 @@ class RequestsDetails extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
-                                    scheduleBooking.pets == 0 ? "No" : "Yes",
+                                    historyBooking.pets == 0 ? "No" : "Yes",
                                     style: TextStyle(
                                         color: constants.grey,
                                         fontWeight: FontWeight.normal,
@@ -700,11 +629,11 @@ class RequestsDetails extends StatelessWidget {
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                              const EdgeInsets.all(8.0),
                                               child: Text(
                                                 "Total Hours",
                                                 style: TextStyle(
@@ -712,12 +641,12 @@ class RequestsDetails extends StatelessWidget {
                                                     fontSize: 14,
                                                     fontFamily: 'Ubuntu',
                                                     fontWeight:
-                                                        FontWeight.bold),
+                                                    FontWeight.bold),
                                               ),
                                             ),
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                              const EdgeInsets.all(8.0),
                                               child: Text(
                                                   controller
                                                       .requestDetailsModel!
@@ -729,17 +658,17 @@ class RequestsDetails extends StatelessWidget {
                                                       fontSize: 14,
                                                       fontFamily: 'Ubuntu',
                                                       fontWeight:
-                                                          FontWeight.bold)),
+                                                      FontWeight.bold)),
                                             ),
                                           ],
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                              const EdgeInsets.all(8.0),
                                               child: Text(
                                                 "Total Cost",
                                                 style: TextStyle(
@@ -747,12 +676,12 @@ class RequestsDetails extends StatelessWidget {
                                                     fontSize: 14,
                                                     fontFamily: 'Ubuntu',
                                                     fontWeight:
-                                                        FontWeight.bold),
+                                                    FontWeight.bold),
                                               ),
                                             ),
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                              const EdgeInsets.all(8.0),
                                               child: Text(
                                                   "\$ ${controller.requestDetailsModel!.serviceRequest.salary}",
                                                   style: TextStyle(
@@ -760,7 +689,7 @@ class RequestsDetails extends StatelessWidget {
                                                       fontSize: 14,
                                                       fontFamily: 'Ubuntu',
                                                       fontWeight:
-                                                          FontWeight.bold)),
+                                                      FontWeight.bold)),
                                             ),
                                           ],
                                         ),
@@ -788,7 +717,7 @@ class RequestsDetails extends StatelessWidget {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) =>  SupportCenter(jobId: controller.jobId,)),
+                                    MaterialPageRoute(builder: (context) => SupportCenter(jobId: controller.jobId )),
                                   );
                                 },
                                 child: Row(
@@ -802,41 +731,6 @@ class RequestsDetails extends StatelessWidget {
                                     ),
                                     Text(
                                       "Support",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: 'Ubuntu',
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only( left: 8, right: 8 , bottom: 5),
-                      child: Card(
-                        elevation: 5,
-                        child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: Row(
-                                  children: [
-                                    ImageIcon(
-                                      AssetImage("assets/images/cancel.png"),
-                                      color: constants.grey,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "Cancel Job",
                                       style: TextStyle(
                                           fontSize: 14,
                                           fontFamily: 'Ubuntu',

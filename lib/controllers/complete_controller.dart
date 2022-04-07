@@ -6,9 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/models/my_booking_model.dart';
 
 import '../Login/login.dart';
+import '../models/complete_booking.dart';
 import '../models/verifyed_model.dart';
 
-class MYBookingController extends GetxController {
+class MYCompleteBookingController extends GetxController {
 
 
 
@@ -18,13 +19,12 @@ class MYBookingController extends GetxController {
     getMyBooking();
   }
 
-  MyBookingModel? myBookingModel;
+  CompleteBooking? myCompleteBookingModel;
 
   var Read;
   bool isLoading = false;
 
-  List<ScheduleBooking> bookingList = [];
-  List<dynamic> completeList = [];
+  List<HistoryBooking> completeList = [];
 
   bool chooseScreen = true;
 
@@ -52,14 +52,13 @@ class MYBookingController extends GetxController {
     var read = jsonDecode(body);
     if (response.statusCode == 200) {
 
-      myBookingModel = MyBookingModel.fromJson(read);
+      myCompleteBookingModel = CompleteBooking.fromJson(read);
 
-      myBookingModel!.schedule.forEach((element) {
-        bookingList.add(element);
+      myCompleteBookingModel!.history.forEach((element) {
+        completeList.add(element);
       });
 
-      isLoading =true;
-
+      isLoading = true;
 
       print(body);
       print(response.statusCode);
