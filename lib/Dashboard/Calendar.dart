@@ -178,7 +178,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     headerVisible: true,
                     sixWeekMonthsEnforced: false,
                     daysOfWeekVisible: true,
-                    daysOfWeekStyle: const DaysOfWeekStyle(
+                    daysOfWeekStyle: DaysOfWeekStyle(
                       decoration: BoxDecoration(
                         color: constants.blue3,
                       ),
@@ -211,7 +211,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           ),
                           color: constants.lightGrey),
                     ),
-                    calendarStyle: const CalendarStyle(
+                    calendarStyle:  CalendarStyle(
                       defaultTextStyle: TextStyle(color: Colors.white),
                       withinRangeTextStyle: TextStyle(color: Colors.white),
                       weekendTextStyle: TextStyle(color: Colors.white),

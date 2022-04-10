@@ -15,12 +15,12 @@ import 'controllers/verifyed_controller.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // options: const FirebaseOptions(
-    //   apiKey: "XXX", // Your apiKey
-    //   appId: "1:389584921781:ios:fa10c18de8288c748b4afc", // Your appId
-    //   messagingSenderId: "XXX", // Your messagingSenderId
-    //   projectId: "skephomecleaner", // Your projectId
-    // ),
+    options: const FirebaseOptions(
+      apiKey: "XXX", // Your apiKey
+      appId: "1:389584921781:ios:fa10c18de8288c748b4afc", // Your appId
+      messagingSenderId: "XXX", // Your messagingSenderId
+      projectId: "skephomecleaner", // Your projectId
+    ),
   );
 
 
@@ -34,11 +34,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Skep Home',
-
+      initialBinding: Binding(),
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.welcome,
       getPages: AppRoutes.routes,
     );
+  }
+}
+
+class Binding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(()=>GoogleMapViewModel() , fenix: true);
+    Get.put<VerifyedController>(VerifyedController());
+
   }
 }
 

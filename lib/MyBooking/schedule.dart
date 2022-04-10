@@ -126,63 +126,42 @@ class _ScheduleState extends State<Schedule> {
         builder: (controller) => Padding(
           padding: const EdgeInsets.only(top: 20, right: 7, left: 7),
           child: controller.bookingList.isEmpty
-              ? Column(
-                  children: [
-                    Image.asset("assets/images/cleanerone.png"),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      "No Assigned Cleaning Jobs",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'Ubuntu',
-                        fontWeight: FontWeight.bold,
+              ? Padding(
+                padding: const EdgeInsets.only(top: 55.0),
+                child: Column(
+                    children: [
+                      Image.asset("assets/images/cleanerone.png"),
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    const Center(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Sorry there Is no assigned cleaning Job right now,",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: 'Ubuntu',
-                          ),
+                      const Text(
+                        "No Available Bookings",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'Ubuntu',
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        width: 180,
-                        height: 45,
-                        decoration: const BoxDecoration(
-                            color: constants.yellow,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(18))),
-                        child: const Center(
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const Center(
+                        child: Align(
+                          alignment: Alignment.center,
                           child: Text(
-                            "Accept Jobs",
+                            "Sorry there Is no available cleaning requests right now.",
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: constants.grey,
                               fontFamily: 'Ubuntu',
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                )
+                    ],
+                  ),
+              )
               : ListView.builder(
                   itemCount: controller.bookingList.length,
                   shrinkWrap: true,
@@ -192,154 +171,155 @@ class _ScheduleState extends State<Schedule> {
                             width: MediaQuery.of(context).size.width,
                             height: 120,
                             padding: EdgeInsets.only(
-                              left: 5,
-                              right: 5,
-                              top: 20,
+                              left: 3,
+                              right: 0,
+                              top: 2,
                             ),
                             child: Card(
                               elevation: 5.0,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 4.0),
-                                    child: Container(
-                                      width: 55.0,
-                                      height: 55.0,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.green,
-                                        foregroundColor: Colors.green,
-                                        backgroundImage: NetworkImage(
-                                            "https://staging.skephome.com/storage/${controller.bookingList[index].image}"),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 4.0 , top: 4.0),
+                                      child: Container(
+                                        width: 55.0,
+                                        height: 55.0,
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.green,
+                                          foregroundColor: Colors.green,
+                                          backgroundImage: NetworkImage(
+                                              controller.bookingList[index].image == null ?
+                                          "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"  : "https://staging.skephome.com/storage/${controller.bookingList[index].image}" ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 290,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                    SizedBox(
+                                      width: 16,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 290,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 8.0),
+                                                child: Text(
+                                                  "${controller.bookingList[index].fullName}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 12,
+                                                      fontFamily: 'Ubuntu',
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0, right: 18),
+                                                child: Text(
+                                                  "\$ ${controller.bookingList[index].salary}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 12,
+                                                      fontFamily: 'Ubuntu',
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Text(
+                                          "${controller.bookingList[index].readableDate}",
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 10,
+                                              fontFamily: 'Ubuntu',
+                                              fontWeight: FontWeight.normal),
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Row(
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0),
-                                              child: Text(
-                                                "${controller.bookingList[index].fullName}",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 12,
-                                                    fontFamily: 'Ubuntu',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                            Container(
+                                              width: 73,
+                                              height: 21.94,
+                                              decoration: BoxDecoration(
+                                                color: constants.lightGrey,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  ImageIcon(AssetImage(
+                                                      "assets/images/refresh.png")),
+                                                  Text(
+                                                    "${controller.bookingList[index].frequency}",
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Ubuntu'),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0, right: 20),
-                                              child: Text(
-                                                "\$ ${controller.bookingList[index].salary}",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 12,
-                                                    fontFamily: 'Ubuntu',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              width: 73,
+                                              height: 21.94,
+                                              decoration: BoxDecoration(
+                                                color: constants.lightGrey,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text(
+                                                    "(${controller.bookingList[index].rate}/5)",
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Ubuntu'),
+                                                  ),
+                                                  ImageIcon(
+                                                    AssetImage(
+                                                        "assets/images/star.png"),
+                                                    color: constants.yellow,
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 7,
-                                      ),
-                                      Text(
-                                        "${controller.bookingList[index].readableDate}",
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 10,
-                                            fontFamily: 'Ubuntu',
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                      SizedBox(
-                                        height: 7,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 73,
-                                            height: 21.94,
-                                            decoration: BoxDecoration(
-                                              color: constants.lightGrey,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                ImageIcon(AssetImage(
-                                                    "assets/images/refresh.png")),
-                                                Text(
-                                                  "${controller.bookingList[index].frequency}",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: 'Ubuntu'),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Container(
-                                            width: 73,
-                                            height: 21.94,
-                                            decoration: BoxDecoration(
-                                              color: constants.lightGrey,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text(
-                                                  "(${controller.bookingList[index].rate}/5)",
-                                                  style: TextStyle(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: 'Ubuntu'),
-                                                ),
-                                                ImageIcon(
-                                                  AssetImage(
-                                                      "assets/images/star.png"),
-                                                  color: constants.yellow,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -419,20 +399,20 @@ class _ScheduleState extends State<Schedule> {
                         width: MediaQuery.of(context).size.width,
                         height: 120,
                         padding: EdgeInsets.only(
-                          left: 5,
-                          right: 5,
-                          top: 20,
+                          left: 3,
+                          right: 0,
+                          top: 2,
                         ),
                         child: Card(
                           elevation: 5.0,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 4.0),
+                                padding: const EdgeInsets.only(left: 8.0 , top: 10),
                                 child: Container(
                                   width: 55.0,
                                   height: 55.0,

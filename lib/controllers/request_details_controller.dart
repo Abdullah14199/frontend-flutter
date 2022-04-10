@@ -30,11 +30,6 @@ class RequestDetailsController extends GetxController {
   void getRequestDetails(int id) async {
 
     SharedPreferences pref = await SharedPreferences.getInstance();
-// print('..>>>>>>>>>>>>>>>>>>>${pref.get('token3').toString()}');
-
-
-    // var latDouble = double.parse(requestDetailsModel!.serviceRequest.lat);
-
     final response = await http.get(
       Uri.parse('http://staging.skephome.com/api/Booking/BookingByID/$id'),
       headers: <String, String>{
@@ -74,5 +69,150 @@ class RequestDetailsController extends GetxController {
 
     update();
   }
+
+  void postMarkAsStartRequest(int id , BuildContext context) async {
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final response = await http.post(
+      Uri.parse('http://staging.skephome.com/api/BookingStatus/MarkAsStart'),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${pref.get('token3').toString()}',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept' : 'application/json'
+      },
+      body: jsonEncode(<String, String>{
+        'booking_id': "$id",
+      }),
+
+    );
+
+    var body = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+
+      requestDetailsModel =  RequestDetailsModel.fromJson(body);
+
+      booking_statues = requestDetailsModel!.serviceRequest.bookingStatus;
+      booking_statues = 'inprogress';
+
+
+
+      isLoading =true;
+      // certin_status =
+      print("RRRRRRRRRRRRRRR${booking_statues}");
+      // then parse the JSON.
+    } if (response.statusCode == 409) {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+
+
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Center(child: const Text('Skep Pro.')),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[
+                    Center(child: Text('Sorry, you can’t start the job before the start time.')),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+
+      print(response.statusCode);
+
+
+    } else{
+
+      print(response.statusCode);
+
+      throw Exception('Failed to create album.');
+    }
+
+    update();
+  }
+
+  void postMarkAsCompleteRequest(int id , BuildContext context) async {
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final response = await http.post(
+      Uri.parse('http://staging.skephome.com/api/BookingStatus/MarkAsComplete'),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${pref.get('token3').toString()}',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept' : 'application/json'
+      },
+      body: jsonEncode(<String, String>{
+        'booking_id': "$id",
+      }),
+
+    );
+
+    var body = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+
+      requestDetailsModel =  RequestDetailsModel.fromJson(body);
+
+      booking_statues = requestDetailsModel!.serviceRequest.bookingStatus;
+      booking_statues = 'completed';
+
+
+
+      isLoading =true;
+      // certin_status =
+      print("RRRRRRRRRRRRRRR${booking_statues}");
+      // then parse the JSON.
+    } if (response.statusCode == 409) {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+
+
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Sorry.'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[
+                    Text('The email has already been taken.'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Approve'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+
+      print(response.statusCode);
+
+
+    } else{
+      print(response.statusCode);
+      print(body);
+
+      throw Exception('Failed to create album.');
+    }
+
+    update();
+  }
+
 
 }

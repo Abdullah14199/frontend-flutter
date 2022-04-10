@@ -56,12 +56,13 @@ class RequestsDetails extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.42,
+                        height: MediaQuery.of(context).size.height * 0.4,
                         child: Card(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Stack(
                                 children: [
@@ -77,7 +78,7 @@ class RequestsDetails extends StatelessWidget {
                                           zoomGesturesEnabled: false,
                                           tiltGesturesEnabled: false,
                                           rotateGesturesEnabled: false,
-                                          myLocationButtonEnabled: true,
+                                          myLocationButtonEnabled: false,
                                           initialCameraPosition: CameraPosition(
                                               target: LatLng(controller.lat,
                                                   controller.log),
@@ -87,16 +88,16 @@ class RequestsDetails extends StatelessWidget {
                                         ),
                                         Center(
                                           child: Container(
-                                              height: 50,
+                                              height: 70,
                                               child: Lottie.asset("assets/images/map.json"),),
                                         ),
                                       ],
                                     ),
                                   ),
                                   Positioned(
-                                    top: 20,
-                                    left: 250,
-                                    right: 20,
+                                    top: 10,
+                                    left: 270,
+                                    right: 4,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
@@ -129,39 +130,34 @@ class RequestsDetails extends StatelessWidget {
                               SizedBox(
                                 height: 10,
                               ),
-                              Row(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 55.0,
-                                        height: 55.0,
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.green,
-                                          foregroundColor: Colors.green,
-                                          backgroundImage: NetworkImage(
-                                              "https://staging.skephome.com/storage/${controller.requestDetailsModel!.serviceRequest.image}"),
-                                        ),
+
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 55.0,
+                                      height: 55.0,
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.green,
+                                        foregroundColor: Colors.green,
+                                        backgroundImage: NetworkImage(controller.requestDetailsModel!.serviceRequest.image != null ?
+                                            "https://staging.skephome.com/storage/${controller.requestDetailsModel!.serviceRequest.image}" : "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"),
                                       ),
-                                      Column(
-                                        children: [
-                                          Row(
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          width: 280 ,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                controller.requestDetailsModel!
-                                                    .serviceRequest.fullName,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 12,
-                                                    fontFamily: 'Ubuntu',
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 130),
+                                                padding: const EdgeInsets.only(left: 15.0),
                                                 child: Text(
-                                                  "\$ ${controller.requestDetailsModel!.serviceRequest.salary}",
+                                                  controller.requestDetailsModel!
+                                                      .serviceRequest.fullName,
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 12,
@@ -170,16 +166,26 @@ class RequestsDetails extends StatelessWidget {
                                                           FontWeight.bold),
                                                 ),
                                               ),
+                                              Text(
+                                                "\$ ${controller.requestDetailsModel!.serviceRequest.salary}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 12,
+                                                    fontFamily: 'Ubuntu',
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
                                             ],
                                           ),
-                                          SizedBox(
-                                            height: 7,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              child: Row(
                                                 children: [
                                                   ImageIcon(AssetImage(
                                                       "assets/images/calendar-6.png")),
@@ -196,64 +202,64 @@ class RequestsDetails extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              Row(
+                                            ),
+                                            Row(
+                                              children: [
+                                                ImageIcon(
+                                                  AssetImage(
+                                                      "assets/images/clock.png"),
+                                                ),
+                                                Text(
+                                                  controller
+                                                      .requestDetailsModel!
+                                                      .serviceRequest
+                                                      .time,
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: 'Ubuntu'),
+                                                ),
+                                                SizedBox(
+                                                  width: 110,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 73,
+                                              height: 21.94,
+                                              decoration: BoxDecoration(
+                                                color: constants.lightGrey,
+                                                borderRadius:
+                                                    BorderRadius.all(
+                                                  Radius.circular(8),
+                                                ),
+                                              ),
+                                              child: Row(
                                                 children: [
-                                                  ImageIcon(
-                                                    AssetImage(
-                                                        "assets/images/clock.png"),
-                                                  ),
+                                                  ImageIcon(AssetImage(
+                                                      "assets/images/refresh.png")),
                                                   Text(
                                                     controller
                                                         .requestDetailsModel!
                                                         .serviceRequest
-                                                        .time,
+                                                        .frequency,
                                                     style: TextStyle(
-                                                        fontSize: 10,
+                                                        fontSize: 12,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontFamily: 'Ubuntu'),
                                                   ),
-                                                  SizedBox(
-                                                    width: 110,
-                                                  ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: 73,
-                                                height: 21.94,
-                                                decoration: BoxDecoration(
-                                                  color: constants.lightGrey,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10),
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    ImageIcon(AssetImage(
-                                                        "assets/images/refresh.png")),
-                                                    Text(
-                                                      controller
-                                                          .requestDetailsModel!
-                                                          .serviceRequest
-                                                          .frequency,
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: 'Ubuntu'),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Row(
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 20.0),
+                                              child: Row(
                                                 children: [
                                                   Text(
                                                     "(${controller.requestDetailsModel!.serviceRequest.rate}/5)",
@@ -268,35 +274,35 @@ class RequestsDetails extends StatelessWidget {
                                                         "assets/images/star.png"),
                                                     color: constants.yellow,
                                                   ),
-                                                  SizedBox(
-                                                    width: 110,
-                                                  ),
+                                                  SizedBox(width: 100)
                                                 ],
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
                       ),
                     ),
+
                     Padding(
-                        padding:
-                            const EdgeInsets.only(top: 5, left: 15, right: 15),
+                        padding: const EdgeInsets.only(left: 15, right: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                                width: 300,
+                                width: 280,
                                 child: controller.booking_statues == "upcoming"
                                     ? ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          controller.postMarkAsStartRequest(scheduleBooking.id , context);
+                                        },
                                         child: Text("Start job"),
                                         style: ButtonStyle(
                                           backgroundColor:
@@ -354,7 +360,7 @@ class RequestsDetails extends StatelessWidget {
                                                         ? ElevatedButton(
                                                             onPressed: () {},
                                                             child: Text(
-                                                                "Complete"),
+                                                                "Completed"),
                                                             style: ButtonStyle(
                                                               backgroundColor:
                                                                   MaterialStateProperty
@@ -366,7 +372,9 @@ class RequestsDetails extends StatelessWidget {
                                                                 "inprogress"
                                                             ? ElevatedButton(
                                                                 onPressed:
-                                                                    () {},
+                                                                    () {
+                                                                  controller.postMarkAsCompleteRequest(scheduleBooking.id, context);
+                                                                  },
                                                                 child: Text(
                                                                     "Complete Job"),
                                                                 style:
@@ -380,16 +388,16 @@ class RequestsDetails extends StatelessWidget {
                                                             : const SizedBox()),
                             Container(
                                 width: 60,
-                                height: 45,
+                                height: 40,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(8),
                                     color: constants.yellow),
                                 child: controller.booking_statues ==
                                         "inprogress"
                                     ? IconButton(
                                         onPressed: () {},
                                         icon: Image.asset(
-                                          "assets/images/check_list.png",
+                                          "assets/images/ic_check_list_icon.PNG",
                                           color: Colors.white,
                                         ),
                                       )
@@ -397,7 +405,7 @@ class RequestsDetails extends StatelessWidget {
                                         ? IconButton(
                                             onPressed: () {},
                                             icon: Image.asset(
-                                              "assets/images/check_list.png",
+                                              "assets/images/ic_check_list_icon.PNG",
                                               color: Colors.white,
                                             ),
                                           )
@@ -406,7 +414,7 @@ class RequestsDetails extends StatelessWidget {
                                             ? IconButton(
                                                 onPressed: () {},
                                                 icon: Image.asset(
-                                                  "assets/images/check_list.png",
+                                                  "assets/images/ic_check_list_icon.PNG",
                                                   color: Colors.white,
                                                 ),
                                               )
@@ -415,7 +423,7 @@ class RequestsDetails extends StatelessWidget {
                                                 ? IconButton(
                                                     onPressed: () {},
                                                     icon: Image.asset(
-                                                      "assets/images/check_list.png",
+                                                      "assets/images/ic_check_list_icon.PNG",
                                                       color: Colors.white,
                                                     ),
                                                   )
@@ -424,7 +432,7 @@ class RequestsDetails extends StatelessWidget {
                                                     ? IconButton(
                                                         onPressed: () {},
                                                         icon: Image.asset(
-                                                          "assets/images/check_list.png",
+                                                          "assets/images/ic_check_list_icon.PNG",
                                                           color: Colors.white,
                                                         ),
                                                       )
@@ -433,7 +441,7 @@ class RequestsDetails extends StatelessWidget {
                                                         ? IconButton(
                                                             onPressed: () {},
                                                             icon: Image.asset(
-                                                              "assets/images/check_list.png",
+                                                              "assets/images/ic_check_list_icon.PNG",
                                                               color:
                                                                   Colors.white,
                                                             ),
@@ -445,7 +453,7 @@ class RequestsDetails extends StatelessWidget {
                                                                     () {},
                                                                 icon:
                                                                     Image.asset(
-                                                                  "assets/images/check_list.png",
+                                                                  "assets/images/ic_check_list_icon.PNG",
                                                                   color: Colors
                                                                       .white,
                                                                 ),
@@ -453,11 +461,12 @@ class RequestsDetails extends StatelessWidget {
                                                             : const SizedBox())
                           ],
                         )),
+
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: double.infinity,
-                        height: 300,
+                        height: 273,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(20),
@@ -500,11 +509,8 @@ class RequestsDetails extends StatelessWidget {
                                   height: 10,
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-
-
                                     Row(
                                       children: [
                                         Text(
@@ -517,7 +523,7 @@ class RequestsDetails extends StatelessWidget {
                                         ),
                                         SizedBox(width: 5,),
                                         Container(
-                                          width: 20,
+                                          width: 30,
                                           height: 20,
                                           decoration: BoxDecoration(
                                               color: constants.yellow,
@@ -533,7 +539,6 @@ class RequestsDetails extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-
                                     Row(
                                       children: [
                                         Text(
@@ -546,7 +551,7 @@ class RequestsDetails extends StatelessWidget {
                                         ),
                                         SizedBox(width: 5,),
                                         Container(
-                                          width: 20,
+                                          width: 30,
                                           height: 20,
                                           decoration: BoxDecoration(
                                               color: constants.yellow,
@@ -575,7 +580,7 @@ class RequestsDetails extends StatelessWidget {
                                         ),
                                         SizedBox(width: 5,),
                                         Container(
-                                          width: 20,
+                                          width: 30,
                                           height: 20,
                                           decoration: BoxDecoration(
                                               color: constants.yellow,
@@ -693,9 +698,7 @@ class RequestsDetails extends StatelessWidget {
                                     height: 65,
                                     decoration: BoxDecoration(
                                         color: constants.yellow,
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(20),
-                                            bottomRight: Radius.circular(20))),
+                                    ),
                                     child: Column(
                                       children: [
                                         Row(
@@ -725,7 +728,7 @@ class RequestsDetails extends StatelessWidget {
                                                       .bookingHours
                                                       .toString(),
                                                   style: TextStyle(
-                                                      color: constants.grey,
+                                                      color: Colors.white,
                                                       fontSize: 14,
                                                       fontFamily: 'Ubuntu',
                                                       fontWeight:
@@ -756,7 +759,7 @@ class RequestsDetails extends StatelessWidget {
                                               child: Text(
                                                   "\$ ${controller.requestDetailsModel!.serviceRequest.salary}",
                                                   style: TextStyle(
-                                                      color: constants.grey,
+                                                      color: Colors.white,
                                                       fontSize: 14,
                                                       fontFamily: 'Ubuntu',
                                                       fontWeight:
@@ -774,14 +777,13 @@ class RequestsDetails extends StatelessWidget {
                         ),
                       ),
                     ),
+
+
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 8.0 , right: 8.0),
                       child: Card(
                         elevation: 5,
                         child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(

@@ -91,7 +91,7 @@ class ServiceRequest {
 
   factory ServiceRequest.fromJson(Map<String, dynamic> json) => ServiceRequest(
     id: json["id"],
-    image: json["image"],
+    image: json["image"]==null?"":json["image"],
     fullName: json["FullName"],
     homeownerPhone: json["homeowner_phone"],
     rate: json["rate"],
