@@ -4,14 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skep_home_pro/MyBooking/schedule.dart';
 import 'package:skep_home_pro/models/certn_verifyed.dart';
 import 'package:skep_home_pro/models/my_booking_model.dart';
 import 'package:skep_home_pro/models/request_details_model.dart';
 
-import '../Back_ground_check/back_ground_check.dart';
-import '../Login/login.dart';
-import '../models/UserModel.dart';
-import '../models/verifyed_model.dart';
 
 class RequestDetailsController extends GetxController {
   ScheduleBooking ? scheduleBooking;
@@ -182,17 +179,17 @@ class RequestDetailsController extends GetxController {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: const Text('Sorry.'),
+              title: Center(child: const Text('Skep Pro.')),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: const <Widget>[
-                    Text('The email has already been taken.'),
+                    Center(child: Text('You Can not Complete the Job before to do the checklist.')),
                   ],
                 ),
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Approve'),
+                  child: const Text('Cancel'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -215,4 +212,44 @@ class RequestDetailsController extends GetxController {
   }
 
 
+
+
+
+  void postMarkAsCancelRequest(int id , BuildContext context) async {
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final response = await http.post(
+      Uri.parse('http://staging.skephome.com/api/BookingStatus/CancelForCleaner'),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${pref.get('token3').toString()}',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept' : 'application/json'
+      },
+      body: jsonEncode(<String, String>{
+        'booking_id': "$id",
+      }),
+
+    );
+
+    var body = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Schedule()),
+      );
+
+      // certin_status =
+      print("RRRRRRRRRRRRRRR${booking_statues}");
+      // then parse the JSON.
+    } else{
+      print(response.statusCode);
+      print(body);
+
+      throw Exception('Failed to create album.');
+    }
+
+    update();
+  }
 }

@@ -110,7 +110,7 @@ class HistoryBooking {
     lng: json["lng"],
     homwowner: json["homwowner"],
     readableDate: json["readable_date"],
-    image: json["image"],
+    image: json["image"]==null?"":json["image"],
     fullName: json["FullName"],
     homeownerPhone: json["homeowner_phone"],
     rate: json["rate"],

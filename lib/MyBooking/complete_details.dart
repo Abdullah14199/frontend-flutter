@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:skep_home_pro/MyBooking/check_list.dart';
 import 'package:skep_home_pro/MyBooking/support_center.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/controllers/complete_request_controller.dart';
@@ -58,10 +59,10 @@ class CompleteDetails extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.42,
+                        height: MediaQuery.of(context).size.height * 0.40,
                         child: Card(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: Column(
                             children: [
@@ -79,7 +80,7 @@ class CompleteDetails extends StatelessWidget {
                                           zoomGesturesEnabled: false,
                                           tiltGesturesEnabled: false,
                                           rotateGesturesEnabled: false,
-                                          myLocationButtonEnabled: true,
+                                          myLocationButtonEnabled: false,
                                           initialCameraPosition: CameraPosition(
                                               target: LatLng(controller.lat,
                                                   controller.log),
@@ -89,16 +90,16 @@ class CompleteDetails extends StatelessWidget {
                                         ),
                                         Center(
                                           child: Container(
-                                            height: 50,
+                                            height: 70,
                                             child: Lottie.asset("assets/images/map.json"),),
                                         ),
                                       ],
                                     ),
                                   ),
                                   Positioned(
-                                    top: 20,
-                                    left: 250,
-                                    right: 20,
+                                    top: 10,
+                                    left: 270,
+                                    right: 4,
                                     child: Row(
                                       mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
@@ -147,22 +148,25 @@ class CompleteDetails extends StatelessWidget {
                                       ),
                                       Column(
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                controller.requestDetailsModel!
-                                                    .serviceRequest.fullName,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 12,
-                                                    fontFamily: 'Ubuntu',
-                                                    fontWeight:
-                                                    FontWeight.bold),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 130),
-                                                child: Text(
+                                          Container(
+                                            width: 280,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 15.0),
+                                                  child: Text(
+                                                    controller.requestDetailsModel!
+                                                        .serviceRequest.fullName,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12,
+                                                        fontFamily: 'Ubuntu',
+                                                        fontWeight:
+                                                        FontWeight.bold),
+                                                  ),
+                                                ),
+                                                Text(
                                                   "\$ ${controller.requestDetailsModel!.serviceRequest.salary}",
                                                   style: TextStyle(
                                                       color: Colors.black,
@@ -171,8 +175,8 @@ class CompleteDetails extends StatelessWidget {
                                                       fontWeight:
                                                       FontWeight.bold),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                           SizedBox(
                                             height: 7,
@@ -216,7 +220,7 @@ class CompleteDetails extends StatelessWidget {
                                                         fontFamily: 'Ubuntu'),
                                                   ),
                                                   SizedBox(
-                                                    width: 110,
+                                                    width: 100,
                                                   ),
                                                 ],
                                               ),
@@ -288,14 +292,15 @@ class CompleteDetails extends StatelessWidget {
                         ),
                       ),
                     ),
+
                     Padding(
                         padding:
-                        const EdgeInsets.only(top: 5, left: 15, right: 15),
+                        const EdgeInsets.only(left: 15, right: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                                width: 300,
+                                width: 280,
                                 child:  ElevatedButton(
                                   onPressed: () {},
                                   child: Text(
@@ -309,84 +314,30 @@ class CompleteDetails extends StatelessWidget {
                                 )),
                             Container(
                                 width: 60,
-                                height: 45,
+                                height: 40,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(8),
                                     color: constants.yellow),
-                                child: controller.booking_statues ==
-                                    "inprogress"
-                                    ? IconButton(
-                                  onPressed: () {},
+                                child:IconButton(
+                                      onPressed: () { Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => CheckList()),
+                                      );},
                                   icon: Image.asset(
-                                    "assets/images/check_list.png",
+                                    "assets/images/ic_check_list_icon.PNG",
                                     color: Colors.white,
                                   ),
-                                )
-                                    : controller.booking_statues == "completed"
-                                    ? IconButton(
-                                      onPressed: () {},
-                                  icon: Image.asset(
-                                    "assets/images/check_list.png",
-                                    color: Colors.white,
-                                  ),
-                                )
-                                    : controller.booking_statues ==
-                                    "scheduled"
-                                    ? IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                    "assets/images/check_list.png",
-                                    color: Colors.white,
-                                  ),
-                                )
-                                    : controller.booking_statues ==
-                                    "under_review"
-                                    ? IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                    "assets/images/check_list.png",
-                                    color: Colors.white,
-                                  ),
-                                )
-                                    : controller.booking_statues ==
-                                    "pending"
-                                    ? IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                    "assets/images/check_list.png",
-                                    color: Colors.white,
-                                  ),
-                                )
-                                    : controller.booking_statues ==
-                                    "canceled"
-                                    ? IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                    "assets/images/check_list.png",
-                                    color:
-                                    Colors.white,
-                                  ),
-                                )
-                                    : controller.booking_statues ==
-                                    "upcoming"
-                                    ? IconButton(
-                                  onPressed:
-                                      () {},
-                                  icon:
-                                  Image.asset(
-                                    "assets/images/check_list.png",
-                                    color: Colors
-                                        .white,
-                                  ),
-                                )
-                                    : const SizedBox())
+                                ),
+                            )
                           ],
                         )),
+
+
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: double.infinity,
-                        height: 300,
+                        height: 273,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(20),
@@ -654,7 +605,7 @@ class CompleteDetails extends StatelessWidget {
                                                       .bookingHours
                                                       .toString(),
                                                   style: TextStyle(
-                                                      color: constants.grey,
+                                                      color: Colors.white,
                                                       fontSize: 14,
                                                       fontFamily: 'Ubuntu',
                                                       fontWeight:
@@ -685,7 +636,7 @@ class CompleteDetails extends StatelessWidget {
                                               child: Text(
                                                   "\$ ${controller.requestDetailsModel!.serviceRequest.salary}",
                                                   style: TextStyle(
-                                                      color: constants.grey,
+                                                      color: Colors.white,
                                                       fontSize: 14,
                                                       fontFamily: 'Ubuntu',
                                                       fontWeight:

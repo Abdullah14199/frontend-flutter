@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:skep_home_pro/MyBooking/check_list.dart';
 import 'package:skep_home_pro/MyBooking/support_center.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/controllers/request_details_controller.dart';
@@ -88,8 +89,10 @@ class RequestsDetails extends StatelessWidget {
                                         ),
                                         Center(
                                           child: Container(
-                                              height: 70,
-                                              child: Lottie.asset("assets/images/map.json"),),
+                                            height: 70,
+                                            child: Lottie.asset(
+                                                "assets/images/map.json"),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -130,10 +133,8 @@ class RequestsDetails extends StatelessWidget {
                               SizedBox(
                                 height: 10,
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
-
                                 child: Row(
                                   children: [
                                     Container(
@@ -142,22 +143,31 @@ class RequestsDetails extends StatelessWidget {
                                       child: CircleAvatar(
                                         backgroundColor: Colors.green,
                                         foregroundColor: Colors.green,
-                                        backgroundImage: NetworkImage(controller.requestDetailsModel!.serviceRequest.image != null ?
-                                            "https://staging.skephome.com/storage/${controller.requestDetailsModel!.serviceRequest.image}" : "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"),
+                                        backgroundImage: NetworkImage(controller
+                                                    .requestDetailsModel!
+                                                    .serviceRequest
+                                                    .image !=
+                                                null
+                                            ? "https://staging.skephome.com/storage/${controller.requestDetailsModel!.serviceRequest.image}"
+                                            : "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"),
                                       ),
                                     ),
                                     Column(
                                       children: [
                                         Container(
-                                          width: 280 ,
+                                          width: 280,
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(left: 15.0),
+                                                padding: const EdgeInsets.only(
+                                                    left: 15.0),
                                                 child: Text(
-                                                  controller.requestDetailsModel!
-                                                      .serviceRequest.fullName,
+                                                  controller
+                                                      .requestDetailsModel!
+                                                      .serviceRequest
+                                                      .fullName,
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 12,
@@ -182,7 +192,8 @@ class RequestsDetails extends StatelessWidget {
                                           height: 7,
                                         ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
                                             Container(
                                               child: Row(
@@ -234,8 +245,7 @@ class RequestsDetails extends StatelessWidget {
                                               height: 21.94,
                                               decoration: BoxDecoration(
                                                 color: constants.lightGrey,
-                                                borderRadius:
-                                                    BorderRadius.all(
+                                                borderRadius: BorderRadius.all(
                                                   Radius.circular(8),
                                                 ),
                                               ),
@@ -258,7 +268,8 @@ class RequestsDetails extends StatelessWidget {
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 20.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 20.0),
                                               child: Row(
                                                 children: [
                                                   Text(
@@ -291,6 +302,8 @@ class RequestsDetails extends StatelessWidget {
                       ),
                     ),
 
+
+
                     Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: Row(
@@ -301,7 +314,8 @@ class RequestsDetails extends StatelessWidget {
                                 child: controller.booking_statues == "upcoming"
                                     ? ElevatedButton(
                                         onPressed: () {
-                                          controller.postMarkAsStartRequest(scheduleBooking.id , context);
+                                          controller.postMarkAsStartRequest(
+                                              scheduleBooking.id, context);
                                         },
                                         child: Text("Start job"),
                                         style: ButtonStyle(
@@ -371,10 +385,12 @@ class RequestsDetails extends StatelessWidget {
                                                         : controller.booking_statues ==
                                                                 "inprogress"
                                                             ? ElevatedButton(
-                                                                onPressed:
-                                                                    () {
-                                                                  controller.postMarkAsCompleteRequest(scheduleBooking.id, context);
-                                                                  },
+                                                                onPressed: () {
+                                                                  controller.postMarkAsCompleteRequest(
+                                                                      scheduleBooking
+                                                                          .id,
+                                                                      context);
+                                                                },
                                                                 child: Text(
                                                                     "Complete Job"),
                                                                 style:
@@ -395,7 +411,12 @@ class RequestsDetails extends StatelessWidget {
                                 child: controller.booking_statues ==
                                         "inprogress"
                                     ? IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => CheckList()),
+                                          );
+                                        },
                                         icon: Image.asset(
                                           "assets/images/ic_check_list_icon.PNG",
                                           color: Colors.white,
@@ -403,7 +424,10 @@ class RequestsDetails extends StatelessWidget {
                                       )
                                     : controller.booking_statues == "completed"
                                         ? IconButton(
-                                            onPressed: () {},
+                                            onPressed: () { Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => CheckList()),
+                                            );},
                                             icon: Image.asset(
                                               "assets/images/ic_check_list_icon.PNG",
                                               color: Colors.white,
@@ -412,7 +436,10 @@ class RequestsDetails extends StatelessWidget {
                                         : controller.booking_statues ==
                                                 "scheduled"
                                             ? IconButton(
-                                                onPressed: () {},
+                                                onPressed: () { Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => CheckList()),
+                                                );},
                                                 icon: Image.asset(
                                                   "assets/images/ic_check_list_icon.PNG",
                                                   color: Colors.white,
@@ -421,7 +448,10 @@ class RequestsDetails extends StatelessWidget {
                                             : controller.booking_statues ==
                                                     "under_review"
                                                 ? IconButton(
-                                                    onPressed: () {},
+                                                    onPressed: () { Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(builder: (context) => CheckList()),
+                                                    );},
                                                     icon: Image.asset(
                                                       "assets/images/ic_check_list_icon.PNG",
                                                       color: Colors.white,
@@ -430,7 +460,10 @@ class RequestsDetails extends StatelessWidget {
                                                 : controller.booking_statues ==
                                                         "pending"
                                                     ? IconButton(
-                                                        onPressed: () {},
+                                                        onPressed: () { Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(builder: (context) => CheckList()),
+                                                        );},
                                                         icon: Image.asset(
                                                           "assets/images/ic_check_list_icon.PNG",
                                                           color: Colors.white,
@@ -439,7 +472,10 @@ class RequestsDetails extends StatelessWidget {
                                                     : controller.booking_statues ==
                                                             "canceled"
                                                         ? IconButton(
-                                                            onPressed: () {},
+                                                            onPressed: () { Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(builder: (context) => CheckList()),
+                                                            );},
                                                             icon: Image.asset(
                                                               "assets/images/ic_check_list_icon.PNG",
                                                               color:
@@ -450,7 +486,10 @@ class RequestsDetails extends StatelessWidget {
                                                                 "upcoming"
                                                             ? IconButton(
                                                                 onPressed:
-                                                                    () {},
+                                                                    () { Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(builder: (context) => CheckList()),
+                                                                    );},
                                                                 icon:
                                                                     Image.asset(
                                                                   "assets/images/ic_check_list_icon.PNG",
@@ -461,6 +500,7 @@ class RequestsDetails extends StatelessWidget {
                                                             : const SizedBox())
                           ],
                         )),
+
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -485,8 +525,10 @@ class RequestsDetails extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(scheduleBooking.placeInstructions != null ?
-                                  "${scheduleBooking.placeInstructions}" : "" ,
+                                Text(
+                                  scheduleBooking.placeInstructions != null
+                                      ? "${scheduleBooking.placeInstructions}"
+                                      : "",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontFamily: 'Ubuntu',
@@ -509,7 +551,8 @@ class RequestsDetails extends StatelessWidget {
                                   height: 10,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -521,21 +564,24 @@ class RequestsDetails extends StatelessWidget {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(width: 5,),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         Container(
                                           width: 30,
                                           height: 20,
                                           decoration: BoxDecoration(
                                               color: constants.yellow,
                                               borderRadius:
-                                              BorderRadius.circular(50)),
+                                                  BorderRadius.circular(50)),
                                           child: Center(
                                               child: Text(
-                                                controller.requestDetailsModel!
-                                                    .serviceRequest.bedrooms
-                                                    .toString(),
-                                                style: TextStyle(color: Colors.white),
-                                              )),
+                                            controller.requestDetailsModel!
+                                                .serviceRequest.bedrooms
+                                                .toString(),
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )),
                                         ),
                                       ],
                                     ),
@@ -549,25 +595,27 @@ class RequestsDetails extends StatelessWidget {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(width: 5,),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         Container(
                                           width: 30,
                                           height: 20,
                                           decoration: BoxDecoration(
                                               color: constants.yellow,
                                               borderRadius:
-                                              BorderRadius.circular(50)),
+                                                  BorderRadius.circular(50)),
                                           child: Center(
                                               child: Text(
-                                                controller.requestDetailsModel!
-                                                    .serviceRequest.bathrooms
-                                                    .toString(),
-                                                style: TextStyle(color: Colors.white),
-                                              )),
+                                            controller.requestDetailsModel!
+                                                .serviceRequest.bathrooms
+                                                .toString(),
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )),
                                         ),
                                       ],
                                     ),
-
                                     Row(
                                       children: [
                                         Text(
@@ -578,25 +626,27 @@ class RequestsDetails extends StatelessWidget {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(width: 5,),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         Container(
                                           width: 30,
                                           height: 20,
                                           decoration: BoxDecoration(
                                               color: constants.yellow,
                                               borderRadius:
-                                              BorderRadius.circular(50)),
+                                                  BorderRadius.circular(50)),
                                           child: Center(
                                               child: Text(
-                                                controller.requestDetailsModel!
-                                                    .serviceRequest.dens
-                                                    .toString(),
-                                                style: TextStyle(color: Colors.white),
-                                              )),
+                                            controller.requestDetailsModel!
+                                                .serviceRequest.dens
+                                                .toString(),
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )),
                                         ),
                                       ],
                                     ),
-
                                   ],
                                 ),
                                 SizedBox(
@@ -697,7 +747,7 @@ class RequestsDetails extends StatelessWidget {
                                     width: double.infinity,
                                     height: 65,
                                     decoration: BoxDecoration(
-                                        color: constants.yellow,
+                                      color: constants.yellow,
                                     ),
                                     child: Column(
                                       children: [
@@ -780,76 +830,146 @@ class RequestsDetails extends StatelessWidget {
 
 
                     Padding(
-                      padding: const EdgeInsets.only(left: 8.0 , right: 8.0),
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                       child: Card(
                         elevation: 5,
                         child: Container(
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) =>  SupportCenter(jobId: controller.jobId,)),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    ImageIcon(
-                                      AssetImage("assets/images/XMLID_2_.png"),
-                                      color: constants.grey,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "Support",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: 'Ubuntu',
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SupportCenter(
+                                          jobId: controller.jobId,
+                                        )),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                ImageIcon(
+                                  AssetImage("assets/images/XMLID_2_.png"),
+                                  color: constants.grey,
                                 ),
-                              ),
-                            )),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only( left: 8, right: 8 , bottom: 5),
-                      child: Card(
-                        elevation: 5,
-                        child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Support",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Ubuntu',
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: Row(
-                                  children: [
-                                    ImageIcon(
-                                      AssetImage("assets/images/cancel.png"),
-                                      color: constants.grey,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "Cancel Job",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: 'Ubuntu',
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )),
+                          ),
+                        )),
                       ),
                     ),
+
+
+
+
+                    controller.booking_statues == "canceled"
+                        ? SizedBox()
+                        : controller.booking_statues == "completed"
+                            ? SizedBox()
+                            : Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8, right: 8, bottom: 5),
+                                child: Card(
+                                  elevation: 5,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Center(child: const Text('Skep Pro')),
+                                                    content: SingleChildScrollView(
+                                                      child: ListBody(
+                                                        children: const <Widget>[
+                                                          Center(child: Text('Are you sure you want to cancel this booking ?')),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: const Text('Yes'),
+                                                        onPressed: () {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: (context) {
+                                                                return AlertDialog(
+                                                                  title: Center(child: const Text('Skep Pro')),
+                                                                  content: SingleChildScrollView(
+                                                                    child: ListBody(
+                                                                      children: const <Widget>[
+                                                                        Center(child: Text('WARNING, if you proceed with cancelling this job your rating will drop by 0.2')),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  actions: <Widget>[
+                                                                    TextButton(
+                                                                      child: const Text('Proceed'),
+                                                                      onPressed: () {
+                                                                        controller.postMarkAsCancelRequest(scheduleBooking.id, context);
+                                                                      },
+                                                                    ),
+                                                                    TextButton(
+                                                                      child: const Text('No'),
+                                                                      onPressed: () {
+                                                                        Navigator.of(context).pop();
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              });
+                                                        },
+                                                      ),
+                                                      TextButton(
+                                                        child: const Text('No'),
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              ImageIcon(
+                                                AssetImage(
+                                                    "assets/images/cancel.png"),
+                                                color: constants.grey,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                "Cancel Job",
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontFamily: 'Ubuntu',
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                ),
+                              ),
                   ],
                 ),
               ),

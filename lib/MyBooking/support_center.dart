@@ -6,16 +6,52 @@ import 'package:skep_home_pro/models/request_details_model.dart';
 
 import '../controllers/support_center_by_id-controller.dart';
 
-class SupportCenter extends StatelessWidget {
+class SupportCenter extends StatefulWidget {
   String jobId;
-  final TextEditingController _controllerTitle = TextEditingController();
-  final TextEditingController _controllerDescription = TextEditingController();
 
   SupportCenter({Key? key , required this.jobId}) : super(key: key);
 
   @override
+  State<SupportCenter> createState() => _SupportCenterState();
+}
+
+class _SupportCenterState extends State<SupportCenter> {
+  late TextEditingController _controllerTitle = TextEditingController();
+  late TextEditingController _controllerDescription = TextEditingController();
+
+  bool isButtonActive = false ;
+
+  @override
+  void initState(){
+    super.initState();
+
+    _controllerTitle = TextEditingController();
+    _controllerDescription = TextEditingController();
+    
+    // _controllerTitle.addListener(() {
+    //     final isButtonActive = _controllerTitle.text.isNotEmpty;
+    //
+    //     setState(() => this.isButtonActive = isButtonActive);
+    // });
+
+    _controllerDescription.addListener(() {
+      final isButtonActive = _controllerDescription.text.isNotEmpty;
+
+      setState(() => this.isButtonActive = isButtonActive);
+    });
+  }
+  @override
+  void dispose(){
+    _controllerTitle.dispose();
+    _controllerDescription.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -49,10 +85,8 @@ class SupportCenter extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0 , left: 20 , right: 20),
-                  child: Text("Please submit a ticket and we will get back to you as Soon as possible. " , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.normal , fontFamily: 'Ubuntu'),),
-                ),
+                Center(child: Text("Please submit a ticket and we will get back to you as." , style: TextStyle(fontSize: 12 , fontWeight: FontWeight.normal , fontFamily: 'Ubuntu' , color: constants.grey),)),
+                Center(child: Text("soon as possible." , style: TextStyle(fontSize: 12 , fontWeight: FontWeight.normal , fontFamily: 'Ubuntu' , color: constants.grey),)),
                 const Padding(
                   padding: EdgeInsets.only(top: 15 , bottom: 7 , left: 3),
                   child: Text("Title"),
@@ -60,27 +94,29 @@ class SupportCenter extends StatelessWidget {
                 TextFormField(
                   controller: _controllerTitle,
                   decoration: InputDecoration(
-                      labelText: 'Issue',
+                      contentPadding: EdgeInsets.only(left: 20),
+                      hintText: 'Issue',
+                      hintStyle: TextStyle(fontSize: 12, color: constants.grey),
                       enabledBorder: OutlineInputBorder(
                         borderSide:
                         BorderSide(width: 3, color: constants.grey),
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       errorBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
                           borderSide:
                           BorderSide(width: 2, color: constants.grey),
-                          borderRadius: BorderRadius.circular(15))),
+                          borderRadius: BorderRadius.circular(8))),
                 ),
                 const Padding(
-                  padding: EdgeInsets.only(top: 8.0 , bottom: 7 , left: 3),
+                  padding: EdgeInsets.only(top: 14.0 , bottom: 7 , left: 3),
                   child: Text("Description"),
                 ),
                 Container(
@@ -88,53 +124,57 @@ class SupportCenter extends StatelessWidget {
                     controller: _controllerDescription,
                     maxLines: 20,
                     minLines: 20,
-
                     decoration: InputDecoration(
-                      hintMaxLines: 10,
-
+                        hintMaxLines: 10,
+                        contentPadding: EdgeInsets.only(left: 20 , top: 20),
+                        hintStyle: TextStyle(fontSize: 12 , color: constants.grey),
                         hintText: "Please describe the problem you are facing",
                         enabledBorder: OutlineInputBorder(
                           borderSide:
                           BorderSide(width: 3, color: constants.grey),
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         errorBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.red),
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         focusedErrorBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.red),
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         focusedBorder: OutlineInputBorder(
                             borderSide:
                             BorderSide(width: 2, color: constants.grey),
-                            borderRadius: BorderRadius.circular(15))),
+                            borderRadius: BorderRadius.circular(8))),
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: ElevatedButton.icon(
-                        icon: const Icon(Icons.arrow_back),
-                        label: const Text(
-                          "Place Ticket",
-                          style: TextStyle(fontSize: 14,),
-                        ),
-                        style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor: MaterialStateProperty.all<Color>(constants.darkgrey),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              const RoundedRectangleBorder(
-                                  borderRadius:  BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10),bottomRight: Radius.circular(10) , bottomLeft: Radius.circular(10)),
-                                  side: BorderSide(color: constants.darkgrey)
-                              )
+                Padding(
+                  padding: const EdgeInsets.only(top: 14.0),
+                  child: Container(
+                    width: double.infinity,
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: ElevatedButton.icon(
+                          icon: const Icon(Icons.arrow_back),
+                          label: const Text(
+                            "Place Ticket",
+                            style: TextStyle(fontSize: 14,),
                           ),
-                        ),
-                        onPressed: () {
-                          controller.getSupportCenter(_controllerTitle.text, _controllerDescription.text , jobId , context);
-                        }
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor: isButtonActive ?  MaterialStateProperty.all<Color>(constants.blue4) : MaterialStateProperty.all<Color>(constants.grey),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                 RoundedRectangleBorder(
+                                    borderRadius:  BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10),bottomRight: Radius.circular(10) , bottomLeft: Radius.circular(10)),
+                                    side: BorderSide(color: isButtonActive ? constants.blue4 : constants.grey)
+                                )
+                            ),
+                          ),
+                          onPressed: isButtonActive ? () {
+                            setState( () => isButtonActive = false );
+                            controller.getSupportCenter(_controllerTitle.text, _controllerDescription.text , widget.jobId , context);
+                          } : null
+                      ),
                     ),
                   ),
                 ),

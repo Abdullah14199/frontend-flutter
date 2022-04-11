@@ -111,7 +111,7 @@ class _TodaysListState extends State<TodaysList> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: Container(
                     width: 380,
                     height: 48,
@@ -122,7 +122,7 @@ class _TodaysListState extends State<TodaysList> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 40, right: 40),
+                      padding: const EdgeInsets.only(left: 20, right: 40),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -190,129 +190,139 @@ class _TodaysListState extends State<TodaysList> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "0",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 21,
-                  fontFamily: 'Ubuntu',
-                  fontWeight: FontWeight.bold),
+            Column(
+              children: [
+                Text(
+                  "0",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 21,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Bookings",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.normal),
+                ),
+              ],
             ),
             Container(
               width: 3,
               height: 60,
               color: constants.grey,
             ),
-            Text(
-              "00:00",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 21,
-                  fontFamily: 'Ubuntu',
-                  fontWeight: FontWeight.bold),
+            Column(
+              children: [
+                Text(
+                  "00:00",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 21,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Total Hours",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.normal),
+                ),
+              ],
             ),
             Container(
               width: 3,
               height: 60,
               color: constants.grey,
             ),
-            Text(
-              "\$0,00",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 21,
-                  fontFamily: 'Ubuntu',
-                  fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Bookings",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontFamily: 'Ubuntu',
-                  fontWeight: FontWeight.normal),
-            ),
-            Text(
-              "Total Hours",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontFamily: 'Ubuntu',
-                  fontWeight: FontWeight.normal),
-            ),
-            Text(
-              "Cash In",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontFamily: 'Ubuntu',
-                  fontWeight: FontWeight.normal),
+            Column(
+              children: [
+                Text(
+                  "\$0,00",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 21,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Cash In",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.normal),
+                ),
+              ],
             ),
           ],
         ),
         isData == true
-            ? Column(
+            ? Padding(
+              padding: const EdgeInsets.only(top: 45.0),
+              child: Column(
           children: [
-            Image.asset("assets/images/cleanerone.png"),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              "No Assigned Cleaning Jobs",
-              style: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Ubuntu',
-                fontWeight: FontWeight.bold,
+              Image.asset("assets/images/cleanerone.png"),
+              const SizedBox(
+                height: 20,
               ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            const Center(
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Sorry there Is no assigned cleaning Job right now,",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Ubuntu',
-                  ),
+              const Text(
+                "No Assigned Cleaning Jobs",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Ubuntu',
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                width: 180,
-                height: 45,
-                decoration: const BoxDecoration(
-                    color: constants.yellow,
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(18))),
-                child: const Center(
+              const SizedBox(
+                height: 8,
+              ),
+              const Center(
+                child: Align(
+                  alignment: Alignment.center,
                   child: Text(
-                    "Accept Jobs",
+                    "Sorry there Is no assigned cleaning Job right now,",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
                       fontFamily: 'Ubuntu',
                     ),
                   ),
                 ),
               ),
-            ),
+              const SizedBox(
+                height: 20,
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 180,
+                  height: 45,
+                  decoration: const BoxDecoration(
+                      color: constants.yellow,
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(18))),
+                  child: const Center(
+                    child: Text(
+                      "Accept Jobs",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Ubuntu',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
-        )
+        ),
+            )
             : ListView.builder(
           itemCount: 10,
           shrinkWrap: true,
@@ -774,7 +784,7 @@ class _TodaysListState extends State<TodaysList> {
                       child: Card(
                         elevation: 5.0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0.0),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
