@@ -50,8 +50,6 @@ class RequestDetailsController extends GetxController {
 
       jobId = requestDetailsModel!.serviceRequest.jobId;
 
-
-
       isLoading =true;
       // certin_status =
       print("RRRRRRRRRRRRRRR${booking_statues}");
