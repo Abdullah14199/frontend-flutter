@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/MyBooking/schedule.dart';
+import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/certn_verifyed.dart';
 import 'package:skep_home_pro/models/my_booking_model.dart';
 import 'package:skep_home_pro/models/request_details_model.dart';
@@ -163,6 +164,29 @@ class RequestDetailsController extends GetxController {
 
       booking_statues = requestDetailsModel!.serviceRequest.bookingStatus;
       booking_statues = 'completed';
+
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Center(child: const Text('Skep Pro.')),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[
+                    Center(child: Text('Booking Completed.')),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
 
 
 

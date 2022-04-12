@@ -312,23 +312,6 @@ class CompleteDetails extends StatelessWidget {
                                         .darkgrey),
                                   ),
                                 )),
-                            Container(
-                                width: 60,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: constants.yellow),
-                                child:IconButton(
-                                      onPressed: () { Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => CheckList()),
-                                      );},
-                                  icon: Image.asset(
-                                    "assets/images/ic_check_list_icon.PNG",
-                                    color: Colors.white,
-                                  ),
-                                ),
-                            )
                           ],
                         )),
 

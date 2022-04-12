@@ -419,7 +419,7 @@ class _ScheduleState extends State<Schedule> {
                                   child: CircleAvatar(
                                     backgroundColor: Colors.green,
                                     foregroundColor: Colors.green,
-                                    backgroundImage: NetworkImage(
+                                    backgroundImage:  NetworkImage(
                                         "https://staging.skephome.com/storage/${controller.completeList[index].image}"),
                                   ),
                                 ),

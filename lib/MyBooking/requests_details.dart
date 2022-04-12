@@ -11,8 +11,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 
 class RequestsDetails extends StatelessWidget {
-  RequestsDetails({Key? key, required this.scheduleBooking}) : super(key: key);
 
+  RequestsDetails({Key? key, required this.scheduleBooking}) : super(key: key);
   ScheduleBooking scheduleBooking;
 
   @override
@@ -22,7 +22,6 @@ class RequestsDetails extends StatelessWidget {
       init: RequestDetailsController(),
       builder: (controller) {
         controller.getRequestDetails(scheduleBooking.id);
-        print(controller.log);
         return SafeArea(
           child: Scaffold(
             appBar: AppBar(
@@ -314,8 +313,30 @@ class RequestsDetails extends StatelessWidget {
                                 child: controller.booking_statues == "upcoming"
                                     ? ElevatedButton(
                                         onPressed: () {
-                                          controller.postMarkAsStartRequest(
-                                              scheduleBooking.id, context);
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Center(child: const Text('Skep Pro.')),
+                                                  content: SingleChildScrollView(
+                                                    child: ListBody(
+                                                      children: const <Widget>[
+                                                        Center(child: Text('Job Started! Make Sure To Review & Complete The Cleaning Checklist.')),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: const Text('Ok'),
+                                                      onPressed: () {
+                                                        controller.postMarkAsStartRequest(
+                                                            scheduleBooking.id, context);
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
                                         },
                                         child: Text("Start job"),
                                         style: ButtonStyle(
@@ -386,10 +407,32 @@ class RequestsDetails extends StatelessWidget {
                                                                 "inprogress"
                                                             ? ElevatedButton(
                                                                 onPressed: () {
-                                                                  controller.postMarkAsCompleteRequest(
-                                                                      scheduleBooking
-                                                                          .id,
-                                                                      context);
+                                                                  showDialog(
+                                                                      context: context,
+                                                                      builder: (context) {
+                                                                        return AlertDialog(
+                                                                          title: Center(child: const Text('Skep Pro.')),
+                                                                          content: SingleChildScrollView(
+                                                                            child: ListBody(
+                                                                              children: const <Widget>[
+                                                                                Center(child: Text('Booking Completed.')),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          actions: <Widget>[
+                                                                            TextButton(
+                                                                              child: const Text('Ok'),
+                                                                              onPressed: () {
+                                                                                controller.postMarkAsCompleteRequest(
+                                                                                    scheduleBooking
+                                                                                        .id,
+                                                                                    context);
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                            ),
+                                                                          ],
+                                                                        );
+                                                                      });
                                                                 },
                                                                 child: Text(
                                                                     "Complete Job"),
@@ -414,7 +457,7 @@ class RequestsDetails extends StatelessWidget {
                                         onPressed: () {
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(builder: (context) => CheckList()),
+                                            MaterialPageRoute(builder: (context) => CheckList(scheduleBooking: scheduleBooking.id,)),
                                           );
                                         },
                                         icon: Image.asset(
@@ -423,22 +466,13 @@ class RequestsDetails extends StatelessWidget {
                                         ),
                                       )
                                     : controller.booking_statues == "completed"
-                                        ? IconButton(
-                                            onPressed: () { Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => CheckList()),
-                                            );},
-                                            icon: Image.asset(
-                                              "assets/images/ic_check_list_icon.PNG",
-                                              color: Colors.white,
-                                            ),
-                                          )
+                                        ? SizedBox()
                                         : controller.booking_statues ==
                                                 "scheduled"
                                             ? IconButton(
                                                 onPressed: () { Navigator.push(
                                                   context,
-                                                  MaterialPageRoute(builder: (context) => CheckList()),
+                                                  MaterialPageRoute(builder: (context) => CheckList(scheduleBooking: scheduleBooking.id)),
                                                 );},
                                                 icon: Image.asset(
                                                   "assets/images/ic_check_list_icon.PNG",
@@ -450,7 +484,7 @@ class RequestsDetails extends StatelessWidget {
                                                 ? IconButton(
                                                     onPressed: () { Navigator.push(
                                                       context,
-                                                      MaterialPageRoute(builder: (context) => CheckList()),
+                                                      MaterialPageRoute(builder: (context) => CheckList(scheduleBooking: scheduleBooking.id)),
                                                     );},
                                                     icon: Image.asset(
                                                       "assets/images/ic_check_list_icon.PNG",
@@ -462,7 +496,7 @@ class RequestsDetails extends StatelessWidget {
                                                     ? IconButton(
                                                         onPressed: () { Navigator.push(
                                                           context,
-                                                          MaterialPageRoute(builder: (context) => CheckList()),
+                                                          MaterialPageRoute(builder: (context) => CheckList(scheduleBooking: scheduleBooking.id)),
                                                         );},
                                                         icon: Image.asset(
                                                           "assets/images/ic_check_list_icon.PNG",
@@ -474,7 +508,7 @@ class RequestsDetails extends StatelessWidget {
                                                         ? IconButton(
                                                             onPressed: () { Navigator.push(
                                                               context,
-                                                              MaterialPageRoute(builder: (context) => CheckList()),
+                                                              MaterialPageRoute(builder: (context) => CheckList(scheduleBooking: scheduleBooking.id)),
                                                             );},
                                                             icon: Image.asset(
                                                               "assets/images/ic_check_list_icon.PNG",
@@ -488,7 +522,7 @@ class RequestsDetails extends StatelessWidget {
                                                                 onPressed:
                                                                     () { Navigator.push(
                                                                       context,
-                                                                      MaterialPageRoute(builder: (context) => CheckList()),
+                                                                      MaterialPageRoute(builder: (context) => CheckList(scheduleBooking: scheduleBooking.id)),
                                                                     );},
                                                                 icon:
                                                                     Image.asset(

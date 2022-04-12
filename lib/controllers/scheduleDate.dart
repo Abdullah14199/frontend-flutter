@@ -103,8 +103,10 @@ class ScheduleDate extends GetxController{
       Total_hours = bookingBalance['Total_hours'];
       TodayCashIn = bookingBalance['TodayCashIn'];
       chart = bookingBalance['chart'];
-
       print(body);
+
+
+
       print(chart);
       if(populationData2.isNotEmpty){
         hasData = false ;

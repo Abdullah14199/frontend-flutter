@@ -21,6 +21,7 @@ class MYBookingController extends GetxController {
   MyBookingModel? myBookingModel;
 
   var Read;
+  var id;
   bool isLoading = false;
 
   List<ScheduleBooking> bookingList = [];
@@ -59,10 +60,9 @@ class MYBookingController extends GetxController {
       });
 
       isLoading =true;
-
-
       print(body);
       print(response.statusCode);
+
 
       // then parse the JSON.
     } else {

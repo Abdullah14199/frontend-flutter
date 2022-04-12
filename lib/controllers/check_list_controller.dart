@@ -1,48 +1,29 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skep_home_pro/models/my_booking_model.dart';
+import '../models/check_list_model.dart';
+import '../models/my_booking_model.dart';
+import 'complete_controller.dart';
 
-import '../Login/login.dart';
-import '../models/complete_booking.dart';
-import '../models/verifyed_model.dart';
-
-
-
-class MYCompleteBookingController extends GetxController {
-
-
+class CheckListController extends GetxController {
 
   @override
   void onInit() {
     super.onInit();
-    getMyBooking();
+    //getCheckListMainService();
   }
 
-  CompleteBooking? myCompleteBookingModel;
+  CheckListModel? checkListModel;
+  List<MainService> mainServiceList = [];
 
-  var Read;
+  bool verifyed = true;
 
-  bool isLoading = false;
-
-  List<HistoryBooking> completeList = [];
-
-  bool chooseScreen = true;
-
-  bool history = true;
-
-  void choose(bool screen){
-    chooseScreen = screen;
-    update();
-  }
-
-  void getMyBooking() async {
+  void getCheckListMainService(int id) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 // print('..>>>>>>>>>>>>>>>>>>>${pref.get('token3').toString()}');
     final response = await http.get(
-      Uri.parse('http://staging.skephome.com/api/Homeowner/MyBookings'),
+      Uri.parse('http://staging.skephome.com/api/Checklist/GetChecklist/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -50,24 +31,21 @@ class MYCompleteBookingController extends GetxController {
       },
     );
 
-
     var body = response.body;
     var read = jsonDecode(body);
+
     if (response.statusCode == 200) {
 
-      myCompleteBookingModel = CompleteBooking.fromJson(read);
+      checkListModel =  CheckListModel.fromJson(read);
 
-      myCompleteBookingModel!.history.forEach((element) {
-        completeList.add(element);
+      checkListModel!.mainServices.forEach((element) {
+        mainServiceList.add(element);
       });
 
 
-      isLoading = true;
-
-      print(body);
+      print(mainServiceList);
       print(response.statusCode);
 
-      // then parse the JSON.
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
@@ -76,7 +54,7 @@ class MYCompleteBookingController extends GetxController {
 
       throw Exception('Failed to create album.');
     }
-    update();
+     update();
   }
 
 
