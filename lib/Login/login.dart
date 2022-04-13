@@ -23,10 +23,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 var token3;
+var dialCodeDigits;
+var dateOfBirth;
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _controller = TextEditingController();
-  String dialCodeDigits = "+00";
+
   String phone = "";
 
   Future<CallApi> fetchDataUser(context) async {
@@ -50,6 +52,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
       var gender = jsonDecode(body);
       Gender = gender['user']['gender'] ;
+
+      var countryCode = jsonDecode(body);
+      dialCodeDigits = countryCode['user']['country_code'];
+
+      var dateOfBirthjs = jsonDecode(body);
+      dateOfBirth = dateOfBirthjs['user']['date_of_birth'];
+
+
 
       var Codecountry = jsonDecode(body);
       CodeCountry2 = Codecountry['user']['country_inti'] ;

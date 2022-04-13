@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -163,28 +162,60 @@ class RequestDetailsController extends GetxController {
       booking_statues = requestDetailsModel!.serviceRequest.bookingStatus;
       booking_statues = 'completed';
 
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Center(child: const Text('Skep Pro.')),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: const <Widget>[
-                    Center(child: Text('Booking Completed.')),
-                  ],
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) => Container(
+          width: double.infinity,
+          height: 350,
+          decoration: const BoxDecoration(color: Colors.white ,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(50),
+              topRight: Radius.circular(50),
+            ),
+          ),
+          child: Column(
+            children:[
+              Container(
+                width: 150,
+                height: 5,
+                decoration: const BoxDecoration(
+                  color: constants.grey,
+                  borderRadius: BorderRadius.all(Radius.circular(2)),
                 ),
               ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Image.asset("assets/images/correction.png"),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20 , right: 20 , top: 15),
+                child: Center(child: Text("Booking Complete" , style: TextStyle(fontSize: 14),)),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0 , right: 10 , left: 10),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10))
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0 , right: 20.0),
+                    child: ElevatedButton(onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Schedule()),
+                      );
+                    }, child: Text("Close")),
+                  ),
                 ),
-              ],
-            );
-          });
+              ),
+
+            ] ,
+          ),
+        ),
+      );
 
 
 

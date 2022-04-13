@@ -16,6 +16,7 @@ import 'package:skep_home_pro/routes/routes.dart';
 import 'package:http/http.dart' as http;
 
 import '../Back_ground_check/verificationAccount.dart';
+import '../Login/edit_profile.dart';
 import '../controllers/verifyed_controller.dart';
 import '../models/UserModel.dart';
 import '../models/userModelSignUp.dart';
@@ -161,7 +162,12 @@ class _DashboardState extends State<Dashboard> {
                             top: 70,
                             left: 145,
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) =>  EditProfile()),
+                                );
+                              },
                               child: Row(
                                 children: [
                                   const Text(
@@ -169,7 +175,8 @@ class _DashboardState extends State<Dashboard> {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                    },
                                     icon: Image.asset(
                                       "assets/images/edit.png",
                                       color: Colors.white,

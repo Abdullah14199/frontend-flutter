@@ -31,6 +31,7 @@ class _CheckListState extends State<CheckList> {
     return GetBuilder<CheckListController>(
       init: CheckListController(),
       builder: (controller){
+
         print(id);
         return SafeArea(
             child: Scaffold(
@@ -90,6 +91,14 @@ class _CheckListState extends State<CheckList> {
                                       ),
                                       child: Row(
                                         children: [
+                                          Container(
+                                            width: 10,
+                                            height: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color:controller.mainServiceList[index].status == 0 ? constants.red : constants.green ,
+                                              borderRadius: BorderRadius.circular(8)
+                                            ),
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: RoundCheckBox(
@@ -99,7 +108,7 @@ class _CheckListState extends State<CheckList> {
                                                   backgroundColor: Colors.transparent,
                                                   builder: (context) => Container(
                                                     width: double.infinity,
-                                                    height: 350,
+                                                    height: 250,
                                                     decoration: const BoxDecoration(color: Colors.white ,
                                                       borderRadius: BorderRadius.only(
                                                         topLeft: Radius.circular(50),
@@ -107,13 +116,16 @@ class _CheckListState extends State<CheckList> {
                                                       ),
                                                     ),
                                                     child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children:[
-                                                        Container(
-                                                          width: 150,
-                                                          height: 5,
-                                                          decoration: const BoxDecoration(
-                                                            color: constants.grey,
-                                                            borderRadius: BorderRadius.all(Radius.circular(2)),
+                                                        Center(
+                                                          child: Container(
+                                                            width: 150,
+                                                            height: 5,
+                                                            decoration: const BoxDecoration(
+                                                              color: constants.grey,
+                                                              borderRadius: BorderRadius.all(Radius.circular(2)),
+                                                            ),
                                                           ),
                                                         ),
                                                         Padding(
@@ -122,7 +134,7 @@ class _CheckListState extends State<CheckList> {
                                                         ),
                                                         Padding(
                                                           padding: const EdgeInsets.only(left: 25 , right: 25 , top: 15),
-                                                          child: Center(child: Text(controller.mainServiceList[index].items.description , style: TextStyle(color: Colors.grey , fontSize: 12),)),
+                                                          child: Text(controller.mainServiceList[index].items.description.replaceAll('* ', '\n') , style: TextStyle(color: Colors.grey , fontSize: 14 ,fontWeight: FontWeight.bold , fontFamily: 'Ubuntu'),),
                                                         ),
                                                         Padding(
                                                           padding: const EdgeInsets.only(top: 20.0 , right: 10 , left: 10),
@@ -132,8 +144,10 @@ class _CheckListState extends State<CheckList> {
                                                                 borderRadius: BorderRadius.all(Radius.circular(10))
                                                             ),
                                                             child: ElevatedButton(onPressed: (){
+                                                              controller.getDoneCheckListMainService(controller.mainServiceList[index].id);
+                                                              controller.mainServiceList[index].status = 1;
                                                               Navigator.of(context).pop();
-                                                            }, child: Text("Close")),
+                                                            }, child: Text("Done")),
                                                           ),
                                                         ),
 
@@ -146,6 +160,7 @@ class _CheckListState extends State<CheckList> {
                                               size: 30,
                                               checkedColor: constants.green,
                                               uncheckedColor: Colors.white,
+                                              isChecked: controller.mainServiceList[index].status == 1 ? true : false,
                                             ),
                                           ),
                                           Padding(
@@ -190,12 +205,67 @@ class _CheckListState extends State<CheckList> {
                                         ),
                                         child: Row(
                                           children: [
+                                            Container(
+                                              width: 10,
+                                              height: double.infinity,
+                                              decoration: BoxDecoration(
+                                                  color: constants.red ,
+                                                  borderRadius: BorderRadius.circular(8)
+                                              ),
+                                            ),
                                             Padding(
                                               padding: const EdgeInsets.all(8.0),
                                               child: RoundCheckBox(
                                                 onTap: (value) {
+                                                  showModalBottomSheet(
+                                                    context: context,
+                                                    backgroundColor: Colors.transparent,
+                                                    builder: (context) => Container(
+                                                      width: double.infinity,
+                                                      height: 250,
+                                                      decoration: const BoxDecoration(color: Colors.white ,
+                                                        borderRadius: BorderRadius.only(
+                                                          topLeft: Radius.circular(50),
+                                                          topRight: Radius.circular(50),
+                                                        ),
+                                                      ),
+                                                      child: Column(
+                                                        children:[
+                                                          Container(
+                                                            width: 150,
+                                                            height: 5,
+                                                            decoration: const BoxDecoration(
+                                                              color: constants.grey,
+                                                              borderRadius: BorderRadius.all(Radius.circular(2)),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 20 , right: 20 , top: 15),
+                                                            child: Center(child: Text(controller2.extraService[index].items.name)),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 25 , right: 25 , top: 15),
+                                                            child: Center(child: Text(controller2.extraService[index].items.description.replaceAll('* ', '\n') , style: TextStyle(color: Colors.grey , fontSize: 14 ,fontWeight: FontWeight.bold , fontFamily: 'Ubuntu'),)),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(top: 20.0 , right: 10 , left: 10),
+                                                            child: Container(
+                                                              width: double.infinity,
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.all(Radius.circular(10))
+                                                              ),
+                                                              child: ElevatedButton(onPressed: (){
+                                                                Navigator.of(context).pop();
+                                                              }, child: Text("Close")),
+                                                            ),
+                                                          ),
 
+                                                        ] ,
+                                                      ),
+                                                    ),
+                                                  );
                                                 },
+                                                isChecked: controller2.extraService[index].status == 1 ? true : false,
                                                 size: 30,
                                                 checkedColor: constants.green,
                                                 uncheckedColor: Colors.white,

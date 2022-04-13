@@ -147,5 +147,10 @@ class CertnVerifyedController extends GetxController {
     update();
   }
 
+  //User/UpdateProfile
+
+
+
+
 
 }

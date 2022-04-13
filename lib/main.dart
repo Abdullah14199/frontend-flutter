@@ -15,12 +15,12 @@ import 'controllers/verifyed_controller.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // options: const FirebaseOptions(
-    //   apiKey: "XXX", // Your apiKey
-    //   appId: "1:389584921781:ios:fa10c18de8288c748b4afc", // Your appId
-    //   messagingSenderId: "XXX", // Your messagingSenderId
-    //   projectId: "skephomecleaner", // Your projectId
-    // ),
+    options: const FirebaseOptions(
+      apiKey: "XXX", // Your apiKey
+      appId: "1:389584921781:ios:fa10c18de8288c748b4afc", // Your appId
+      messagingSenderId: "XXX", // Your messagingSenderId
+      projectId: "skephomecleaner", // Your projectId
+    ),
   );
 
 

@@ -34,14 +34,14 @@ var Level;
 var Phone;
 var Level_statues;
 
-
-Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async {
+Future<CallApiBG> createAlbum(
+    String gender, String codeCountry, context) async {
   final response = await http.post(
     Uri.parse('http://staging.skephome.com/api/Cleaner/CleanerBackground'),
     headers: <String, String>{
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json; charset=UTF-8',
-      'Accept' : 'application/json'
+      'Accept': 'application/json'
     },
     body: jsonEncode(<String, String>{
       'gender': gender,
@@ -56,13 +56,13 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
     var body = response.body;
 
     var gender = jsonDecode(body);
-    Gender = gender['user']['gender'] ;
+    Gender = gender['user']['gender'];
 
     var Codecountry = jsonDecode(body);
-    CodeCountry2 = Codecountry['user']['country_inti'] ;
+    CodeCountry2 = Codecountry['user']['country_inti'];
 
     var email = jsonDecode(body);
-    EmailUser = email['user']['email'] ;
+    EmailUser = email['user']['email'];
 
     var firstName = jsonDecode(body);
     FirstName = firstName['user']['first_name'];
@@ -78,8 +78,6 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
 
     var level_statues = jsonDecode(body);
     Level_statues = level_statues['user']['level_status'];
-
-
 
     Get.offNamed(Routes.dashboard);
 
@@ -97,24 +95,18 @@ Future<CallApiBG> createAlbum(String gender, String codeCountry ,context) async 
 
 String token = "";
 
-
-
 class _backGroundCheckState extends State<backGroundCheck> {
   String genderBool = '';
   String CountryCodeValue = '';
 
-
   @override
   Widget build(BuildContext context) {
-
-
-    SharedPreferences.getInstance().then((sharedPrefValue){
+    SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
         token = sharedPrefValue.getString('token')!;
         //print(token);
       });
     });
-
 
     return SafeArea(
         child: Scaffold(
@@ -176,10 +168,10 @@ class _backGroundCheckState extends State<backGroundCheck> {
             child: RoundCheckBox(
               onTap: (value) {
                 male.value = value!;
-                if(male.value){
+                if (male.value) {
                   genderBool = "M";
                   print(genderBool);
-                }else {
+                } else {
                   genderBool = "";
                   print(genderBool);
                 }
@@ -206,10 +198,10 @@ class _backGroundCheckState extends State<backGroundCheck> {
             child: RoundCheckBox(
               onTap: (value) {
                 female.value = value!;
-                if(female.value){
+                if (female.value) {
                   genderBool = "F";
                   print(genderBool);
-                }else {
+                } else {
                   genderBool = "";
                   print(genderBool);
                 }
@@ -229,16 +221,17 @@ class _backGroundCheckState extends State<backGroundCheck> {
                 style: TextStyle(color: constants.grey),
               )),
           Positioned(
-              top: 230,
-              left: 20,
-              child: Text(
-                "Country of birth",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Ubuntu',
-                ),
-              )),
+            top: 230,
+            left: 20,
+            child: Text(
+              "Country of birth",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Ubuntu',
+              ),
+            ),
+          ),
           Positioned(
             top: 250,
             left: 20,
@@ -247,10 +240,9 @@ class _backGroundCheckState extends State<backGroundCheck> {
                 print;
                 CountryCodeValue = countryCode.code!;
                 print(CountryCodeValue);
-
-                } ,
+              },
               initialSelection: 'US',
-              favorite: ['+1','US'],
+              favorite: ['+1', 'US'],
               showCountryOnly: true,
               showOnlyCountryWhenClosed: true,
               alignLeft: false,
@@ -438,8 +430,7 @@ class _backGroundCheckState extends State<backGroundCheck> {
                 child: ElevatedButton(
                   onPressed: () {
                     print(genderBool + CountryCodeValue);
-                    createAlbum(genderBool, CountryCodeValue , context);
-
+                    createAlbum(genderBool, CountryCodeValue, context);
                   },
                   child: Text(
                     "Complete",
