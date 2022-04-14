@@ -12,6 +12,9 @@ import 'package:skep_home_pro/models/my_booking_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 
+import '../Back_ground_check/back_ground_check.dart';
+import '../chatPage/chat.dart';
+
 class CompleteDetails extends StatelessWidget {
   CompleteDetails({Key? key, required this.historyBooking}) : super(key: key);
 
@@ -119,7 +122,9 @@ class CompleteDetails extends StatelessWidget {
                                         CircleAvatar(
                                           backgroundColor: constants.blue2,
                                           child: IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => chatpage(email: "$EmailUser")),);
+                                            },
                                             icon: Icon(Icons.chat,
                                                 color: Colors.white),
                                           ),

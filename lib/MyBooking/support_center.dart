@@ -27,12 +27,6 @@ class _SupportCenterState extends State<SupportCenter> {
 
     _controllerTitle = TextEditingController();
     _controllerDescription = TextEditingController();
-    
-    // _controllerTitle.addListener(() {
-    //     final isButtonActive = _controllerTitle.text.isNotEmpty;
-    //
-    //     setState(() => this.isButtonActive = isButtonActive);
-    // });
 
     _controllerDescription.addListener(() {
       final isButtonActive = _controllerDescription.text.isNotEmpty;
@@ -40,6 +34,7 @@ class _SupportCenterState extends State<SupportCenter> {
       setState(() => this.isButtonActive = isButtonActive);
     });
   }
+
   @override
   void dispose(){
     _controllerTitle.dispose();

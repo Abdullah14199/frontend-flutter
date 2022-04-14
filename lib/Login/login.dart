@@ -4,18 +4,12 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
-import 'package:skep_home_pro/Dashboard/TodaysList.dart';
-import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/Login/OtpController.dart';
-import 'package:skep_home_pro/Login/registration.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/userModelSignUp.dart';
-import 'package:skep_home_pro/splash_screen/get_started.dart';
 import '../Dashboard/Dashboard.dart';
 import '../models/apiSplashScreenModels.dart';
 import 'package:http/http.dart' as http;
-
-import '../shared/cache_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
