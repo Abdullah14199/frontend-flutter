@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:skep_home_pro/constatns/constants.dart';
 
 class messages extends StatefulWidget {
   String email;
@@ -48,38 +49,43 @@ class _messagesState extends State<messages> {
                     ? CrossAxisAlignment.end
                     : CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 300,
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Colors.purple,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: constants.blue4,
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      title: Text(
-                        qs['email'],
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
-                      ),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 200,
-                            child: Text(
-                              qs['message'],
-                              softWrap: true,
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: constants.blue4,
                           ),
-                          Text(
-                            d.hour.toString() + ":" + d.minute.toString(),
-                          )
-                        ],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        title: Text(
+                          qs['message'],
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white
+                          ),
+                        ),
+                        subtitle: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 200,
+                            ),
+                            Text(
+                              d.hour.toString() + ":" + d.minute.toString(),
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -15,6 +15,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import '../Back_ground_check/back_ground_check.dart';
 import '../chatPage/chat.dart';
 
+var idBooking ;
+var homeOwnerPhone;
+var homeOwnerUid;
+
 class CompleteDetails extends StatelessWidget {
   CompleteDetails({Key? key, required this.historyBooking}) : super(key: key);
 
@@ -23,6 +27,9 @@ class CompleteDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("CCC${historyBooking.id}");
+    idBooking = historyBooking.id;
+    homeOwnerPhone = historyBooking.homeownerPhone;
+    homeOwnerUid = historyBooking.firebaseUid;
     return GetBuilder<CompleteRequestController>(
       init: CompleteRequestController(),
       builder: (controller) {
