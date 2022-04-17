@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
+import 'package:skep_home_pro/models/chat_model.dart';
+
+import '../controllers/request_details_controller.dart';
 
 class messages extends StatefulWidget {
   String email;
@@ -20,81 +25,83 @@ class _messagesState extends State<messages> {
       .snapshots();
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _messageStream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text("something is wrong");
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        return ListView.builder(
-          itemCount: snapshot.data!.docs.length,
-          physics: ScrollPhysics(),
-          shrinkWrap: true,
-          primary: true,
-          itemBuilder: (_, index) {
-            QueryDocumentSnapshot qs = snapshot.data!.docs[index];
-            Timestamp t = qs['time'];
-            DateTime d = t.toDate();
-            print(d.toString());
-            return Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 8),
-              child: Column(
-                crossAxisAlignment: email == qs['email']
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Container(
-                      width: 300,
-                      decoration: BoxDecoration(
-                        color: constants.blue4,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: constants.blue4,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        title: Text(
-                          qs['message'],
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white
-                          ),
-                        ),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 200,
+    return GetBuilder<RequestDetailsController>(
+      init: RequestDetailsController(),
+      builder: (controller) {
+        return StreamBuilder<DatabaseEvent>(
+          stream: controller.getData(),
+          builder: (BuildContext context, snapshot) {
+            print('Snapshot: ${snapshot.data!.snapshot.value!['']}');
+            if (snapshot.hasError) {
+              return Text("something is wrong");
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data.snapshot,
+                physics: ScrollPhysics(),
+                shrinkWrap: true,
+                primary: true,
+                itemBuilder: (_, index) {
+                  QueryDocumentSnapshot qs = snapshot.data!.docs[index];
+                  Timestamp t = qs['time'];
+                  DateTime d = t.toDate();
+                  print(d.toString());
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                    child: Column(
+                      crossAxisAlignment: email == qs['email']
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Container(
+                            width: 300,
+                            decoration: BoxDecoration(
+                              color: constants.blue4,
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            Text(
-                              d.hour.toString() + ":" + d.minute.toString(),
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white
+                            child: ListTile(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: constants.blue4,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                            )
-                          ],
+                              title: Text(
+                                qs['message'],
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    width: 200,
+                                  ),
+                                  Text(
+                                    d.hour.toString() + ":" + d.minute.toString(),
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            );
+                  );
+                },
+              );
+            }
+
           },
         );
-      },
+      }
     );
   }
 }

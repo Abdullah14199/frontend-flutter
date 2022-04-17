@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +23,11 @@ class RequestDetailsController extends GetxController {
 
   bool isLoading = false;
   String booking_statues = "";
+
+
+  RequestDetailsController(){
+    getData();
+  }
 
   List<ServiceRequest> serviceRequestList = [];
 
@@ -53,6 +59,16 @@ class RequestDetailsController extends GetxController {
         .millisecondsSinceEpoch}')
         .set(model.toJson());
   }
+
+  Stream<DatabaseEvent> getData(){
+   return FirebaseDatabase.instance
+        .ref('chat_rooms')
+        .child('${idBooking}')
+        .orderByChild('time')
+        .onValue;
+  }
+
+
 
   void getRequestDetails(int id) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
