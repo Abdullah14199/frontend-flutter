@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,8 +11,11 @@ import 'package:skep_home_pro/models/my_booking_model.dart';
 import 'package:skep_home_pro/models/request_details_model.dart';
 
 import '../Back_ground_check/back_ground_check.dart';
+import '../Dashboard/Dashboard.dart';
 import '../Login/login.dart';
+import '../MyBooking/complete_details.dart';
 import '../models/UserModel.dart';
+import '../models/chat_model.dart';
 import '../models/verifyed_model.dart';
 
 class CompleteRequestController extends GetxController {
@@ -25,6 +29,39 @@ class CompleteRequestController extends GetxController {
 
   double lat = 0.0;
   double log = 0.0;
+
+
+  void send(String message) {
+    ChatModel model = ChatModel(
+      booking_id:'$idBooking',
+      message: message,
+      receiver: homeOwnerPhone ,
+      receiverUid: homeOwnerUid,
+      sender: "$Phone",
+      senderUid: '$userID',
+      time:'${DateTime.now()}',
+      timeStamp:DateTime
+          .now()
+          .millisecondsSinceEpoch,
+    );
+
+    FirebaseDatabase.instance
+        .ref('chat_rooms')
+        .child('${idBooking}')
+        .child('${DateTime
+        .now()
+        .millisecondsSinceEpoch}')
+        .set(model.toJson());
+  }
+
+  Stream<DatabaseEvent> getData(){
+    return FirebaseDatabase.instance
+        .ref('chat_rooms')
+        .child('${idBooking}')
+        .orderByChild('time')
+        .onValue;
+  }
+
 
   void getRequestDetails(int id) async {
 

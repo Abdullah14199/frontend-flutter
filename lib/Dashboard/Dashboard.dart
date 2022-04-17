@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
@@ -34,15 +37,16 @@ class Dashboard extends StatefulWidget {
 }
 
 
-Future<User> fetchData(context) async {
 
+Future<UserModel> fetchData(context) async {
 
+  SharedPreferences pref = await SharedPreferences.getInstance();
   final response = await http.get(
     Uri.parse('http://staging.skephome.com/api/User/MyProfile'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
-      'Authorization' : 'Bearer $token3'
+      'Authorization' : 'Bearer ${pref.get('token3').toString()}'
     },
   );
   final responseJson = jsonDecode(response.body);
@@ -76,7 +80,7 @@ Future<User> fetchData(context) async {
     var selfie = jsonDecode(body);
     Selfie = selfie['user']['selfie'];
 
-    return User.fromJson(responseJson);
+    return UserModel.fromJson(responseJson);
   } else {
     print(response.statusCode);
     print(responseJson);
@@ -85,13 +89,50 @@ Future<User> fetchData(context) async {
   }
 }
 
+var FCMToken ;
+var userID ;
+var userIDFirebase ;
 
 class _DashboardState extends State<Dashboard> {
 
+
+
   @override
-  void initState() {
+  void initState(){
     super.initState();
      fetchData(context);
+
+
+
+
+
+
+
+
+    FirebaseMessaging.instance.getToken().then((newToken) async{
+      print("FCM Token");
+      print(newToken);
+
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString('FCMToken', newToken!);
+
+      FCMToken = pref.get('FCMToken').toString();
+
+      User? user ;
+      User? userData = FirebaseAuth.instance.currentUser;
+      user = userData;
+      print("CCCCCCCCCC${userData?.uid}");
+      userIDFirebase = userData?.uid;
+      print("HAHAHAHAHAHAHAHA ${userIDFirebase}");
+      pref.setString('userID', userIDFirebase);
+      userID = pref.get('userID').toString();
+
+
+    });
+
+
+
+
   }
 
   int currentIndex = 0;

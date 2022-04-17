@@ -19,10 +19,6 @@ class _messagesState extends State<messages> {
   String email;
   _messagesState({required this.email});
 
-  Stream<QuerySnapshot> _messageStream = FirebaseFirestore.instance
-      .collection('Messages')
-      .orderBy('time')
-      .snapshots();
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RequestDetailsController>(
@@ -30,19 +26,19 @@ class _messagesState extends State<messages> {
       builder: (controller) {
         return StreamBuilder<DatabaseEvent>(
           stream: controller.getData(),
-          builder: (BuildContext context, snapshot) {
-            print('Snapshot: ${snapshot.data!.snapshot.value!['']}');
-            if (snapshot.hasError) {
+          builder: (BuildContext context, snap) {
+            print('Snapshot: ${snap.data!.snapshot.value!}');
+            if (snap.hasError) {
               return Text("something is wrong");
             } else {
               return ListView.builder(
-                itemCount: snapshot.data.snapshot,
+                itemCount: 2,
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
                 primary: true,
                 itemBuilder: (_, index) {
-                  QueryDocumentSnapshot qs = snapshot.data!.docs[index];
-                  Timestamp t = qs['time'];
+                  QueryDocumentSnapshot? qs = snap.data!.snapshot.value![];
+                  Timestamp t = qs!['time'];
                   DateTime d = t.toDate();
                   print(d.toString());
                   return Padding(
@@ -98,7 +94,6 @@ class _messagesState extends State<messages> {
                 },
               );
             }
-
           },
         );
       }

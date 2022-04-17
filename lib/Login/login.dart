@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
@@ -26,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String phone = "";
 
   Future<CallApi> fetchDataUser(context) async {
+
     final response = await http.post(
       Uri.parse('http://staging.skephome.com/api/Auth/LWAD'),
       headers: <String, String>{
@@ -34,7 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       body: jsonEncode(<String, String>{
         'phone': _controller.text,
-        'app_type' : 'cleaner'
+        'app_type' : 'cleaner',
+        'new_fcm_token' : FCMToken,
+        'new_firebase' : userID,
       }),
     );
 
@@ -97,10 +101,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<userModelSplash> fetchData(context) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     final response = await http.get(
         Uri.parse(
             'https://staging.skephome.com/api/Auth/ExistingUser/${_controller.text}'),
-        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+        headers: {HttpHeaders.authorizationHeader: 'Bearer ${pref.get('token3').toString()}'});
 
     final responseJson = jsonDecode(response.body);
     var body = response.body;
@@ -138,6 +143,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+
+    FirebaseMessaging.instance.getToken().then((newToken) {
+      print("FCM Token");
+      print(newToken);
+    });
+
   }
 
   @override

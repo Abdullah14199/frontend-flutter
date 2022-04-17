@@ -58,9 +58,9 @@ class _chatpageState extends State<chatpage> {
             children: [
               Container(
                 height: MediaQuery.of(context).size.height * 0.79,
-                child: messages(
-                  email: email,
-                ),
+                // child: messages(
+                //   email: email,
+                // ),
               ),
               Row(
                 children: [
@@ -79,11 +79,13 @@ class _chatpageState extends State<chatpage> {
                           borderRadius: new BorderRadius.circular(10),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: new BorderSide(color: Colors.purple),
+                          borderSide: new BorderSide(color: Colors.white),
                           borderRadius: new BorderRadius.circular(10),
                         ),
                       ),
-                      validator: (value) {},
+                      validator: (value) {
+
+                      },
                       onSaved: (value) {
                         message.text = value!;
                       },
@@ -95,11 +97,11 @@ class _chatpageState extends State<chatpage> {
                       child: IconButton(
                         onPressed: () {
                           if (message.text.isNotEmpty) {
-                            // fs.collection('Messages').doc().set({
-                            //   'message': message.text.trim(),
-                            //   'time': DateTime.now(),
-                            //   'email': email,
-                            // });
+                            fs.collection('Messages').doc().set({
+                              'message': message.text.trim(),
+                              'time': DateTime.now(),
+                              'email': email,
+                            });
                             controller.send(message.text);
                             message.clear();
                           }

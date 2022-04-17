@@ -14,6 +14,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import '../Back_ground_check/back_ground_check.dart';
 
 var id;
+var homeOwnerPhoneReq;
+var homeOwnerUidReq;
 
 class RequestsDetails extends StatelessWidget {
   RequestsDetails({Key? key, required this.scheduleBooking}) : super(key: key);
@@ -23,6 +25,11 @@ class RequestsDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     id = scheduleBooking.id;
     print("CCC${scheduleBooking.id}");
+
+
+    homeOwnerPhoneReq = scheduleBooking.homeownerPhone;
+    homeOwnerUidReq = scheduleBooking.firebaseUid;
+
     return GetBuilder<RequestDetailsController>(
       init: RequestDetailsController(),
       builder: (controller) {

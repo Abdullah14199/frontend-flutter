@@ -24,13 +24,9 @@ var First_name;
 var Last_name;
 var Date_of_birth;
 var Phone_Number;
-
 var Selfie;
-
-
 var IDCertn;
 var IDInfo;
-
 var Url_redrict ;
 
 
@@ -128,8 +124,7 @@ class _service_requestState extends State<service_request> {
     Selfie = selfie['user']['selfie'];
 
     print(Email['email']);
-    return userProfileModel
-        .fromJson(JsonDecoder().convert(utf8.decode(response.bodyBytes)));
+    return userProfileModel.fromJson(JsonDecoder().convert(utf8.decode(response.bodyBytes)));
   }
 
   void createAlbum() async {
@@ -248,7 +243,7 @@ class _service_requestState extends State<service_request> {
   }
 
 
-  Future<User> getDataUser() async {
+  Future<UserModel> getDataUser() async {
     final response = await http.get(
         Uri.parse('http://staging.skephome.com/api/User/MyProfile'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
@@ -273,7 +268,7 @@ class _service_requestState extends State<service_request> {
 
 
       print(response.body);
-      return User.fromJson(jsonDecode(response.body));
+      return UserModel.fromJson(jsonDecode(response.body));
     } else {
       print(response.body);
       print(response.statusCode);

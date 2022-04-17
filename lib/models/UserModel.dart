@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   int? id;
   String? firstName;
   String? lastName;
@@ -30,7 +30,7 @@ class User {
   String? level;
   String? levelStatus;
 
-  User(
+  UserModel(
       {this.id,
         this.firstName,
         this.lastName,
@@ -62,7 +62,7 @@ class User {
         this.level,
         this.levelStatus});
 
-  User.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     firstName = json['first_name'];
     lastName = json['last_name'];

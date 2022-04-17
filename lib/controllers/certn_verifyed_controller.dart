@@ -24,7 +24,7 @@ class CertnVerifyedController extends GetxController {
 
 
   CertnVerifyedModel ? certnVerifyedModel;
-  User? updateUser;
+  UserModel? updateUser;
 
   var EmailVerifiedBool;
 

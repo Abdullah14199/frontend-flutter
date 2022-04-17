@@ -41,6 +41,7 @@ dependencies:
   country_code_picker: ^2.0.2
   conditional_builder_null_safety: ^0.0.6
   get: ^4.5.1
+  firebase_messaging: ^11.2.13
   get_storage: ^2.0.3
   google_fonts: ^2.1.0
   http: ^0.13.4

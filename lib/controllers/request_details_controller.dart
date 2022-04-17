@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skep_home_pro/Dashboard/Dashboard.dart';
 import 'package:skep_home_pro/MyBooking/requests_details.dart';
 import 'package:skep_home_pro/MyBooking/schedule.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
@@ -44,7 +45,7 @@ class RequestDetailsController extends GetxController {
         receiver: homeOwnerPhone ,
         receiverUid: homeOwnerUid,
         sender: "$Phone",
-        senderUid: '',
+        senderUid: '$userID',
         time:'${DateTime.now()}',
         timeStamp:DateTime
             .now()
