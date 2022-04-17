@@ -94,20 +94,10 @@ var userID ;
 var userIDFirebase ;
 
 class _DashboardState extends State<Dashboard> {
-
-
-
   @override
   void initState(){
     super.initState();
      fetchData(context);
-
-
-
-
-
-
-
 
     FirebaseMessaging.instance.getToken().then((newToken) async{
       print("FCM Token");

@@ -1,3 +1,14 @@
+
+class IdChat{
+  String? id;
+  ChatModel? chatModel;
+  IdChat({this.chatModel,this.id});
+
+
+
+}
+
+
 class ChatModel {
   String? booking_id;
   String? message;
@@ -20,7 +31,8 @@ class ChatModel {
   });
 
 
-  ChatModel.fromJson(Map<String,dynamic>json){
+  ChatModel.fromJson(Map<dynamic,dynamic>json){
+
     booking_id = json['booking_id'];
     time = json['time'];
     message = json['message'];

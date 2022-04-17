@@ -54,13 +54,10 @@ class _chatpageState extends State<chatpage> {
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
                 height: MediaQuery.of(context).size.height * 0.79,
-                // child: messages(
-                //   email: email,
-                // ),
+                child: messages(),
               ),
               Row(
                 children: [

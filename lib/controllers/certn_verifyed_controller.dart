@@ -52,7 +52,6 @@ class CertnVerifyedController extends GetxController {
       certin_status = certnVerifyedModel!.certin_status!;
 
       // certin_status =
-      print("RRRRRRRRRRRRRRR${certin_status}");
 
       // then parse the JSON.
     } else {
@@ -160,7 +159,7 @@ class CertnVerifyedController extends GetxController {
       print(body);
 
       // certin_status =
-      print("RRRRRRRRRRRRRRR${certin_status}");
+
 
       // then parse the JSON.
     } else {

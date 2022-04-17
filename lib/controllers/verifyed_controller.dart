@@ -42,7 +42,7 @@ class VerifyedController extends GetxController {
 
       verifyed = verifyedModel!.burgerMenuValid!;
 
-      print("RRRRRRRRRRRRRRR${verifyedModel!.burgerMenuValid}");
+
 
       // then parse the JSON.
     } else {

@@ -95,7 +95,7 @@ class CompleteRequestController extends GetxController {
 
       isLoading =true;
       // certin_status =
-      print("RRRRRRRRRRRRRRR${booking_statues}");
+
       // then parse the JSON.
     } else {
       // If the server did not return a 201 CREATED response,

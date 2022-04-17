@@ -37,6 +37,9 @@ class RequestDetailsController extends GetxController {
 
   String jobId = "";
 
+  ChatModel? chatModel;
+
+
 
   void send(String message) {
     ChatModel model = ChatModel(
@@ -61,12 +64,16 @@ class RequestDetailsController extends GetxController {
         .set(model.toJson());
   }
 
-  Stream<DatabaseEvent> getData(){
-   return FirebaseDatabase.instance
+   void getData(){
+    FirebaseDatabase.instance
         .ref('chat_rooms')
         .child('${idBooking}')
         .orderByChild('time')
-        .onValue;
+        .get().then((value) {
+        print(value.value);
+    });
+
+
   }
 
 
@@ -98,7 +105,7 @@ class RequestDetailsController extends GetxController {
 
       isLoading = true;
       // certin_status =
-      print("RRRRRRRRRRRRRRR${booking_statues}");
+
       // then parse the JSON.
     } else {
       // If the server did not return a 201 CREATED response,
@@ -136,7 +143,7 @@ class RequestDetailsController extends GetxController {
 
       isLoading = true;
       // certin_status =
-      print("RRRRRRRRRRRRRRR${booking_statues}");
+
       // then parse the JSON.
     }
     if (response.statusCode == 409) {
@@ -265,8 +272,7 @@ class RequestDetailsController extends GetxController {
 
       isLoading = true;
       // certin_status =
-      print("RRRRRRRRRRRRRRR${booking_statues}");
-      // then parse the JSON.
+
     }
     if (response.statusCode == 409) {
       // If the server did not return a 201 CREATED response,
@@ -332,7 +338,7 @@ class RequestDetailsController extends GetxController {
       );
 
       // certin_status =
-      print("RRRRRRRRRRRRRRR${booking_statues}");
+
       // then parse the JSON.
     } else {
       print(response.statusCode);
