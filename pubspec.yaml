@@ -46,6 +46,8 @@ dependencies:
   get_storage: ^2.0.3
   google_fonts: ^2.1.0
   http: ^0.13.4
+  awesome_dialog: ^2.2.0
+
   flutter_facebook_auth: ^3.5.0
   splash_screen_view: ^3.0.0
   modal_bottom_sheet:

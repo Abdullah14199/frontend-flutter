@@ -118,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print(response.body);
       // print(token);
       if (userType['user_type'] == "cleaner" && message['message'] == true) {
+
        fetchDataUser(context);
       } else {
         Navigator.push(

@@ -121,7 +121,7 @@ class _chatpageState extends State<chatpage> {
                             await _fcmNotificationService.sendNotificationToUser(
                               title: 'New Notification!',
                               body: message.text,
-                              fcmToken: _otherDeviceToken,
+                              fcmToken: "cRqRIFe4QDee7l1pi_2FNP:APA91bGthCV2BViH_-j02qCuXMzzEJldzh0sz5BcOhYfDDhE4dGfkQN6Hmm9KM14UfQCSRGtl7bzp2-yJs9HoNHR_Xwq8WJ1ieB7tJ5ASRtQIPL5QwhnMkGaEKaGda7UkUDEO9EIRvIY",
                             );
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
