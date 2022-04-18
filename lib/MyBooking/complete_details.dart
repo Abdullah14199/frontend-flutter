@@ -18,6 +18,8 @@ import '../chatPage/chat.dart';
 var idBooking ;
 var homeOwnerPhone;
 var homeOwnerUid;
+var FcmTokenOwner;
+
 
 class CompleteDetails extends StatelessWidget {
   CompleteDetails({Key? key, required this.historyBooking}) : super(key: key);
@@ -30,6 +32,7 @@ class CompleteDetails extends StatelessWidget {
     idBooking = historyBooking.id;
     homeOwnerPhone = historyBooking.homeownerPhone;
     homeOwnerUid = historyBooking.firebaseUid;
+    FcmTokenOwner = historyBooking.fcmToken;
     return GetBuilder<CompleteRequestController>(
       init: CompleteRequestController(),
       builder: (controller) {

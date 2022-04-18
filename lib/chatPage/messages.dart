@@ -106,10 +106,10 @@ class _messagesState extends State<messages> {
       child: Container(
         child: Text(
           message,
-          style: TextStyle(fontSize: 18.0),
+          style: TextStyle(fontSize: 16.0 , color: Colors.white),
         ),
         decoration: BoxDecoration(
-          color: Colors.blue[300],
+          color: constants.blue4,
           borderRadius: BorderRadiusDirectional.only(
             topEnd: Radius.circular(10.0),
             topStart: Radius.circular(10.0),
@@ -122,16 +122,3 @@ class _messagesState extends State<messages> {
   );
 }
 
-void printObject(Object object) {
-  // Encode your object and then decode your object to Map variable
-  Map jsonMapped = json.decode(json.encode(object));
-
-  // Using JsonEncoder for spacing
-  JsonEncoder encoder = new JsonEncoder.withIndent('  ');
-
-  // encode it to string
-  String prettyPrint = encoder.convert(jsonMapped);
-
-  // print or debugPrint your object
-  debugPrint(prettyPrint);
-}

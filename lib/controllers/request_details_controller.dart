@@ -13,6 +13,7 @@ import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/certn_verifyed.dart';
 import 'package:skep_home_pro/models/my_booking_model.dart';
 import 'package:skep_home_pro/models/request_details_model.dart';
+import 'package:skep_home_pro/notification/notification.dart';
 
 import '../Back_ground_check/back_ground_check.dart';
 import '../MyBooking/complete_details.dart';
@@ -54,6 +55,7 @@ class RequestDetailsController extends GetxController {
             .now()
             .millisecondsSinceEpoch,
     );
+
 
     FirebaseDatabase.instance
         .ref('chat_rooms')

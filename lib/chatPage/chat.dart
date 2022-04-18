@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skep_home_pro/Dashboard/Dashboard.dart';
+import 'package:skep_home_pro/MyBooking/complete_details.dart';
 import 'package:skep_home_pro/controllers/chat_controller.dart';
 
 import '../controllers/request_details_controller.dart';
+import '../notification/notification.dart';
 import 'messages.dart';
 
 class chatpage extends StatefulWidget {
@@ -20,6 +26,24 @@ class _chatpageState extends State<chatpage> {
 
   final fs = FirebaseFirestore.instance;
   final TextEditingController message = new TextEditingController();
+
+
+  final FCMNotificationService _fcmNotificationService = FCMNotificationService();
+  String _otherDeviceToken="";
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    //Subscribe to the NEWS topic.
+    _fcmNotificationService.subscribeToTopic(topic: 'NEWS');
+    _otherDeviceToken = FcmTokenOwner;
+    print("<<<<<<<<<<<<<<<<<<<<<<${_otherDeviceToken}");
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +116,25 @@ class _chatpageState extends State<chatpage> {
                     padding: const EdgeInsets.only(right: 5.0),
                     child: CircleAvatar(
                       child: IconButton(
-                        onPressed: () {
+                        onPressed: ()async {
+                          try {
+                            await _fcmNotificationService.sendNotificationToUser(
+                              title: 'New Notification!',
+                              body: message.text,
+                              fcmToken: _otherDeviceToken,
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Notification sent.'),
+                              ),
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error, ${e.toString()}.'),
+                              ),
+                            );
+                          }
                           if (message.text.isNotEmpty) {
                             fs.collection('Messages').doc().set({
                               'message': message.text.trim(),
