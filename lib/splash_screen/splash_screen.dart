@@ -6,12 +6,15 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/TodaysList.dart';
+import 'package:skep_home_pro/chatPage/chat.dart';
+import 'package:skep_home_pro/chatPage/messages.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/splash_screen/get_started.dart';
 import '../Dashboard/Dashboard.dart';
@@ -26,10 +29,38 @@ import 'dart:developer' as devlog;
 import 'package:dio/dio.dart';
 import 'package:lottie/lottie.dart';
 
-void main()async {
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    importance: Importance.high,
+    playSound: true);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('A bg message just showed up :  ${message.messageId}');
+}
+
+Future<void> main() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
-  token= pref.get('token').toString();
-  runApp( GetMaterialApp(
+  token = pref.get('token').toString();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       primarySwatch: Colors.blue,
@@ -48,27 +79,18 @@ void main()async {
     ),
   );
 
-  FirebaseMessaging.onMessage.listen((event) {
-    print(event.data.toString());
-  });
-
-  FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    print(event.data.toString());
-  });
-
 //  runApp(HomePage());
 }
-
 
 class Binding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(()=>GoogleMapViewModel() , fenix: true);
+    Get.lazyPut(() => GoogleMapViewModel(), fenix: true);
     Get.put<VerifyedController>(VerifyedController());
-
   }
 }
-var www ;
+
+var www;
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -81,25 +103,88 @@ class _SplashScreenState extends State<SplashScreen> {
     return Timer(_duration, navigationPage);
   }
 
-
-
-  void navigationPage()async {
+  void navigationPage() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     token3 = pref.get('token3').toString();
-    print('FFFFFFFFFFFFFFFFFFFFFFFF${www}');
     print('TTTTTTTTTTTTTTTTTTTTTTTT${token3}');
-      if(pref.get('token').toString() == "null" && pref.get('token3').toString() == "null"){
-        Get.offNamed(Routes.first_walk_through);
-      }else{
-        Get.offNamed(Routes.dashboard);
-      }
+    if (pref.get('token').toString() == "null" &&
+        pref.get('token3').toString() == "null") {
+      Get.offNamed(Routes.first_walk_through);
+    } else {
+      Get.offNamed(Routes.dashboard);
+    }
   }
-
 
   @override
   void initState() {
     super.initState();
     startTime();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+
+      Map<String, dynamic> dataValue = message.data;
+      String screen = dataValue['screen'].toString();
+
+      print(screen);
+
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                color: Colors.yellow,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ),
+            payload: screen);
+      }
+    });
+
+    var initializationAndroid =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationAndroid, iOS: initializationSettingsIOS);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelect);
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text("${notification.title}"),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text("${notification.body}")],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+
     //fetchData(context);
   }
 
@@ -149,5 +234,14 @@ class _SplashScreenState extends State<SplashScreen> {
         ],
       )),
     );
+  }
+
+  Future<dynamic> onSelect(payload) async {
+    if (payload == 'OPEN_PAGE1') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => chatpage(email: "$EmailUser")));
+    }
   }
 }

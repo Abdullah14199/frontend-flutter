@@ -81,14 +81,12 @@ Future<CallApiBG> createAlbum(
 
     Get.offNamed(Routes.dashboard);
 
-    print("klsjaddhklaslkasd");
     return CallApiBG.fromJson(jsonDecode(response.body));
   } else {
     // If the server did not return a 201 CREATED response,
     // then throw an exception.
     print(response.statusCode);
     print(response.body);
-    print("Hohohohoh");
     throw Exception('Failed to create album.');
   }
 }

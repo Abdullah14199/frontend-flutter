@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-var deviceId ;
+var deviceId;
 
 abstract class IFCMNotificationService {
   Future<void> sendNotificationToUser({
@@ -13,43 +13,48 @@ abstract class IFCMNotificationService {
     required String title,
     required String body,
   });
+
   Future<void> sendNotificationToGroup({
     required String group,
     required String title,
     required String body,
   });
+
   Future<void> unsubscribeFromTopic({
     required String topic,
   });
+
   Future<void> subscribeToTopic({
     required String topic,
   });
 }
 
-
-
 class FCMNotificationService extends IFCMNotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final String _endpoint = 'https://fcm.googleapis.com/fcm/send';
   final String _contentType = 'application/json';
-  final String _authorization = 'Bearer AAAAWrUSJLU:APA91bGMWjDZU67HHzbEbXCJkjuG6-A4mtbL8ln6tupDglJEJuA-nCTejDC0qwaDTbFYwQyb37sb0jyPSG-c-wOxbJgjgWeQX-ebun9pP-vC4of_-Mu8D2eiZKDbbnY2VTLc3x56GZNk';
+  final String _authorization =
+      'Bearer AAAAWrUSJLU:APA91bGMWjDZU67HHzbEbXCJkjuG6-A4mtbL8ln6tupDglJEJuA-nCTejDC0qwaDTbFYwQyb37sb0jyPSG-c-wOxbJgjgWeQX-ebun9pP-vC4of_-Mu8D2eiZKDbbnY2VTLc3x56GZNk';
 
 
-  Future<http.Response> _sendNotification(String to, String title, String body) async {
-
-    // _firebaseMessaging.getToken().then((token){
-    //   to = "$token";
-    //   deviceId = to;
-    // });
-
+  Future<http.Response> _sendNotification(
+      String to, String title, String body) async {
     try {
       final dynamic data = json.encode(
         {
-          'to': to ,
+          'to': to,
           'priority': 'high',
           'notification': {
             'title': title,
             'body': body,
+            'click_action' : 'FLUTTER_NOTIFICATION_CLICK' ,
+          },
+          'data' :{
+            "title": title,
+            "body": body,
+            "sound": "default",
+            "status": "done",
+            "screen": "OPEN_PAGE1",
           },
           'content_available': true
         },
@@ -60,7 +65,7 @@ class FCMNotificationService extends IFCMNotificationService {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer AAAAWrUSJLU:APA91bGMWjDZU67HHzbEbXCJkjuG6-A4mtbL8ln6tupDglJEJuA-nCTejDC0qwaDTbFYwQyb37sb0jyPSG-c-wOxbJgjgWeQX-ebun9pP-vC4of_-Mu8D2eiZKDbbnY2VTLc3x56GZNk'
-      },
+        },
       );
 
       print(response.statusCode);
@@ -68,14 +73,10 @@ class FCMNotificationService extends IFCMNotificationService {
       print("<<<<<<<<<>>>>>>>>> $to");
 
       return response;
-
     } catch (error) {
       throw Exception(error);
     }
-
   }
-
-
 
   @override
   Future<void> unsubscribeFromTopic({required String topic}) {
@@ -92,7 +93,8 @@ class FCMNotificationService extends IFCMNotificationService {
     required String fcmToken,
     required String title,
     required String body,
-  }) {
+  })
+  {
     print("<<<<<<<<<<<$fcmToken");
     return _sendNotification(fcmToken, title, body);
   }

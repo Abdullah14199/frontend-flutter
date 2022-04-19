@@ -461,8 +461,8 @@ class _DashboardState extends State<Dashboard> {
                     ListTile(
                       onTap: () async{
                         SharedPreferences pref = await SharedPreferences.getInstance();
-                        CacheHelper.removeData(key: 'token');
-                        pref.remove('token');
+                        // CacheHelper.removeData(key: 'token');
+                        // pref.remove('token');
                         pref.remove('token3');
                         Get.offNamed(Routes.first_walk_through);
                       },

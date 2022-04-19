@@ -10,6 +10,8 @@ import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/userModelSignUp.dart';
 import '../Dashboard/Dashboard.dart';
 import '../models/apiSplashScreenModels.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
@@ -20,6 +22,8 @@ class LoginScreen extends StatefulWidget {
 var token3;
 var dialCodeDigits;
 var dateOfBirth;
+var FCMToken;
+var UID;
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _controller = TextEditingController();
@@ -37,8 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: jsonEncode(<String, String>{
         'phone': _controller.text,
         'app_type' : 'cleaner',
-        'new_fcm_token' : FCMToken,
-        'new_firebase' : userID,
+         'new_fcm_token' : FCMToken,
+         'new_firebase' : UID,
       }),
     );
 
@@ -145,10 +149,24 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
 
-    FirebaseMessaging.instance.getToken().then((newToken) {
+    FirebaseMessaging.instance.getToken().then((newToken) async{
       print("FCM Token");
+      FCMToken = newToken;
       print(newToken);
+
+      SharedPreferences pref = await SharedPreferences.getInstance();
+
+      User? user ;
+      User? userData = FirebaseAuth.instance.currentUser;
+      user = userData;
+      print("CCCCCCCCCC${userData?.uid}");
+      userIDFirebase = userData?.uid;
+      print("HAHAHAHAHAHAHAHA ${userIDFirebase}");
+      pref.setString('userID', userIDFirebase);
+      UID = pref.get('userID').toString();
     });
+
+
 
   }
 

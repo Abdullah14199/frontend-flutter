@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/Dashboard.dart';
 import 'package:skep_home_pro/MyBooking/complete_details.dart';
 import 'package:skep_home_pro/controllers/chat_controller.dart';
@@ -35,6 +36,7 @@ class _chatpageState extends State<chatpage> {
   @override
   void initState() {
     super.initState();
+
 
     //Subscribe to the NEWS topic.
     _fcmNotificationService.subscribeToTopic(topic: 'NEWS');
@@ -119,14 +121,9 @@ class _chatpageState extends State<chatpage> {
                         onPressed: ()async {
                           try {
                             await _fcmNotificationService.sendNotificationToUser(
-                              title: 'New Notification!',
+                              title: '${FirstName}',
                               body: message.text,
-                              fcmToken: "cRqRIFe4QDee7l1pi_2FNP:APA91bGthCV2BViH_-j02qCuXMzzEJldzh0sz5BcOhYfDDhE4dGfkQN6Hmm9KM14UfQCSRGtl7bzp2-yJs9HoNHR_Xwq8WJ1ieB7tJ5ASRtQIPL5QwhnMkGaEKaGda7UkUDEO9EIRvIY",
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Notification sent.'),
-                              ),
+                              fcmToken: "eROzUyItTQCQ4-xU1SjGaE:APA91bHOpygdPOhayVQd6hyNQCeRNAn3dXz_yseyzIYGHnRkwJ-kQLW3-ZclvoMHxKSgQfRtfrbz06_n1pYdOcRrYlcZiGvkaE6mgHr-SA96Y3mg4qzFMK5t9Ylee3ZCt8COauTaHTPX",
                             );
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(

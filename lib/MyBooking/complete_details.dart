@@ -72,7 +72,7 @@ class CompleteDetails extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.40,
+                        height: MediaQuery.of(context).size.height * 0.45,
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
