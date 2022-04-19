@@ -49,10 +49,7 @@ Future<void> main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
+  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
@@ -125,8 +122,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
       Map<String, dynamic> dataValue = message.data;
       String screen = dataValue['screen'].toString();
-
-      print(screen);
+      print("sss $screen");
 
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
@@ -237,11 +233,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<dynamic> onSelect(payload) async {
-    if (payload == 'OPEN_PAGE1') {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => chatpage(email: "$EmailUser")));
+
+    print("aaaaaaaaaaaaaaaaasssssssss $payload");
+    if (payload == '/chat') {
+      Get.offNamed(Routes.chat);
     }
   }
 }

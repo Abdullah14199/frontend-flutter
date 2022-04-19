@@ -47,14 +47,14 @@ class FCMNotificationService extends IFCMNotificationService {
           'notification': {
             'title': title,
             'body': body,
-            'click_action' : 'FLUTTER_NOTIFICATION_CLICK' ,
           },
           'data' :{
             "title": title,
             "body": body,
             "sound": "default",
             "status": "done",
-            "screen": "OPEN_PAGE1",
+            "screen": "/chat",
+            'click_action' : 'FLUTTER_NOTIFICATION_CLICK' ,
           },
           'content_available': true
         },
@@ -67,6 +67,8 @@ class FCMNotificationService extends IFCMNotificationService {
           'Authorization': 'Bearer AAAAWrUSJLU:APA91bGMWjDZU67HHzbEbXCJkjuG6-A4mtbL8ln6tupDglJEJuA-nCTejDC0qwaDTbFYwQyb37sb0jyPSG-c-wOxbJgjgWeQX-ebun9pP-vC4of_-Mu8D2eiZKDbbnY2VTLc3x56GZNk'
         },
       );
+
+
 
       print(response.statusCode);
       print(response.body);
