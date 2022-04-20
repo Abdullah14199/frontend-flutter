@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:skep_home_pro/routes/routes.dart';
 import 'package:skep_home_pro/shared/cache_helper.dart';
-
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'Back_ground_check/back_ground_check.dart';
 import 'controllers/google_map_viow_model.dart';
 import 'controllers/verifyed_controller.dart';
@@ -41,6 +41,8 @@ Future<void> main() async{
     //   projectId: "skephomecleaner", // Your projectId
     // ),
   );
+
+  Stripe.publishableKey = 'pk_test_51KqbfwGDR1ZdiamSz86HTHDjzviSxYqAz97ZaHhYfV9FaNJ3uOvhk8CaFubGmcUS9CJTdTsux2Gp9RI67p6tvQu6000mrhbiTk';
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 

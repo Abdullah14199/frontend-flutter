@@ -20,6 +20,8 @@ import 'package:http/http.dart' as http;
 
 import '../Back_ground_check/verificationAccount.dart';
 import '../Login/edit_profile.dart';
+import '../Payment_Stripe/payment_stripe.dart';
+import '../Settings/settings.dart';
 import '../controllers/verifyed_controller.dart';
 import '../models/UserModel.dart';
 import '../models/userModelSignUp.dart';
@@ -381,6 +383,12 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       title: const Text('Payment Options',
                           style: TextStyle(color: Colors.black)),
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const PaymentStripe()),
+                        );
+                      },
                     ),
                     Container(
                       width: double.infinity,
@@ -410,6 +418,12 @@ class _DashboardState extends State<Dashboard> {
                       color: constants.grey,
                     ),
                     ListTile(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const settingsScreen()),
+                        );
+                      },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,
@@ -451,29 +465,6 @@ class _DashboardState extends State<Dashboard> {
                         color: constants.blue2,
                       ),
                       title: const Text('Support Center',
-                          style: TextStyle(color: Colors.black)),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 2,
-                      color: constants.grey,
-                    ),
-                    ListTile(
-                      onTap: () async{
-                        SharedPreferences pref = await SharedPreferences.getInstance();
-                        // CacheHelper.removeData(key: 'token');
-                        // pref.remove('token');
-                        pref.remove('token3');
-                        Get.offNamed(Routes.first_walk_through);
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      selected: true,
-                      leading: Image.asset(
-                        "assets/images/support.png",
-                        color: constants.blue2,
-                      ),
-                      title: const Text('Logout',
                           style: TextStyle(color: Colors.black)),
                     ),
                     Container(

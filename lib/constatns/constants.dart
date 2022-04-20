@@ -5,6 +5,7 @@ class constants {
   static const yellow = Color.fromRGBO(254, 206, 76, 1);
   static const grey = Color.fromRGBO(206, 214, 224, 1);
   static const darkgrey = Color.fromRGBO(77, 77, 77, 1);
+  static const Ogrey = Color.fromRGBO(226, 226, 226, 1);
   static const blue2 = Color.fromRGBO(88, 119, 247, 1);
   static const blue3 = Color.fromRGBO(73, 109, 255, 1.0);
   static const blue4 = Color.fromRGBO(112, 133, 248, 1.0);
