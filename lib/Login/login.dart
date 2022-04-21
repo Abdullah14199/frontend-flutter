@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'phone': _controller.text,
         'app_type' : 'cleaner',
          'new_fcm_token' : FCMToken,
-         'new_firebase' : UID,
+        // 'new_firebase' : UID,
       }),
     );
 

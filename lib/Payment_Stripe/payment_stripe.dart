@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:get/get.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:skep_home_pro/controllers/stripeController.dart';
 
 class PaymentStripe extends StatefulWidget {
   const PaymentStripe({Key? key}) : super(key: key);
@@ -16,6 +19,12 @@ class PaymentStripe extends StatefulWidget {
 class _PaymentStripeState extends State<PaymentStripe> {
 
   Map<String, dynamic>? paymentIntentData;
+
+  final paymentController = Get.put(PaymentController());
+  final TextEditingController _controllerAccountNumber = TextEditingController();
+  final TextEditingController _controllerHolderName = TextEditingController();
+  final TextEditingController _controllerTransitNumber = TextEditingController();
+  final TextEditingController _controllerInstitutionNumber = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -228,10 +237,8 @@ class _PaymentStripeState extends State<PaymentStripe> {
                       style: ElevatedButton.styleFrom(
                         primary: constants.yellow,
                       ),
-                      onPressed: () {
-                        print("SADASDASD");
-                        makePayment();
-
+                      onPressed: () async{
+                        _modalBottomSheetMenu(context);
                       },
                       child: Text("Add Bank Account"),
                     ))
@@ -244,91 +251,199 @@ class _PaymentStripeState extends State<PaymentStripe> {
     ));
   }
 
-  Future<void> makePayment() async {
-    try {
-      paymentIntentData = await createPaymentIntent('20', 'USD'); //json.decode(response.body);
-      // print('Response body==>${response.body.toString()}');
-      await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-              paymentIntentClientSecret: paymentIntentData!['client_secret'],
-              applePay: true,
-              googlePay: true,
-              testEnv: true,
-              style: ThemeMode.dark,
-              merchantCountryCode: 'US',
-              merchantDisplayName: 'ANNIE')).then((value){
-      });
-      ///now finally display payment sheeet
-      displayPaymentSheet();
-    } catch (e, s) {
-      print('exception:$e$s');
-    }
-  }
-
-  displayPaymentSheet() async {
-
-    try {
-      await Stripe.instance.presentPaymentSheet(
-          parameters: PresentPaymentSheetParameters(
-            clientSecret: paymentIntentData!['client_secret'],
-            confirmPayment: true,
-          )).then((newValue){
 
 
-        print('payment intent'+paymentIntentData!['id'].toString());
-        print('payment intent'+paymentIntentData!['client_secret'].toString());
-        print('payment intent'+paymentIntentData!['amount'].toString());
-        print('payment intent'+paymentIntentData.toString());
-        //orderPlaceApi(paymentIntentData!['id'].toString());
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("paid successfully")));
+  void _modalBottomSheetMenu(context){
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(color: Colors.white ,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(50),
+            topRight: Radius.circular(50),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:[
+            Padding(
+              padding: const EdgeInsets.only(left: 140.0 , right: 40.0 , top: 10),
+              child: Container(
+                width: 150,
+                height: 5,
+                decoration: const BoxDecoration(
+                  color: constants.grey,
+                  borderRadius: BorderRadius.all(Radius.circular(2)),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10.0 , right: 40.0 , top: 20),
+              child:  Text("Add new Bank Account" , style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Ubuntu',
+                  fontWeight: FontWeight.bold
+              ),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0 , top: 15),
+              child: Text("Account Number"),
+            ),
+            const SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0 , right: 10),
+              child: Container(
+                width: double.infinity,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintStyle: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Ubuntu', color: Colors.white),
+                    enabled: true,
+                    contentPadding: const EdgeInsets.only(
+                        left: 14.0, bottom: 8.0),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: new BorderSide(color: Colors.grey),
+                      borderRadius: new BorderRadius.circular(10),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: new BorderSide(color: Colors.grey),
+                      borderRadius: new BorderRadius.circular(10),
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: new BorderSide(color: Colors.grey),
+                      borderRadius: new BorderRadius.circular(10),
+                    ),
+                  ),
+                  controller: _controllerAccountNumber,
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0 , top: 15),
+              child: Text("Account Holder's Name"),
+            ),
+            const SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0 , right: 10),
+              child: Container(
+                width: double.infinity,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintStyle: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Ubuntu', color: Colors.white),
+                    enabled: true,
+                    contentPadding: const EdgeInsets.only(
+                        left: 14.0, bottom: 8.0),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: new BorderSide(color: Colors.grey),
+                      borderRadius: new BorderRadius.circular(10),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: new BorderSide(color: Colors.grey),
+                      borderRadius: new BorderRadius.circular(10),
+                    ),
+                  ),
+                  controller: _controllerHolderName,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 14.0),
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      Text("Transit number"),
+                      Text("Your 5 digit Transit Number"),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0 , right: 10),
+                        child: Container(
+                          width: 150,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintStyle: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Ubuntu', color: Colors.white),
+                              enabled: true,
+                              contentPadding: const EdgeInsets.only(
+                                  left: 14.0, bottom: 8.0),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(color: Colors.grey),
+                                borderRadius: new BorderRadius.circular(10),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: new BorderSide(color: Colors.grey),
+                                borderRadius: new BorderRadius.circular(10),
+                              ),
+                            ),
+                            controller: _controllerTransitNumber,
 
-        paymentIntentData = null;
-
-      }).onError((error, stackTrace){
-        print('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
-      });
-
-
-    } on StripeException catch (e) {
-      print('Exception/DISPLAYPAYMENTSHEET==> $e');
-      showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            content: Text("Cancelled "),
-          ));
-    } catch (e) {
-      print('aaaaa$e');
-    }
-  }
-
-  //  Future<Map<String, dynamic>>
-  createPaymentIntent(String amount, String currency) async {
-    try {
-      Map<String, dynamic> body = {
-        'amount': calculateAmount('20'),
-        'currency': currency,
-        'payment_method_types[]': 'card'
-      };
-
-      var response = await http.post(
-          Uri.parse('https://api.stripe.com/v1/payment_intents'),
-          body: body,
-          headers: {
-            'Authorization': 'Bearer sk_test_51KqbfwGDR1ZdiamS000tdklMmuhyeBwSssxBZtLPTlP4Sl25lu48vXADAhRZ8NsEYztelmnXLvqrYjuMhOQBhLr600fg9DV9wZ',
-            'Content-Type': 'application/x-www-form-urlencoded'
-          });
-      print(body);
-      print(response.statusCode);
-      print('Create Intent reponse ===> ${response.body.toString()}');
-      return jsonDecode(response.body);
-    } catch (err) {
-      print('err charging user: ${err.toString()}');
-    }
-  }
-
-  calculateAmount(String amount) {
-    final a = (int.parse(amount)) * 100 ;
-    return a.toString();
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: 20,),
+                  Column(
+                    children: [
+                      Text("Institution number"),
+                      Text("Your 3 digit Institution number"),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0 , right: 10),
+                        child: Container(
+                          width: 150,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintStyle: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Ubuntu', color: Colors.white),
+                              enabled: true,
+                              contentPadding: const EdgeInsets.only(
+                                  left: 14.0, bottom: 8.0),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(color: Colors.grey),
+                                borderRadius: new BorderRadius.circular(10),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: new BorderSide(color: Colors.grey),
+                                borderRadius: new BorderRadius.circular(10),
+                              ),
+                            ),
+                            controller: _controllerInstitutionNumber,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0 , right: 8, top: 30),
+              child: Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: constants.yellow,
+                  ),
+                  onPressed: () async{
+                     paymentController.makePayment(accountNum: _controllerAccountNumber.text.toString() ,holderName: _controllerHolderName.text , transitNum: _controllerTransitNumber.text ,institutionNum: _controllerInstitutionNumber.text);
+                  },
+                  child: Text("Add Bank Account"),
+                ),
+              ),
+            )
+          ] ,
+        ),
+      ),
+    );
   }
 
 }

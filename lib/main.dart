@@ -33,6 +33,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = 'pk_test_51KqbfwGDR1ZdiamSz86HTHDjzviSxYqAz97ZaHhYfV9FaNJ3uOvhk8CaFubGmcUS9CJTdTsux2Gp9RI67p6tvQu6000mrhbiTk';
+
   await Firebase.initializeApp(
     // options: const FirebaseOptions(
     //   apiKey: "XXX", // Your apiKey
@@ -42,7 +44,7 @@ Future<void> main() async{
     // ),
   );
 
-  Stripe.publishableKey = 'pk_test_51KqbfwGDR1ZdiamSz86HTHDjzviSxYqAz97ZaHhYfV9FaNJ3uOvhk8CaFubGmcUS9CJTdTsux2Gp9RI67p6tvQu6000mrhbiTk';
+
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
