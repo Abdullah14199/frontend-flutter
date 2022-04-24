@@ -14,6 +14,7 @@ import 'package:skep_home_pro/Dashboard/Today\'s_Schedule.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/Login/login.dart';
 import 'package:skep_home_pro/MyBooking/schedule.dart';
+import 'package:skep_home_pro/Referral%20Program/referral_program.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/routes/routes.dart';
 import 'package:http/http.dart' as http;
@@ -440,7 +441,12 @@ class _DashboardState extends State<Dashboard> {
                       color: constants.grey,
                     ),
                     ListTile(
-
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ReferralProgram()),
+                        );
+                      },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,

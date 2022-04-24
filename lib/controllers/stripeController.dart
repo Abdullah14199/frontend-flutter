@@ -60,8 +60,8 @@ var idTokStr;
          "bank_account[country]" : "CA" ,
          "bank_account[currency]": "CAD" ,
          "bank_account[account_holder_name]": holderName ,
-        "bank_account[routing_number]" : "11000000",
-        "bank_account[account_number]": "000999999991"
+        "bank_account[routing_number]" : "${transitNum}${institutionNum}",
+        "bank_account[account_number]": accountNum
       };
       var response = await http.post(
           Uri.parse('https://api.stripe.com/v1/tokens'),

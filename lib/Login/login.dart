@@ -41,8 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: jsonEncode(<String, String>{
         'phone': _controller.text,
         'app_type' : 'cleaner',
-         'new_fcm_token' : FCMToken,
-        // 'new_firebase' : UID,
+        'new_fcm_token' : FCMToken,
+        //'new_firebase' : UID,
       }),
     );
 
@@ -122,8 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print(response.body);
       // print(token);
       if (userType['user_type'] == "cleaner" && message['message'] == true) {
-
-       fetchDataUser(context);
+        fetchDataUser(context);
       } else {
         Navigator.push(
           context,

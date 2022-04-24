@@ -19,6 +19,9 @@ class PaymentStripe extends StatefulWidget {
 class _PaymentStripeState extends State<PaymentStripe> {
 
   Map<String, dynamic>? paymentIntentData;
+  bool ?valuefirst = false;
+  bool isVisable = true;
+
 
   final paymentController = Get.put(PaymentController());
   final TextEditingController _controllerAccountNumber = TextEditingController();
@@ -77,7 +80,7 @@ class _PaymentStripeState extends State<PaymentStripe> {
                     height: 160,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: constants.Ogrey
+                        color: isVisable ? constants.Ogrey : constants.yellow
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 8.0 , left: 20),
@@ -102,7 +105,7 @@ class _PaymentStripeState extends State<PaymentStripe> {
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: constants.lightGrey,
-                                    hintText: 'xxxx xxxx xxxx',
+                                    hintText: isVisable ? 'xxxx xxxx xxxx' : _controllerAccountNumber.text,
                                     hintStyle: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Ubuntu', color: Colors.white),
                                     enabled: true,
                                     contentPadding: const EdgeInsets.only(
@@ -172,7 +175,7 @@ class _PaymentStripeState extends State<PaymentStripe> {
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: constants.lightGrey,
-                                    hintText: '11000',
+                                    hintText: isVisable ? '11000' : _controllerTransitNumber.text,
                                     hintStyle: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Ubuntu', color: Colors.white),
                                     enabled: true,
                                     contentPadding: const EdgeInsets.only(
@@ -201,7 +204,7 @@ class _PaymentStripeState extends State<PaymentStripe> {
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: constants.lightGrey,
-                                    hintText: '000',
+                                    hintText: isVisable ? '000' : _controllerInstitutionNumber.text,
                                     hintStyle: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Ubuntu', color: Colors.white),
                                     enabled: true,
                                     contentPadding: const EdgeInsets.only(
@@ -233,15 +236,18 @@ class _PaymentStripeState extends State<PaymentStripe> {
                   top: 60,
                     left: 60,
                     right: 60,
-                    child: ElevatedButton(
+                    child: isVisable ? ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: constants.yellow,
                       ),
                       onPressed: () async{
                         _modalBottomSheetMenu(context);
+                        setState(() {
+                          isVisable = !isVisable;
+                        });
                       },
                       child: Text("Add Bank Account"),
-                    ))
+                    ) : SizedBox() )
               ],
             ),
           )
@@ -255,11 +261,12 @@ class _PaymentStripeState extends State<PaymentStripe> {
 
   void _modalBottomSheetMenu(context){
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
+      builder: (context) => StatefulBuilder(builder: (context, setState) => Container(
         width: double.infinity,
-        height: double.infinity,
+        height: 450,
         decoration: const BoxDecoration(color: Colors.white ,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(50),
@@ -267,6 +274,7 @@ class _PaymentStripeState extends State<PaymentStripe> {
           ),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children:[
@@ -304,18 +312,22 @@ class _PaymentStripeState extends State<PaymentStripe> {
                     fillColor: Colors.white,
                     hintStyle: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Ubuntu', color: Colors.white),
                     enabled: true,
+                    border: OutlineInputBorder(
+                      borderSide: new BorderSide(color: constants.grey),
+                      borderRadius: new BorderRadius.circular(10),
+                    ),
                     contentPadding: const EdgeInsets.only(
                         left: 14.0, bottom: 8.0),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: new BorderSide(color: Colors.grey),
+                      borderSide: new BorderSide(color: constants.grey),
                       borderRadius: new BorderRadius.circular(10),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: new BorderSide(color: Colors.grey),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: new BorderSide(color: constants.grey),
                       borderRadius: new BorderRadius.circular(10),
                     ),
                     disabledBorder: OutlineInputBorder(
-                      borderSide: new BorderSide(color: Colors.grey),
+                      borderSide: new BorderSide(color: constants.grey),
                       borderRadius: new BorderRadius.circular(10),
                     ),
                   ),
@@ -342,11 +354,11 @@ class _PaymentStripeState extends State<PaymentStripe> {
                     contentPadding: const EdgeInsets.only(
                         left: 14.0, bottom: 8.0),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: new BorderSide(color: Colors.grey),
+                      borderSide: new BorderSide(color:constants.grey),
                       borderRadius: new BorderRadius.circular(10),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: new BorderSide(color: Colors.grey),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: new BorderSide(color: constants.grey),
                       borderRadius: new BorderRadius.circular(10),
                     ),
                   ),
@@ -357,11 +369,19 @@ class _PaymentStripeState extends State<PaymentStripe> {
             Padding(
               padding: const EdgeInsets.only(top: 14.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Transit number"),
-                      Text("Your 5 digit Transit Number"),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Text("Transit number", style: TextStyle(fontWeight: FontWeight.normal , fontFamily: 'Ubuntu' , fontSize: 14)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0 ,top: 5 , bottom: 8),
+                        child: Text("Your 5 digit Transit Number" ,style: TextStyle(fontWeight: FontWeight.normal , fontFamily: 'Ubuntu' , fontSize: 12 , color: constants.grey),),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0 , right: 10),
                         child: Container(
@@ -375,11 +395,11 @@ class _PaymentStripeState extends State<PaymentStripe> {
                               contentPadding: const EdgeInsets.only(
                                   left: 14.0, bottom: 8.0),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.grey),
+                                borderSide: new BorderSide(color: constants.grey),
                                 borderRadius: new BorderRadius.circular(10),
                               ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.grey),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(color: constants.grey),
                                 borderRadius: new BorderRadius.circular(10),
                               ),
                             ),
@@ -390,13 +410,19 @@ class _PaymentStripeState extends State<PaymentStripe> {
                       ),
                     ],
                   ),
-                  SizedBox(width: 20,),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Institution number"),
-                      Text("Your 3 digit Institution number"),
                       Padding(
-                        padding: const EdgeInsets.only(left: 10.0 , right: 10),
+                        padding: const EdgeInsets.only(left: 15 , right: 15),
+                        child: Text("Institution number" , style: TextStyle(fontWeight: FontWeight.normal , fontFamily: 'Ubuntu' , fontSize: 14),),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0 ,top: 5 , bottom: 8 , right: 7),
+                        child: Text("Your 3 digit Institution number", style: TextStyle(fontWeight: FontWeight.normal , fontFamily: 'Ubuntu' , fontSize: 12 , color: constants.grey),),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0 , right: 10),
                         child: Container(
                           width: 150,
                           child: TextFormField(
@@ -408,11 +434,11 @@ class _PaymentStripeState extends State<PaymentStripe> {
                               contentPadding: const EdgeInsets.only(
                                   left: 14.0, bottom: 8.0),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.grey),
+                                borderSide: new BorderSide(color: constants.grey),
                                 borderRadius: new BorderRadius.circular(10),
                               ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.grey),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(color: constants.grey),
                                 borderRadius: new BorderRadius.circular(10),
                               ),
                             ),
@@ -426,23 +452,45 @@ class _PaymentStripeState extends State<PaymentStripe> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 8.0 , right: 8, top: 30),
+              padding: const EdgeInsets.only(left: 6 , top: 3),
+              child: Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.greenAccent,
+                    activeColor: Colors.blue,
+                    value: valuefirst,
+                    onChanged: (value) {
+                      setState(() {
+                        valuefirst = value;
+                      });
+                    },
+                  ),
+                  Text("I agree to") ,
+                  Text(" Privacy Policy." , style: TextStyle(color: Colors.blue),) ,
+                  Text(" &") ,
+                  Text(" Services & Agreements" , style: TextStyle(color: Colors.blue))
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0 , right: 8, top: 5),
               child: Container(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: constants.yellow,
                   ),
-                  onPressed: () async{
-                     paymentController.makePayment(accountNum: _controllerAccountNumber.text.toString() ,holderName: _controllerHolderName.text , transitNum: _controllerTransitNumber.text ,institutionNum: _controllerInstitutionNumber.text);
-                  },
+                  onPressed: () {
+                    paymentController.makePayment(accountNum: _controllerAccountNumber.text.toString() ,holderName: _controllerHolderName.text , transitNum: _controllerTransitNumber.text ,institutionNum: _controllerInstitutionNumber.text);
+                    Navigator.pop(context);
+                    },
                   child: Text("Add Bank Account"),
                 ),
               ),
             )
           ] ,
         ),
-      ),
+      ),),
     );
   }
 
