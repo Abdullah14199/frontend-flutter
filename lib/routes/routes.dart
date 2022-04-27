@@ -9,6 +9,7 @@ import 'package:skep_home_pro/walkthrough/second_walk_through.dart';
 import '../Back_ground_check/back_ground_check.dart';
 import '../Dashboard/Dashboard.dart';
 import '../Dashboard/TodaysList.dart';
+import '../Dashboard/service_request_list.dart';
 import '../chatPage/chat.dart';
 
 
@@ -47,7 +48,10 @@ class AppRoutes {
       name: Routes.chat,
       page: () =>  chatpage(email: "$EmailUser"),
     ),
-
+    GetPage(
+      name: Routes.serviceRequestList,
+      page: () => const serviceRequestList(),
+    ),
   ];
 
 }
@@ -61,5 +65,6 @@ class Routes {
   static const todaysSchedule = '/Today\'s_Schedule';
   static const dashboard = '/dashboard';
   static const chat = '/chat';
+  static const serviceRequestList = '/serviceRequestList';
 
 }

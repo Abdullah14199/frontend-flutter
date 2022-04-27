@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/models/certn_verifyed.dart';
+import 'package:skep_home_pro/models/faq_model.dart';
 
 import '../Back_ground_check/back_ground_check.dart';
 import '../Login/login.dart';
@@ -18,12 +19,8 @@ class SettingsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getFaq();
   }
-
-
-
-
-
 
   void getLogOut() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -42,7 +39,47 @@ class SettingsController extends GetxController {
       print(response.statusCode);
       print(body);
 
+      // then parse the JSON.
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
 
+      print(response.statusCode);
+
+      throw Exception('Failed to create album.');
+    }
+    update();
+  }
+
+  FaqModel? faqModel;
+  List<Faq> faqList = [];
+
+
+  void getFaq() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+// print('..>>>>>>>>>>>>>>>>>>>${pref.get('token3').toString()}');
+    final response = await http.get(
+      Uri.parse('https://staging.skephome.com/api/FAQ/GetFaq'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization' : "Bearer ${pref.get('token3').toString()}"
+      },
+    );
+
+
+    var body = response.body;
+    var read = jsonDecode(body);
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+
+      faqModel = FaqModel.fromJson(read);
+
+      faqModel!.faq.forEach((element) {
+        faqList.add(element);
+      });
+
+      print(faqList.length);
 
 
       // then parse the JSON.
@@ -56,8 +93,6 @@ class SettingsController extends GetxController {
     }
     update();
   }
-
-
 
 
 

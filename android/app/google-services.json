@@ -1,42 +1,195 @@
 {
   "project_info": {
-    "project_number": "389584921781",
-    "project_id": "skephomecleaner",
-    "storage_bucket": "skephomecleaner.appspot.com"
+    "project_number": "455546414239",
+    "firebase_url": "https://skep-home-1549305844612.firebaseio.com",
+    "project_id": "skep-home-1549305844612",
+    "storage_bucket": "skep-home-1549305844612.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:389584921781:android:b866219e08111d138b4afc",
+        "mobilesdk_app_id": "1:455546414239:android:16022d4ebd79d597166eaa",
         "android_client_info": {
           "package_name": "com.example.skep_home_pro"
         }
       },
       "oauth_client": [
         {
-          "client_id": "389584921781-o9v9g4frie6jq383latqukl52o05q8bb.apps.googleusercontent.com",
+          "client_id": "455546414239-33o405lis8gaaob9b5dmm80lrru66ch2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.skep_home_pro",
-            "certificate_hash": "b09c3daa740851cb45af1462b99e749f7a5e14c9"
+            "certificate_hash": "03d3d07a49421fc43b32bc0ecdce591d953abe1d"
           }
         },
         {
-          "client_id": "389584921781-22huqsjguuu972bbqfjal0oq6pu1i47o.apps.googleusercontent.com",
+          "client_id": "455546414239-nmubsjc35lmiv2mfdn295f1aovsnafae.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.skep_home_pro",
+            "certificate_hash": "dcf4bfe4f65751b71c2204633414724e81db2a9c"
+          }
+        },
+        {
+          "client_id": "455546414239-bp3ronlsjl895fukiqt617olq152s1v2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBXLOOgn_Y7HWyeMZDbBpdcOuQ-TfVdQSo"
+          "current_key": "AIzaSyCCHzYB_WUozqkw2mntxWDwzCAxLfKqZWM"
+        },
+        {
+          "current_key": "AIzaSyAwffYlubMWJ8esMgDKMWXCUVMRdQM2ubw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "389584921781-22huqsjguuu972bbqfjal0oq6pu1i47o.apps.googleusercontent.com",
+              "client_id": "455546414239-bp3ronlsjl895fukiqt617olq152s1v2.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "455546414239-3fdtpoe74cuqnoq75hqgl6ekask51i30.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ddd"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455546414239:android:eeadecba201fbac6166eaa",
+        "android_client_info": {
+          "package_name": "com.skephome.cleaner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455546414239-g1g7tul9gnbcul9t015hctu90gf15j00.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skephome.cleaner",
+            "certificate_hash": "99bfa0479e1cf52b1817f25867f5180b816acfe8"
+          }
+        },
+        {
+          "client_id": "455546414239-hh3ek1p2c9encaiuoh1uvb4o00u4k2dq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skephome.cleaner",
+            "certificate_hash": "c477e7661f2b09aeade5f343d38a7d1183787e00"
+          }
+        },
+        {
+          "client_id": "455546414239-ktere1ob8h3ghq2l7e1vvh71s4rj6ldp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skephome.cleaner",
+            "certificate_hash": "971f93a92452792ffd72a0e8670af7ba2b7b7a42"
+          }
+        },
+        {
+          "client_id": "455546414239-bp3ronlsjl895fukiqt617olq152s1v2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCHzYB_WUozqkw2mntxWDwzCAxLfKqZWM"
+        },
+        {
+          "current_key": "AIzaSyAwffYlubMWJ8esMgDKMWXCUVMRdQM2ubw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455546414239-bp3ronlsjl895fukiqt617olq152s1v2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "455546414239-3fdtpoe74cuqnoq75hqgl6ekask51i30.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ddd"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455546414239:android:8f1efbff9d9e7ec6166eaa",
+        "android_client_info": {
+          "package_name": "com.skephome.skephome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455546414239-3dl5bnkqsbpp1qnecelrlbvj91o7op68.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skephome.skephome",
+            "certificate_hash": "968486520fa345f9b281f88c2b02bc7193c2da56"
+          }
+        },
+        {
+          "client_id": "455546414239-3o8b7hb4p2ei4v8vjsei2m7i9d6dcauk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skephome.skephome",
+            "certificate_hash": "3aa70812ee338520f841b2901e75934191df1e68"
+          }
+        },
+        {
+          "client_id": "455546414239-q3s7ls4ut1nlr3vfqdrlub3145rvo3vj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skephome.skephome",
+            "certificate_hash": "6f27ea797a1d6554e45bc4fcf70b6b5dae4a4f24"
+          }
+        },
+        {
+          "client_id": "455546414239-usbnjc3r3f85hdlste8q9kg5al7v6nk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skephome.skephome",
+            "certificate_hash": "8c81ed11e2e1dcbce463a9e89cead1bd478dc5f2"
+          }
+        },
+        {
+          "client_id": "455546414239-bp3ronlsjl895fukiqt617olq152s1v2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCHzYB_WUozqkw2mntxWDwzCAxLfKqZWM"
+        },
+        {
+          "current_key": "AIzaSyAwffYlubMWJ8esMgDKMWXCUVMRdQM2ubw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455546414239-bp3ronlsjl895fukiqt617olq152s1v2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "455546414239-3fdtpoe74cuqnoq75hqgl6ekask51i30.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ddd"
+              }
             }
           ]
         }

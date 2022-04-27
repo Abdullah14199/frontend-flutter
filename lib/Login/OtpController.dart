@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/TodaysList.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
@@ -12,8 +13,9 @@ import 'package:skep_home_pro/Login/registration.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/serviceRequestModel.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:store_redirect/store_redirect.dart';
 import '../Dashboard/Dashboard.dart';
+import '../models/apiSplashScreenModels.dart';
 
 
 class OtpControllerScreen extends StatefulWidget {
@@ -105,6 +107,72 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
         timeout: const Duration(seconds: 60)
     );
 
+  }
+
+  Future<userModelSplash> fetchData(context) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final response = await http.get(
+        Uri.parse(
+            'https://staging.skephome.com/api/Auth/ExistingUser/${widget.phone}'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ${pref.get('token3').toString()}'
+        });
+
+    final responseJson = jsonDecode(response.body);
+    var body = response.body;
+    var message = json.decode(body);
+    print(message['message']);
+    var userType = json.decode(body);
+    print(userType['user_type']);
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      // print(token);
+      if (userType['user_type'] == "cleaner" && message['message'] == true) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dashboard(),
+          ),
+        );
+      }
+      else if(userType['user_type'] == "homeowner" && message['message'] == true) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Skep Home.'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: const <Widget>[
+                      Text(
+                          'You are trying to log in from the wrong application , please download skep pro services application.'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Ok'),
+                    onPressed: () {
+                      StoreRedirect.redirect(
+                        androidAppId: "com.skephome.skephome",
+                        iOSAppId: "1457799861",
+                      );
+                    },
+                  ),
+                ],
+              );
+            });
+      }
+      return userModelSplash.fromJson(responseJson);
+    } else {
+      print(response.statusCode);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Registration(phone: widget.phone)),
+      );
+      throw Exception('Failed to load album');
+    }
   }
 
   @override
@@ -244,7 +312,7 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
                                 ),
                               ),
                               onPressed: () {
-
+                                fetchData(context);
                               }
                           ),
                         ),

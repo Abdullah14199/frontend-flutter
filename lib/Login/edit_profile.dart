@@ -235,7 +235,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
 
               Padding(
-                padding: EdgeInsets.only(left: 290 , top: 300 , right: 15),
+                padding: EdgeInsets.only(left: 310 , top: 300 , right: 15),
                 child: Container(
                   height: 47,
                   width: 90,
@@ -308,7 +308,7 @@ class _EditProfileState extends State<EditProfile> {
                   child: TextFormField(
                     readOnly: true,
                     decoration: InputDecoration(
-                        hintText: '${dialCodeDigits}',
+                        hintText: '$dialCodeDigits',
                         contentPadding: const EdgeInsets.symmetric(vertical: 10.0 , horizontal: 7.0),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
@@ -332,13 +332,13 @@ class _EditProfileState extends State<EditProfile> {
               ),
 
               Padding(
-                padding: EdgeInsets.only(left: 100 , top: 500 , right: 15),
+                padding: EdgeInsets.only(left: 120 , top: 500 , right: 15),
                 child: Container(
                   height: 65,
                   child: TextFormField(
                     decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(vertical: 10.0 , horizontal: 7.0),
-                        hintText: '${Phone}',
+                        hintText: '$Phone',
                         enabledBorder: OutlineInputBorder(
                           borderSide:
                           const BorderSide(width: 1, color: constants.grey),

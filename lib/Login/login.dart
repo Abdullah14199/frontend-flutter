@@ -8,6 +8,7 @@ import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Login/OtpController.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/models/userModelSignUp.dart';
+import 'package:store_redirect/store_redirect.dart';
 import '../Dashboard/Dashboard.dart';
 import '../models/apiSplashScreenModels.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,7 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String phone = "";
 
   Future<CallApi> fetchDataUser(context) async {
-
     final response = await http.post(
       Uri.parse('http://staging.skephome.com/api/Auth/LWAD'),
       headers: <String, String>{
@@ -40,8 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       body: jsonEncode(<String, String>{
         'phone': _controller.text,
-        'app_type' : 'cleaner',
-        'new_fcm_token' : FCMToken,
+        'app_type': 'cleaner',
+        'new_fcm_token': FCMToken,
         //'new_firebase' : UID,
       }),
     );
@@ -51,23 +51,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
     if (response.statusCode == 200) {
-
       var gender = jsonDecode(body);
-      Gender = gender['user']['gender'] ;
+      Gender = gender['user']['gender'];
 
-      var countryCode = jsonDecode(body);
-      dialCodeDigits = countryCode['user']['country_code'];
 
       var dateOfBirthjs = jsonDecode(body);
       dateOfBirth = dateOfBirthjs['user']['date_of_birth'];
 
-
-
       var Codecountry = jsonDecode(body);
-      CodeCountry2 = Codecountry['user']['country_inti'] ;
+      CodeCountry2 = Codecountry['user']['country_inti'];
 
       var email = jsonDecode(body);
-      EmailUser = email['user']['email'] ;
+      EmailUser = email['user']['email'];
 
       var firstName = jsonDecode(body);
       FirstName = firstName['user']['first_name'];
@@ -85,19 +80,52 @@ class _LoginScreenState extends State<LoginScreen> {
 
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString('token3', email['accessToken']);
-      token3=pref.get('token3').toString();
-
-
+      token3 = pref.get('token3').toString();
 
 
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Dashboard(),
+          builder: (context) => OtpControllerScreen(phone: _controller.text, dialCodeDigits: dialCodeDigits),
         ),
       );
       return CallApi.fromJson(responseJson);
-    } else {
+    } else if (response.statusCode == 421) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OtpControllerScreen(phone: _controller.text, dialCodeDigits: dialCodeDigits),
+        ),
+      );
+      // showDialog(
+      //     context: context,
+      //     builder: (context) {
+      //       return AlertDialog(
+      //         title: const Text('Skep Home.'),
+      //         content: SingleChildScrollView(
+      //           child: ListBody(
+      //             children: const <Widget>[
+      //               Text(
+      //                   'You are trying to log in from the wrong application , please download skep pro services application.'),
+      //             ],
+      //           ),
+      //         ),
+      //         actions: <Widget>[
+      //           TextButton(
+      //             child: const Text('Ok'),
+      //             onPressed: () {
+      //               StoreRedirect.redirect(
+      //                 androidAppId: "com.skephome.skephome",
+      //                 iOSAppId: "1457799861",
+      //               );
+      //             },
+      //           ),
+      //         ],
+      //       );
+      //     });
+      return CallApi.fromJson(responseJson);
+    } else{
+
       print(response.statusCode);
       print(response.body);
       throw Exception('Failed to load album');
@@ -109,7 +137,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final response = await http.get(
         Uri.parse(
             'https://staging.skephome.com/api/Auth/ExistingUser/${_controller.text}'),
-        headers: {HttpHeaders.authorizationHeader: 'Bearer ${pref.get('token3').toString()}'});
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ${pref.get('token3').toString()}'
+        });
 
     final responseJson = jsonDecode(response.body);
     var body = response.body;
@@ -123,13 +153,8 @@ class _LoginScreenState extends State<LoginScreen> {
       // print(token);
       if (userType['user_type'] == "cleaner" && message['message'] == true) {
         fetchDataUser(context);
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => OtpControllerScreen(
-                  phone: _controller.text, dialCodeDigits: dialCodeDigits)),
-        );
+      } else if(userType['user_type'] == "homeowner" && message['message'] == true) {
+        fetchDataUser(context);
       }
       return userModelSplash.fromJson(responseJson);
     } else {
@@ -212,8 +237,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(left: 0, right: 5, top: 0),
                       child: CountryCodePicker(
                         onChanged: (country) {
-                          setState(() {
+                          setState(() async {
+
                             dialCodeDigits = country.dialCode!;
+                            SharedPreferences pref = await SharedPreferences.getInstance();
+                            pref.setString('codeCountry', dialCodeDigits);
+                            dialCodeDigits = pref.get('codeCountry').toString();
+                            print("qqqqqqqqq$dialCodeDigits");
                             // _controller.text = phone;
                           });
                         },
@@ -290,12 +320,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           BorderSide(color: constants.blue2))),
                         ),
                         onPressed: () {
-                          //Navigator.of(context).push(MaterialPageRoute(builder: (c) =>  Registration(phone: _controller.text,)));
-                          //  Navigator.of(context).push(MaterialPageRoute(builder: (c) =>OtpControllerScreen(
-                          //    phone: _controller.text,
-                          //    dialCodeDigits: dialCodeDigits,
-                          //  ),),
-                          //  );
                           checkUser = fetchData(context);
                         }),
                   ),

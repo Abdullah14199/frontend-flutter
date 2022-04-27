@@ -1,20 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:skep_home_pro/constatns/constants.dart';
+import 'package:skep_home_pro/controllers/settings_controller.dart';
 
-
-class FAQ extends StatefulWidget {
-  const FAQ({Key? key}) : super(key: key);
+class FAQScreen extends StatefulWidget {
+  const FAQScreen({Key? key}) : super(key: key);
 
   @override
-  State<FAQ> createState() => _FAQState();
+  State<FAQScreen> createState() => _FAQScreenState();
 }
 
-class _FAQState extends State<FAQ> {
-  final items = ['One'];
-  String selectedValue = 'One';
+final faqController = Get.put(SettingsController());
+
+class Item {
+  Item({
+    required this.expandedValue,
+    required this.headerValue,
+    this.isExpanded = false,
+  });
+
+  String expandedValue;
+  String headerValue;
+  bool isExpanded;
+}
+
+List<Item> generateItems(int numberOfItems) {
+  return List<Item>.generate(numberOfItems, (int index) {
+    return Item(
+      headerValue: faqController.faqModel!.faq[index].questions,
+      expandedValue: faqController.faqModel!.faq[index].answers,
+    );
+  });
+}
+
+class _FAQScreenState extends State<FAQScreen> {
+  final List<Item> _data = generateItems(8);
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -42,32 +67,33 @@ class _FAQState extends State<FAQ> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ListView(
-              shrinkWrap: true,
-              children: [
-                Card(
-                  elevation: 3,
-                  borderOnForeground: true,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+            const Text("Get answers to the most frequently asked questions.",  style: TextStyle(fontSize: 15 , fontFamily: 'Ubuntu')),
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                  child: ExpansionPanelList(
+                    expansionCallback: (int index, bool isExpanded) {
+                      setState(() {
+                        _data[index].isExpanded = !isExpanded;
+                      });
+                    },
+                    children: _data.map<ExpansionPanel>((Item item) {
+                      return ExpansionPanel(
+                        headerBuilder: (BuildContext context, bool isExpanded) {
+                          return ListTile(
+                            title: Text(item.headerValue , style: const TextStyle(fontSize: 14 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: constants.blue4),),
+                          );
+                        },
+                        body: ListTile(
+                          title: Text(item.expandedValue , style: const TextStyle(fontSize: 14 , fontFamily: 'Ubuntu') ),
+                        ),
+                        isExpanded: item.isExpanded,
+                      );
+                    }).toList(),
                   ),
-                 child: DropdownButton<String>(
-                   value: selectedValue,
-                   onChanged: (newValue) =>
-                       setState(() => selectedValue = newValue!),
-                   items: items.map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
-                         value: value,
-                         child: Text(value),
-                       ))
-                       .toList(),
-                   // add extra sugar..
-                   icon: Icon(Icons.arrow_drop_down),
-                   iconSize: 42,
-                   underline: SizedBox(),
-                 ),
-                ),
-              ],
-            )
+                )),
           ],
         ),
       ),

@@ -12,6 +12,7 @@ import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/Calendar.dart';
 import 'package:skep_home_pro/Dashboard/Today\'s_Schedule.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
+import 'package:skep_home_pro/Dashboard/service_request_list.dart';
 import 'package:skep_home_pro/Login/login.dart';
 import 'package:skep_home_pro/MyBooking/schedule.dart';
 import 'package:skep_home_pro/Referral%20Program/referral_program.dart';
@@ -23,6 +24,7 @@ import '../Back_ground_check/verificationAccount.dart';
 import '../Login/edit_profile.dart';
 import '../Payment_Stripe/payment_stripe.dart';
 import '../Settings/settings.dart';
+import '../Support Center/support_center_menu.dart';
 import '../controllers/verifyed_controller.dart';
 import '../models/UserModel.dart';
 import '../models/userModelSignUp.dart';
@@ -132,7 +134,7 @@ class _DashboardState extends State<Dashboard> {
   final List _pages = [
     TodaysList(),
     CalendarScreen(),
-    service_request(),
+    serviceRequestList(),
   ];
 
   @override
@@ -463,6 +465,12 @@ class _DashboardState extends State<Dashboard> {
                       color: constants.grey,
                     ),
                     ListTile(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>  SupportCenterMenu()),
+                        );
+                      },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,

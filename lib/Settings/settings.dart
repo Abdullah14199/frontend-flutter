@@ -213,7 +213,7 @@ class _settingsScreen extends State<settingsScreen> {
                           ),
                           GestureDetector(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => FAQ()),);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => FAQScreen()),);
                             },
                             child: Row(
                               children: [

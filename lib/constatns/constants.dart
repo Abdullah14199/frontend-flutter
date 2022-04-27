@@ -14,6 +14,7 @@ class constants {
   static const green = Color.fromRGBO(51, 217, 178, 1);
   static const red = Color.fromRGBO(253, 106, 106, 1);
   static const darkred = Color.fromRGBO(206, 7, 85, 1);
+  static const lbny = Color.fromRGBO(240, 246, 253, 1);
 
   static const listBuildCodeCountry = [
     "AF",
