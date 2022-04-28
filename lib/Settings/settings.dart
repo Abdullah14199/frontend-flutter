@@ -245,7 +245,7 @@ class _settingsScreen extends State<settingsScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Padding(
@@ -260,7 +260,7 @@ class _settingsScreen extends State<settingsScreen> {
                       onTap: () async {
                         controller.getLogOut();
                         SharedPreferences pref = await SharedPreferences.getInstance();
-                        pref.remove('token3');
+                        pref.clear();
                         Get.offNamed(Routes.first_walk_through);
                       },
                       child: Container(

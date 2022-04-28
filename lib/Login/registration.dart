@@ -85,8 +85,8 @@ class _RegistrationState extends State<Registration> {
     if (response.statusCode == 200) {
 
       SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString('token', BarearToken['accessToken']);
-      token=pref.get('token').toString();
+      pref.setString('token3', BarearToken['accessToken']);
+      token=pref.get('token3').toString();
       print(token);
 
       // then parse the JSON.

@@ -54,7 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
       var gender = jsonDecode(body);
       Gender = gender['user']['gender'];
 
-
       var dateOfBirthjs = jsonDecode(body);
       dateOfBirth = dateOfBirthjs['user']['date_of_birth'];
 
@@ -82,12 +81,16 @@ class _LoginScreenState extends State<LoginScreen> {
       pref.setString('token3', email['accessToken']);
       token3 = pref.get('token3').toString();
 
-
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => OtpControllerScreen(phone: _controller.text, dialCodeDigits: dialCodeDigits),
+      //   ),
+      // );
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => OtpControllerScreen(phone: _controller.text, dialCodeDigits: dialCodeDigits),
-        ),
+          builder: (context) => const Dashboard() ),
       );
       return CallApi.fromJson(responseJson);
     } else if (response.statusCode == 421) {
@@ -97,35 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context) => OtpControllerScreen(phone: _controller.text, dialCodeDigits: dialCodeDigits),
         ),
       );
-      // showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return AlertDialog(
-      //         title: const Text('Skep Home.'),
-      //         content: SingleChildScrollView(
-      //           child: ListBody(
-      //             children: const <Widget>[
-      //               Text(
-      //                   'You are trying to log in from the wrong application , please download skep pro services application.'),
-      //             ],
-      //           ),
-      //         ),
-      //         actions: <Widget>[
-      //           TextButton(
-      //             child: const Text('Ok'),
-      //             onPressed: () {
-      //               StoreRedirect.redirect(
-      //                 androidAppId: "com.skephome.skephome",
-      //                 iOSAppId: "1457799861",
-      //               );
-      //             },
-      //           ),
-      //         ],
-      //       );
-      //     });
       return CallApi.fromJson(responseJson);
     } else{
-
       print(response.statusCode);
       print(response.body);
       throw Exception('Failed to load album');
@@ -155,10 +131,17 @@ class _LoginScreenState extends State<LoginScreen> {
         fetchDataUser(context);
       } else if(userType['user_type'] == "homeowner" && message['message'] == true) {
         fetchDataUser(context);
+      }else{
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtpControllerScreen(phone: _controller.text, dialCodeDigits: dialCodeDigits),
+          ),
+        );
       }
       return userModelSplash.fromJson(responseJson);
     } else {
-      print(response.statusCode);
+      print("assasassas${response.statusCode}");
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => const GetStarted()),
@@ -238,7 +221,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: CountryCodePicker(
                         onChanged: (country) {
                           setState(() async {
-
                             dialCodeDigits = country.dialCode!;
                             SharedPreferences pref = await SharedPreferences.getInstance();
                             pref.setString('codeCountry', dialCodeDigits);

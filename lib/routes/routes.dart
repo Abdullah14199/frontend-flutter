@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:skep_home_pro/Dashboard/Today\'s_Schedule.dart';
 import 'package:skep_home_pro/Dashboard/areaOfWork.dart';
+import 'package:skep_home_pro/MyBooking/complete_details.dart';
+import 'package:skep_home_pro/Payment_Stripe/payment_stripe.dart';
 import 'package:skep_home_pro/splash_screen/get_started.dart';
 import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 import 'package:skep_home_pro/walkthrough/first_walk_through.dart';
@@ -10,6 +12,7 @@ import '../Back_ground_check/back_ground_check.dart';
 import '../Dashboard/Dashboard.dart';
 import '../Dashboard/TodaysList.dart';
 import '../Dashboard/service_request_list.dart';
+import '../MyBooking/schedule.dart';
 import '../chatPage/chat.dart';
 
 
@@ -50,8 +53,16 @@ class AppRoutes {
     ),
     GetPage(
       name: Routes.serviceRequestList,
-      page: () => const serviceRequestList(),
+      page: () =>  const serviceRequestList(),
     ),
+    GetPage(
+      name: Routes.payment,
+      page: () =>  const PaymentStripe(),
+    ),
+    // GetPage(
+    //   name: Routes.bookingDetails,
+    //   page: () =>  CompleteDetails(historyBooking: ,),
+    // ),
   ];
 
 }
@@ -66,5 +77,8 @@ class Routes {
   static const dashboard = '/dashboard';
   static const chat = '/chat';
   static const serviceRequestList = '/serviceRequestList';
+  static const payment = '/payment';
+  static const bookingDetails = '/bookingDetails';
+  static const settings = '/settings';
 
 }

@@ -40,7 +40,7 @@ class _chatpageState extends State<chatpage> {
     //Subscribe to the NEWS topic.
     _fcmNotificationService.subscribeToTopic(topic: 'NEWS');
     _otherDeviceToken = FcmTokenOwner;
-    print("<<<<<<<<<<<<<<<<<<<<<<${_otherDeviceToken}");
+    print("<<<<<<<<<<<<<<<<<<<<<<$_otherDeviceToken");
   }
 
 
@@ -97,12 +97,12 @@ class _chatpageState extends State<chatpage> {
                         contentPadding: const EdgeInsets.only(
                             left: 14.0, bottom: 8.0, top: 8.0),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: new BorderSide(color: Colors.white),
-                          borderRadius: new BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: new BorderSide(color: Colors.white),
-                          borderRadius: new BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       validator: (value) {
@@ -120,9 +120,9 @@ class _chatpageState extends State<chatpage> {
                         onPressed: ()async {
                           try {
                             await _fcmNotificationService.sendNotificationToUser(
-                              title: '${FirstName}',
+                              title: '$FirstName',
                               body: message.text,
-                              fcmToken: "dH5ue6mdTWi6OR6b8YQnSO:APA91bGGmc_vOb-DMeEbIvSN964jJr5ayJWLPZIXsEegSxoqf_dGtYzp4TEZLBG8xtb9WUI4vhbmtt0tVHF80wnkUmWYKChae5n1XHfg6Qw7LHS0ackMqAIM-HDKCJ4eavCPZMw1q0F0",
+                              fcmToken: "c2cqZvWBRcaiqxpiJyB8Zy:APA91bGw5rW14uhnY2NRhFhHQcP9sKyAbFdB5fAfbVo41rzDVZqN_mMVO0gOBSIC4levSM_J9A16CDJcEC9P9Yza26gBMI9JJisQ15E7Oe-XJDreeiVOzNAv4RMkC4pRSk1rDEgiYlWh",
                             );
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -141,7 +141,7 @@ class _chatpageState extends State<chatpage> {
                             message.clear();
                           }
                         },
-                        icon: Icon(Icons.arrow_forward),
+                        icon: const Icon(Icons.arrow_forward),
                       ),
                     ),
                   ),

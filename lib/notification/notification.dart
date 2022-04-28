@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert' show json;
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 var deviceId;
@@ -31,10 +29,6 @@ abstract class IFCMNotificationService {
 
 class FCMNotificationService extends IFCMNotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final String _endpoint = 'https://fcm.googleapis.com/fcm/send';
-  final String _contentType = 'application/json';
-  final String _authorization =
-      'Bearer AAAAWrUSJLU:APA91bGMWjDZU67HHzbEbXCJkjuG6-A4mtbL8ln6tupDglJEJuA-nCTejDC0qwaDTbFYwQyb37sb0jyPSG-c-wOxbJgjgWeQX-ebun9pP-vC4of_-Mu8D2eiZKDbbnY2VTLc3x56GZNk';
 
 
   Future<http.Response> _sendNotification(
@@ -53,7 +47,7 @@ class FCMNotificationService extends IFCMNotificationService {
             "body": body,
             "sound": "default",
             "status": "done",
-            "screen": "/chat",
+            "type": "10",
             'click_action' : 'FLUTTER_NOTIFICATION_CLICK' ,
           },
           'content_available': true
@@ -64,7 +58,7 @@ class FCMNotificationService extends IFCMNotificationService {
         body: data,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer AAAAWrUSJLU:APA91bGMWjDZU67HHzbEbXCJkjuG6-A4mtbL8ln6tupDglJEJuA-nCTejDC0qwaDTbFYwQyb37sb0jyPSG-c-wOxbJgjgWeQX-ebun9pP-vC4of_-Mu8D2eiZKDbbnY2VTLc3x56GZNk'
+          'Authorization': 'Bearer AAAAahCupJ8:APA91bGZdqs1rPWNzdvktW3DFV70lxHbN7i7ZlAoTbnn4Hn3kGNOd-rAdN7MpREaW11lkQIaYHDbmNkjsk_651faezie_riGxlFbeA-VEkggSpCSWGOau2QeURpAmwlXzqozGljjxrbj'
         },
       );
 

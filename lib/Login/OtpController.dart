@@ -77,8 +77,9 @@ class _OtpControllerScreenState extends State<OtpControllerScreen> {
   }
 
   verifyPhoneNumber() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
     await FirebaseAuth.instance.verifyPhoneNumber
-      ( phoneNumber: "${widget.dialCodeDigits+widget.phone}",
+      ( phoneNumber: pref.get('codeCountry').toString()+widget.phone,
         verificationCompleted: (PhoneAuthCredential credential) async {
         await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
           if(value.user != null){

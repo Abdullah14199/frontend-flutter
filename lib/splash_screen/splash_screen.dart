@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -13,21 +11,14 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
-import 'package:skep_home_pro/Dashboard/TodaysList.dart';
-import 'package:skep_home_pro/chatPage/chat.dart';
-import 'package:skep_home_pro/chatPage/messages.dart';
+import 'package:skep_home_pro/MyBooking/schedule.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
-import 'package:skep_home_pro/splash_screen/get_started.dart';
-import '../Dashboard/Dashboard.dart';
 import '../Login/login.dart';
+import '../MyBooking/complete_details.dart';
+import '../Settings/settings.dart';
 import '../controllers/google_map_viow_model.dart';
 import '../controllers/verifyed_controller.dart';
-import '../models/UserModel.dart';
-import '../models/apiSplashScreenModels.dart';
 import '../routes/routes.dart';
-import 'package:http/http.dart' as http;
-import 'dart:developer' as devlog;
-import 'package:dio/dio.dart';
 import 'package:lottie/lottie.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -46,7 +37,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
-  token = pref.get('token').toString();
+  token = pref.get('token3').toString();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -108,8 +99,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     token3 = pref.get('token3').toString();
     print('TTTTTTTTTTTTTTTTTTTTTTTT${token3}');
-    if (pref.get('token').toString() == "null" &&
-        pref.get('token3').toString() == "null") {
+    if (pref.get('token3').toString() == "null") {
       Get.offNamed(Routes.first_walk_through);
     } else {
       Get.offNamed(Routes.dashboard);
@@ -125,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen> {
       RemoteNotification? notification = message.notification;
 
       Map<String, dynamic> dataValue = message.data;
-      String screen = dataValue['screen'].toString();
+      String screen = dataValue['type'].toString();
       print("sss $screen");
 
       AndroidNotification? android = message.notification?.android;
@@ -237,10 +227,25 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<dynamic> onSelect(payload) async {
-
     print("aaaaaaaaaaaaaaaaasssssssss $payload");
-    if (payload == '/chat') {
+
+
+    if (payload == '10') {
       Get.offNamed(Routes.chat);
+    }else if (payload == '0' || payload == '1'){
+      Get.offNamed(Routes.dashboard);
+    }else if(payload == '2') {
+      Get.offNamed(Routes.bookingDetails);
+    }else if(payload == '3') {
+      // open Rating Screen
+    }else if(payload == '5') {
+      // Alert to the Confirm started booking
+    }else if(payload == '6') {
+      // Alert to the Confirm ending booking
+    }else if(payload == '7') {
+      Get.offNamed(Routes.payment);
     }
+
+
   }
 }

@@ -8,22 +8,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:455546414239:android:16022d4ebd79d597166eaa",
+        "mobilesdk_app_id": "1:455546414239:android:475e9f1edf902a12166eaa",
         "android_client_info": {
           "package_name": "com.example.skep_home_pro"
         }
       },
       "oauth_client": [
         {
-          "client_id": "455546414239-33o405lis8gaaob9b5dmm80lrru66ch2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.skep_home_pro",
-            "certificate_hash": "03d3d07a49421fc43b32bc0ecdce591d953abe1d"
-          }
-        },
-        {
-          "client_id": "455546414239-nmubsjc35lmiv2mfdn295f1aovsnafae.apps.googleusercontent.com",
+          "client_id": "455546414239-n9g6b21u0hhbpcsur9vb4k8bcespdci4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.skep_home_pro",
