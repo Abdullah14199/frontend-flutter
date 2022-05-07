@@ -26,7 +26,7 @@ class ChartsModels {
   int bookingCount;
   String totalHours;
   String todayCashIn;
-  List<dynamic> leatestBookings;
+  List<LeatestBooking> leatestBookings;
   Map<String, int> chart;
 
   factory ChartsModels.fromJson(Map<String, dynamic> json) => ChartsModels(
@@ -36,7 +36,7 @@ class ChartsModels {
     bookingCount: json["BookingCount"],
     totalHours: json["Total_hours"],
     todayCashIn: json["TodayCashIn"],
-    leatestBookings: List<dynamic>.from(json["leatestBookings"].map((x) => x)),
+    leatestBookings: List<LeatestBooking>.from(json["leatestBookings"].map((x) => LeatestBooking.fromJson(x))),
     chart: Map.from(json["chart"]).map((k, v) => MapEntry<String, int>(k, v)),
   );
 
@@ -47,7 +47,39 @@ class ChartsModels {
     "BookingCount": bookingCount,
     "Total_hours": totalHours,
     "TodayCashIn": todayCashIn,
-    "leatestBookings": List<dynamic>.from(leatestBookings.map((x) => x)),
+    "leatestBookings": List<dynamic>.from(leatestBookings.map((x) => x.toJson())),
     "chart": Map.from(chart).map((k, v) => MapEntry<String, dynamic>(k, v)),
+  };
+}
+
+class LeatestBooking {
+  LeatestBooking({
+    required this.id,
+    required this.salary,
+    required this.bookingHours,
+    required this.fullName,
+    required this.time,
+  });
+
+  int id;
+  int salary;
+  int bookingHours;
+  String fullName;
+  String time;
+
+  factory LeatestBooking.fromJson(Map<String, dynamic> json) => LeatestBooking(
+    id: json["id"],
+    salary: json["salary"],
+    bookingHours: json["booking_hours"],
+    fullName: json["FullName"],
+    time: json["time"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "salary": salary,
+    "booking_hours": bookingHours,
+    "FullName": fullName,
+    "time": time,
   };
 }

@@ -14,7 +14,7 @@ class VerifyedModel {
     burgerMenuValid = json['BurgerMenuValid'];
     has_AOF = json['Has_AOF'];
     notificationsCount = json['NotificationsCount'];
-    hasRating = json['hasRating'];
+    // hasRating = json['hasRating']==null?null:json["hasRating"];
   }
 
   Map<String, dynamic> toJson() {

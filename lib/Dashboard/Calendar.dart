@@ -90,7 +90,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
           bookList.add(element);
         });
       });
-      print(bookList[0]);
       setState(() {
         if (booking['Booking'] == "{Booking: {}}") {
           isData2 == true;

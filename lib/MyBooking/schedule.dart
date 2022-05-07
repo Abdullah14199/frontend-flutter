@@ -554,9 +554,8 @@ class _ScheduleState extends State<Schedule> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CompleteDetails(
-                              historyBooking:   controller.completeList[index],
-                              )),
+                              builder: (context) => CompleteDetails(historyBooking: controller.completeList[index],)
+                          ),
                         );
                       }),
             ),

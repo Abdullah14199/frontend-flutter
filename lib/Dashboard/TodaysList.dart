@@ -70,7 +70,6 @@ class _TodaysListState extends State<TodaysList> {
   @override
   Widget build(BuildContext context) {
 
-    
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -551,103 +550,105 @@ class _TodaysListState extends State<TodaysList> {
             ),
             Padding(
               padding:
-              const EdgeInsets.only(top: 10, left: 30, right: 83),
+              const EdgeInsets.only(top: 10, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  Column(
                     children: [
-                      Text(
-                        "\$",
-                        style: TextStyle(
-                            color: constants.yellow,
-                            fontSize: 14,
-                            fontFamily: 'Ubuntu',
-                            fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            "\$",
+                            style: TextStyle(
+                                color: constants.yellow,
+                                fontSize: 14,
+                                fontFamily: 'Ubuntu',
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${controller.BookingBalance}",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 21,
+                                fontFamily: 'Ubuntu',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       Text(
-                        "${controller.BookingBalance}",
+                        "Blance",
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 21,
+                            fontSize: 14,
                             fontFamily: 'Ubuntu',
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.normal),
                       ),
                     ],
                   ),
-                  Row(
+                  Column(
                     children: [
-                      Text(
-                        "\$",
-                        style: TextStyle(
-                            color: constants.yellow,
-                            fontSize: 14,
-                            fontFamily: 'Ubuntu',
-                            fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            "\$",
+                            style: TextStyle(
+                                color: constants.yellow,
+                                fontSize: 14,
+                                fontFamily: 'Ubuntu',
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${controller.WeekBalance}",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 21,
+                                fontFamily: 'Ubuntu',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       Text(
-                        "${controller.WeekBalance}",
+                        "This Week",
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 21,
+                            fontSize: 14,
                             fontFamily: 'Ubuntu',
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.normal),
                       ),
                     ],
                   ),
-                  Row(
+                  Column(
                     children: [
-                      Text(
-                        "\$",
-                        style: TextStyle(
-                            color: constants.yellow,
-                            fontSize: 14,
-                            fontFamily: 'Ubuntu',
-                            fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            "\$",
+                            style: TextStyle(
+                                color: constants.yellow,
+                                fontSize: 14,
+                                fontFamily: 'Ubuntu',
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${controller.MonthBalance}",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 21,
+                                fontFamily: 'Ubuntu',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       Text(
-                        "${controller.MonthBalance}",
+                        "This month",
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 21,
+                            fontSize: 14,
                             fontFamily: 'Ubuntu',
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.normal),
                       ),
                     ],
-                  ),
-                ],
-              ),
-            ),
-
-
-            Padding(
-              padding: EdgeInsets.only(top: 10, left: 40, right: 60),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    "Blance",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Ubuntu',
-                        fontWeight: FontWeight.normal),
-                  ),
-                  Text(
-                    "This Week",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Ubuntu',
-                        fontWeight: FontWeight.normal),
-                  ),
-                  Text(
-                    "This month",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Ubuntu',
-                        fontWeight: FontWeight.normal),
                   ),
                 ],
               ),
@@ -762,7 +763,7 @@ class _TodaysListState extends State<TodaysList> {
             Padding(
               padding:
               const EdgeInsets.only(top: 5, left: 10, right: 10),
-              child: isData == false
+              child: controller.leatestBooking.isEmpty
                   ? Center(
                 child: Text(
                   "No data to show",
@@ -774,7 +775,7 @@ class _TodaysListState extends State<TodaysList> {
                 ),
               )
                   : ListView.builder(
-                itemCount: 10,
+                itemCount: controller.leatestBooking.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) =>
                     Container(
@@ -801,7 +802,7 @@ class _TodaysListState extends State<TodaysList> {
                                   Container(
                                     width: 55.0,
                                     height: 55.0,
-                                    child: Text("3:32"),
+                                    child: Text(controller.leatestBooking[index].time),
                                   ),
                                   Container(
                                     width: 35,
@@ -810,16 +811,6 @@ class _TodaysListState extends State<TodaysList> {
                                       color: constants.lightGrey,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10),
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "PM",
-                                        style: TextStyle(
-                                            fontSize: 11,
-                                            fontWeight:
-                                            FontWeight.bold,
-                                            fontFamily: 'Ubuntu'),
                                       ),
                                     ),
                                   ),
@@ -835,7 +826,7 @@ class _TodaysListState extends State<TodaysList> {
                                   Row(
                                     children: [
                                       Text(
-                                        names[index],
+                                        controller.leatestBooking[index].fullName,
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 12,
@@ -844,10 +835,10 @@ class _TodaysListState extends State<TodaysList> {
                                             FontWeight.bold),
                                       ),
                                       SizedBox(
-                                        width: 160,
+                                        width: 100,
                                       ),
                                       Text(
-                                        "\$43",
+                                        "\$ ${controller.leatestBooking[index].salary}",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 12,
@@ -861,7 +852,7 @@ class _TodaysListState extends State<TodaysList> {
                                     height: 7,
                                   ),
                                   Text(
-                                    des[index],
+                                    controller.leatestBooking[index].bookingHours.toString(),
                                     style: TextStyle(
                                         color: Colors.grey,
                                         fontSize: 10,

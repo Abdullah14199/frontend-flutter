@@ -143,6 +143,7 @@ class _DashboardState extends State<Dashboard> {
     return GetBuilder<VerifyedController>(
       init: VerifyedController(),
       builder:(controller) {
+        // controller.getVerifyed();
         return SafeArea(
           child: Scaffold(
             body: Center(

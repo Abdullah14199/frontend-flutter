@@ -38,6 +38,11 @@ class ScheduleDate extends GetxController{
   var chart;
 
 
+
+  ChartsModels? chartsModels;
+  List<LeatestBooking> leatestBooking = [];
+
+
   void choose(bool screen){
     chooseScreen = screen;
     update();
@@ -91,8 +96,11 @@ class ScheduleDate extends GetxController{
         'date': formatted,
       },
     );
-    var body = response.body;
     var respSt = response.statusCode;
+
+    var body = response.body;
+    var read = jsonDecode(body);
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       // then parse the JSON.
       var bookingBalance = jsonDecode(body);
@@ -104,6 +112,13 @@ class ScheduleDate extends GetxController{
       TodayCashIn = bookingBalance['TodayCashIn'];
       chart = bookingBalance['chart'];
       print(body);
+
+
+      chartsModels =  ChartsModels.fromJson(read);
+
+      chartsModels!.leatestBookings.forEach((element) {
+        leatestBooking.add(element);
+      });
 
 
 

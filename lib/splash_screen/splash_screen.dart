@@ -83,6 +83,7 @@ class Binding implements Bindings {
 }
 
 var www;
+var type ;
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -106,6 +107,8 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+
+
   @override
   void initState() {
     super.initState();
@@ -115,8 +118,10 @@ class _SplashScreenState extends State<SplashScreen> {
       RemoteNotification? notification = message.notification;
 
       Map<String, dynamic> dataValue = message.data;
-      String screen = dataValue['type'].toString();
-      print("sss $screen");
+      print(dataValue['type'].toString());
+      type = dataValue['type'].toString();
+      // String screen = dataValue['type'].toString();
+      // print("sss $screen");
 
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
@@ -133,7 +138,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 icon: '@mipmap/ic_launcher',
               ),
             ),
-            payload: screen);
+            payload: dataValue.toString()
+        );
       }
     });
 
@@ -227,22 +233,28 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<dynamic> onSelect(payload) async {
-    print("aaaaaaaaaaaaaaaaasssssssss $payload");
+    print("aaaaaaaaaaaaaaaaasssssssss ${payload}");
+    print("aaaaaaaaaaaaaaaaasssssssss ${type}");
 
 
-    if (payload == '10') {
+    if (type == '10') {
       Get.offNamed(Routes.chat);
-    }else if (payload == '0' || payload == '1'){
+    }else if (type == '0' || type == '1'){
       Get.offNamed(Routes.dashboard);
-    }else if(payload == '2') {
-      Get.offNamed(Routes.bookingDetails);
-    }else if(payload == '3') {
+    }else if(type == '2') {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => CompleteDetails(historyBooking: type,)
+      //   ),
+      // );
+    }else if(type == '3') {
       // open Rating Screen
-    }else if(payload == '5') {
+    }else if(type == '5') {
       // Alert to the Confirm started booking
-    }else if(payload == '6') {
+    }else if(type == '6') {
       // Alert to the Confirm ending booking
-    }else if(payload == '7') {
+    }else if(type == '7') {
       Get.offNamed(Routes.payment);
     }
 

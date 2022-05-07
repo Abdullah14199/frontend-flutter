@@ -37,10 +37,10 @@ class VerifyedController extends GetxController {
 
     var body = jsonDecode( response.body);
     if (response.statusCode == 200) {
-
+      print("Ksjaksjda");
       verifyedModel =  VerifyedModel.fromJson(body);
-
       verifyed = verifyedModel!.burgerMenuValid!;
+      print(verifyed);
 
 
 
