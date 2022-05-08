@@ -28,6 +28,8 @@ class CompleteDetails extends StatefulWidget {
 class _CompleteDetailsState extends State<CompleteDetails> {
   GoogleMapController ? _googleMapController;
 
+  bool mapScreen = false ;
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -88,7 +90,7 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.45,
+                        height: mapScreen == false ? MediaQuery.of(context).size.height * 0.45 : MediaQuery.of(context).size.height * 1.05,
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -99,10 +101,15 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                 children: [
                                   Container(
                                     width: double.infinity,
-                                    height: 230,
+                                    height:mapScreen == false ? 230 : 650,
                                     child: Stack(
                                       children: [
                                         GoogleMap(
+                                          onTap: (LatLng latLng){
+                                            setState(() {
+                                              mapScreen != mapScreen ;
+                                            });
+                                          },
                                           mapType: MapType.normal,
                                           zoomControlsEnabled: false,
                                           scrollGesturesEnabled: false,
@@ -115,7 +122,6 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                                   controller.log),
                                               zoom: 14),
                                           onMapCreated: (controller) {
-                                           
                                           },
                                         ),
                                         Center(
