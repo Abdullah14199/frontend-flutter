@@ -117,15 +117,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
 
 
-  // List event = [
-  //   dataEvent.length.
-  // ];
-
-  //
-  // eventsList.assignAll(eventsConvert);
-  // streamController.add(events);
-
-
   @override
   Widget build(BuildContext context) {
 
@@ -198,19 +189,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     },
                     onPageChanged: (foucsWeek) => {print(foucsWeek)},
                     headerStyle: HeaderStyle(
-                      titleTextStyle: TextStyle(fontSize: 18),
+                      titleTextStyle: const TextStyle(fontSize: 12),
                       formatButtonVisible: false,
                       titleCentered: true,
                       titleTextFormatter: (date , locale) =>
                         DateFormat.yMMMMEEEEd(locale).format(date),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
                           ),
                           color: constants.lightGrey),
                     ),
-                    calendarStyle:  CalendarStyle(
+                      calendarStyle:  const CalendarStyle(
                       defaultTextStyle: TextStyle(color: Colors.white),
                       withinRangeTextStyle: TextStyle(color: Colors.white),
                       weekendTextStyle: TextStyle(color: Colors.white),
@@ -238,7 +229,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20, right: 17, left: 17),
+                  padding: const EdgeInsets.only(top: 60, right: 17, left: 17),
                   child: bookList.isEmpty
                       ? Column(
                           children: [

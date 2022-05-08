@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/Dashboard/Calendar.dart';
 import 'package:skep_home_pro/Dashboard/Today\'s_Schedule.dart';
+import 'package:skep_home_pro/Dashboard/rating_screen.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/Dashboard/service_request_list.dart';
 import 'package:skep_home_pro/Login/login.dart';
@@ -124,10 +125,6 @@ class _DashboardState extends State<Dashboard> {
 
 
     });
-
-
-
-
   }
 
   int currentIndex = 0;
@@ -192,8 +189,9 @@ class _DashboardState extends State<Dashboard> {
                           Positioned(
                             child:
                             Image.asset("assets/images/profile_decore_img.png"),
-                            top: 10,
-                            bottom: 30,
+                            top: 17,
+                            left: 2,
+                            bottom: 24,
                           ),
                           Positioned(
                             top: 70,
@@ -224,8 +222,8 @@ class _DashboardState extends State<Dashboard> {
                             ),
                           ),
                           Positioned(
-                            top: 15,
-                            left: 13,
+                            top: 22,
+                            left: 16,
                             child: CircleAvatar(
                               backgroundImage: NetworkImage(
                                   "https://staging.skephome.com/storage/${Selfie}"),
@@ -288,16 +286,24 @@ class _DashboardState extends State<Dashboard> {
                           Positioned(
                             top: 73,
                             left: 160,
-                            child: Container(
-                              width: 50,
-                              height: 15,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(20)),
-                              ),
-                              child: const Text(
-                                "    Great",
-                                style: TextStyle(color: Colors.black),
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ratingScreen()),
+                                );
+                                },
+                              child: Container(
+                                width: 50,
+                                height: 15,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                ),
+                                child: const Text(
+                                  "   Great",
+                                  style: TextStyle(color: Colors.black),
+                                ),
                               ),
                             ),
                           ),
@@ -318,18 +324,22 @@ class _DashboardState extends State<Dashboard> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,
-                      leading: Image.asset(
-                        "assets/images/homeMenu.png",
-                        color: constants.blue2,
+                      leading: Container(
+                        width: 20,
+                        height: 30,
+                        child: Image.asset(
+                          "assets/images/homeMenu.png",
+                          color: constants.blue2,
+                        ),
                       ),
                       title: const Text(
                         'Home',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.black , fontSize: 12),
                       ),
                     ),
                     Container(
                       width: double.infinity,
-                      height: 2,
+                      height: 1,
                       color: constants.grey,
                     ),
                     ListTile(
@@ -342,17 +352,21 @@ class _DashboardState extends State<Dashboard> {
                           MaterialPageRoute(builder: (context) => const accountVerification()),
                         );
                       },
-                      trailing: controller.verifyed != false ? SizedBox() : Image.asset("assets/images/Ellipse 539.png"),
-                      leading: Image.asset(
-                        "assets/images/shield.png",
-                        color: controller.verifyed !=false ? constants.blue2 : Colors.red,
+                      trailing: controller.verifyed != false ? SizedBox() : Container( width : 7 , height: 20 ,child: Image.asset("assets/images/Ellipse 539.png")),
+                      leading: Container(
+                        width: 20,
+                        height: 30,
+                        child: Image.asset(
+                          "assets/images/shield.png",
+                          color: controller.verifyed !=false ? constants.blue2 : Colors.red,
+                        ),
                       ),
                       title:  Text('Account verification',
-                          style: TextStyle(color: controller.verifyed != false ?  Colors.black : Colors.red)),
+                          style: TextStyle(color: controller.verifyed != false ?  Colors.black : Colors.red , fontSize: 12)),
                     ),
                     Container(
                       width: double.infinity,
-                      height: 2,
+                      height: 1,
                       color: constants.grey,
                     ),
                     ListTile(
@@ -365,28 +379,36 @@ class _DashboardState extends State<Dashboard> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,
-                      leading: Image.asset(
-                        "assets/images/calendar-4.png",
-                        color: constants.blue2 ,
+                      leading: Container(
+                        width: 20,
+                        height: 30,
+                        child: Image.asset(
+                          "assets/images/calendar-4.png",
+                          color: constants.blue2 ,
+                        ),
                       ),
                       title: Text('My Bookings',
-                          style: TextStyle(color: Colors.black )),
+                          style: TextStyle(color: Colors.black  , fontSize: 12)),
                     ),
                     Container(
                       width: double.infinity,
-                      height: 2,
+                      height: 1,
                       color: constants.grey,
                     ),
                     ListTile(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,
-                      leading: Image.asset(
-                        "assets/images/credit-card.png",
-                        color: constants.blue2,
+                      leading: Container(
+                        width: 20,
+                        height: 30,
+                        child: Image.asset(
+                          "assets/images/credit-card.png",
+                          color: constants.blue2,
+                        ),
                       ),
                       title: const Text('Payment Options',
-                          style: TextStyle(color: Colors.black)),
+                          style: TextStyle(color: Colors.black , fontSize: 12)),
                       onTap: (){
                         Navigator.push(
                           context,
@@ -396,7 +418,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Container(
                       width: double.infinity,
-                      height: 2,
+                      height: 1,
                       color: constants.grey,
                     ),
                     ListTile(
@@ -409,16 +431,20 @@ class _DashboardState extends State<Dashboard> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,
-                      leading: Image.asset(
-                        "assets/images/address.png",
-                        color: constants.blue2,
+                      leading: Container(
+                        width: 20,
+                        height: 30,
+                        child: Image.asset(
+                          "assets/images/address.png",
+                          color: constants.blue2,
+                        ),
                       ),
                       title: const Text('Area Of Work',
-                          style: TextStyle(color: Colors.black)),
+                          style: TextStyle(color: Colors.black , fontSize: 12)),
                     ),
                     Container(
                       width: double.infinity,
-                      height: 2,
+                      height: 1,
                       color: constants.grey,
                     ),
                     ListTile(
@@ -431,16 +457,20 @@ class _DashboardState extends State<Dashboard> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,
-                      leading: Image.asset(
-                        "assets/images/settings.png",
-                        color: constants.blue2,
+                      leading: Container(
+                        width: 20,
+                        height: 30,
+                        child: Image.asset(
+                          "assets/images/settings.png",
+                          color: constants.blue2,
+                        ),
                       ),
                       title: const Text('Settings',
-                          style: TextStyle(color: Colors.black)),
+                          style: TextStyle(color: Colors.black , fontSize: 12)),
                     ),
                     Container(
                       width: double.infinity,
-                      height: 2,
+                      height: 1,
                       color: constants.grey,
                     ),
                     ListTile(
@@ -453,16 +483,20 @@ class _DashboardState extends State<Dashboard> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,
-                      leading: Image.asset(
-                        "assets/images/group.png",
-                        color: constants.blue2,
+                      leading: Container(
+                        width: 20,
+                        height: 30,
+                        child: Image.asset(
+                          "assets/images/group.png",
+                          color: constants.blue2,
+                        ),
                       ),
                       title: const Text('Referral Program',
-                          style: TextStyle(color: Colors.black)),
+                          style: TextStyle(color: Colors.black , fontSize: 12)),
                     ),
                     Container(
                       width: double.infinity,
-                      height: 2,
+                      height: 1,
                       color: constants.grey,
                     ),
                     ListTile(
@@ -475,18 +509,27 @@ class _DashboardState extends State<Dashboard> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       selected: true,
-                      leading: Image.asset(
-                        "assets/images/support.png",
-                        color: constants.blue2,
+                      leading: Container(
+                        width: 20,
+                        height: 30,
+                        child: Image.asset(
+                          "assets/images/support.png",
+                          color: constants.blue2,
+                        ),
                       ),
                       title: const Text('Support Center',
-                          style: TextStyle(color: Colors.black)),
+                          style: TextStyle(color: Colors.black , fontSize: 12)),
                     ),
                     Container(
                       width: double.infinity,
-                      height: 2,
+                      height: 1,
                       color: constants.grey,
                     ),
+                    SizedBox(height: 70,),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Text('Version 2.0.14.1' , style: TextStyle(color: constants.blue2),),
+                    )
                   ],
                 ),
               ),

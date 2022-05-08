@@ -82,8 +82,8 @@ class Binding implements Bindings {
   }
 }
 
-var www;
 var type ;
+var booking_id;
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -120,6 +120,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Map<String, dynamic> dataValue = message.data;
       print(dataValue['type'].toString());
       type = dataValue['type'].toString();
+      booking_id = dataValue['booking_id'];
+      print(booking_id);
       // String screen = dataValue['type'].toString();
       // print("sss $screen");
 
@@ -242,14 +244,9 @@ class _SplashScreenState extends State<SplashScreen> {
     }else if (type == '0' || type == '1'){
       Get.offNamed(Routes.dashboard);
     }else if(type == '2') {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => CompleteDetails(historyBooking: type,)
-      //   ),
-      // );
+      Get.offNamed(Routes.bookingDetailsNoti);
     }else if(type == '3') {
-      // open Rating Screen
+      Get.offNamed(Routes.payment);
     }else if(type == '5') {
       // Alert to the Confirm started booking
     }else if(type == '6') {
@@ -260,4 +257,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
   }
+
+
 }

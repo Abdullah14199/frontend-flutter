@@ -1,8 +1,11 @@
 import 'package:get/get.dart';
 import 'package:skep_home_pro/Dashboard/Today\'s_Schedule.dart';
 import 'package:skep_home_pro/Dashboard/areaOfWork.dart';
+import 'package:skep_home_pro/Dashboard/rating_screen.dart';
 import 'package:skep_home_pro/MyBooking/complete_details.dart';
+import 'package:skep_home_pro/MyBooking/complete_details_notification.dart';
 import 'package:skep_home_pro/Payment_Stripe/payment_stripe.dart';
+import 'package:skep_home_pro/models/complete_booking.dart';
 import 'package:skep_home_pro/splash_screen/get_started.dart';
 import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 import 'package:skep_home_pro/walkthrough/first_walk_through.dart';
@@ -22,7 +25,7 @@ class AppRoutes {
   static const welcome = Routes.welcomeScreen;
   static const mainScreen = Routes.first_walk_through;
   static const secondScreen = Routes.second_walk_through;
-
+  List<HistoryBooking> completeList = [];
 
   static final routes = [
     GetPage(
@@ -61,10 +64,14 @@ class AppRoutes {
       name: Routes.payment,
       page: () =>  const PaymentStripe(),
     ),
-    // GetPage(
-    //   name: Routes.bookingDetails,
-    //   page: () =>  CompleteDetails(historyBooking: ,),
-    // ),
+    GetPage(
+      name: Routes.bookingDetailsNoti,
+      page: () =>  CompleteDetailsNoti(bookingId: booking_id),
+    ),
+    GetPage(
+      name: Routes.rating,
+      page: () =>  const ratingScreen(),
+    ),
   ];
 
 }
@@ -80,7 +87,8 @@ class Routes {
   static const chat = '/chat';
   static const serviceRequestList = '/serviceRequestList';
   static const payment = '/payment';
-  static const bookingDetails = '/bookingDetails';
+  static const bookingDetailsNoti = '/bookingDetailsNoti';
   static const settings = '/settings';
+  static const rating = '/rating';
 
 }

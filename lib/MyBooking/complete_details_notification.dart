@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:skep_home_pro/MyBooking/support_center.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/controllers/complete_request_controller.dart';
+import 'package:skep_home_pro/controllers/complete_request_noti.dart';
 import 'package:skep_home_pro/models/complete_booking.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -17,42 +18,23 @@ var homeOwnerUid;
 var FcmTokenOwner;
 
 
-class CompleteDetails extends StatefulWidget {
-  CompleteDetails({Key? key, required this.historyBooking}) : super(key: key);
-  HistoryBooking historyBooking;
-
-  @override
-  State<CompleteDetails> createState() => _CompleteDetailsState();
-}
-
-class _CompleteDetailsState extends State<CompleteDetails> {
-  GoogleMapController ? _googleMapController;
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _googleMapController!.dispose();
-    super.dispose();
-  }
-
-  
+class CompleteDetailsNoti extends StatelessWidget {
+  CompleteDetailsNoti({Key? key, required this.bookingId}) : super(key: key);
+  var bookingId ;
 
   @override
   Widget build(BuildContext context) {
-    print("CCC${widget.historyBooking.id}");
-    idBooking = widget.historyBooking.id;
-    homeOwnerPhone = widget.historyBooking.homeownerPhone;
-    homeOwnerUid = widget.historyBooking.firebaseUid;
-    FcmTokenOwner = widget.historyBooking.fcmToken;
+    print("CCC${bookingId}");
 
-
-
-
-
-    return GetBuilder<CompleteRequestController>(
-      init: CompleteRequestController(),
+    bool isLoading = true;
+    return GetBuilder<CompleteRequestNotiController>(
+      init: CompleteRequestNotiController(),
       builder: (controller) {
-        controller.getRequestDetails(widget.historyBooking.id);
+         controller.getRequestDetails(176);
+        // idBooking = controller.historyBooking!.id;
+        // homeOwnerPhone = controller.historyBooking!.homeownerPhone;
+        // homeOwnerUid = controller.historyBooking!.firebaseUid;
+        // FcmTokenOwner = controller.historyBooking!.fcmToken;
 
         return SafeArea(
           child: Scaffold(
@@ -112,11 +94,9 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                           myLocationButtonEnabled: false,
                                           initialCameraPosition: CameraPosition(
                                               target: LatLng(controller.lat,
-                                                  controller.log),
+                                                 controller.log),
                                               zoom: 14),
-                                          onMapCreated: (controller) {
-                                           
-                                          },
+                                          onMapCreated: (GoogleMapControllercontroller) {},
                                         ),
                                         Center(
                                           child: Container(
@@ -190,8 +170,7 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 15.0),
                                                   child: Text(
-                                                    controller.requestDetailsModel!
-                                                        .serviceRequest.fullName,
+                                                   controller.requestDetailsModel!.serviceRequest.fullName,
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 12,
@@ -224,10 +203,7 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                                   ImageIcon(AssetImage(
                                                       "assets/images/calendar-6.png")),
                                                   Text(
-                                                    controller
-                                                        .requestDetailsModel!
-                                                        .serviceRequest
-                                                        .date,
+                                                    controller.requestDetailsModel!.serviceRequest.date,
                                                     style: TextStyle(
                                                         fontSize: 12,
                                                         fontWeight:
@@ -243,10 +219,7 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                                         "assets/images/clock.png"),
                                                   ),
                                                   Text(
-                                                    controller
-                                                        .requestDetailsModel!
-                                                        .serviceRequest
-                                                        .time,
+                                                    controller.requestDetailsModel!.serviceRequest.time,
                                                     style: TextStyle(
                                                         fontSize: 10,
                                                         fontWeight:
@@ -276,11 +249,7 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                                   children: [
                                                     ImageIcon(AssetImage(
                                                         "assets/images/refresh.png")),
-                                                    Text(
-                                                      controller
-                                                          .requestDetailsModel!
-                                                          .serviceRequest
-                                                          .frequency,
+                                                    Text(controller.requestDetailsModel!.serviceRequest.frequency,
                                                       style: TextStyle(
                                                           fontSize: 12,
                                                           fontWeight:
@@ -373,8 +342,8 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(widget.historyBooking.placeInstructions != null ?
-                                "${widget.historyBooking.placeInstructions}" : "" ,
+                                Text(controller.requestDetailsModel!.serviceRequest.placeInstructions != null ?
+                                "${controller.requestDetailsModel!.serviceRequest.placeInstructions}" : "" ,
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontFamily: 'Ubuntu',
@@ -400,8 +369,6 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
-
-
                                     Row(
                                       children: [
                                         Text(
@@ -422,9 +389,9 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                               BorderRadius.circular(50)),
                                           child: Center(
                                               child: Text(
-                                                controller.requestDetailsModel!
-                                                    .serviceRequest.bedrooms
-                                                    .toString(),
+                                                  controller.requestDetailsModel!
+                                                      .serviceRequest.bedrooms
+                                                      .toString(),
                                                 style: TextStyle(color: Colors.white),
                                               )),
                                         ),
@@ -504,7 +471,7 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
-                                    widget.historyBooking.pets == 0 ? "No" : "Yes",
+                                    controller.requestDetailsModel!.serviceRequest.pets == 0 ? "No" : "Yes",
                                     style: TextStyle(
                                         color: constants.grey,
                                         fontWeight: FontWeight.normal,

@@ -9,6 +9,7 @@ import 'package:skep_home_pro/models/certn_verifyed.dart';
 import 'package:skep_home_pro/models/complete_booking.dart';
 import 'package:skep_home_pro/models/my_booking_model.dart';
 import 'package:skep_home_pro/models/request_details_model.dart';
+import 'package:skep_home_pro/splash_screen/splash_screen.dart';
 
 import '../Back_ground_check/back_ground_check.dart';
 import '../Dashboard/Dashboard.dart';
@@ -18,7 +19,7 @@ import '../models/UserModel.dart';
 import '../models/chat_model.dart';
 import '../models/verifyed_model.dart';
 
-class CompleteRequestController extends GetxController {
+class CompleteRequestNotiController extends GetxController {
   HistoryBooking ? historyBooking;
   RequestDetailsModel? requestDetailsModel;
   bool isLoading = false;
@@ -34,6 +35,7 @@ class CompleteRequestController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getRequestDetails(176);
   }
 
 

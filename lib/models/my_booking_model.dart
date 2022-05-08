@@ -117,7 +117,7 @@ class ScheduleBooking {
     firebaseUid: json["firebase_uid"],
     fcmToken:  json["fcm_token"]==null?"":json["fcm_token"],
     salary: json["salary"].toDouble(),
-    homwownerPenalty: json["homwowner_penalty"],
+    homwownerPenalty: json["homwowner_penalty"]==null?"":json["homwowner_penalty"],
   );
 
   Map<String, dynamic> toJson() => {

@@ -194,7 +194,7 @@ class _ScheduleState extends State<Schedule> {
                                           backgroundColor: Colors.green,
                                           foregroundColor: Colors.green,
                                           backgroundImage: NetworkImage(
-                                              controller.bookingList[index].image == null ?
+                                              controller.bookingList[index].image == "" ?
                                           "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"  : "https://staging.skephome.com/storage/${controller.bookingList[index].image}" ),
                                         ),
                                       ),
@@ -337,11 +337,8 @@ class _ScheduleState extends State<Schedule> {
         ),
       );
 
-  //Rambo El Batal
-  //Tayson
 
-  Widget buildComplete() =>
-      GetBuilder<MYCompleteBookingController>(
+  Widget buildComplete() => GetBuilder<MYCompleteBookingController>(
         init: MYCompleteBookingController(),
         builder: (controller) => ConditionalBuilder(
           condition: controller.isLoading,
@@ -420,6 +417,8 @@ class _ScheduleState extends State<Schedule> {
                                     backgroundColor: Colors.green,
                                     foregroundColor: Colors.green,
                                     backgroundImage:  NetworkImage(
+                                        controller.completeList[index].image == "" ?
+                                        "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"  :
                                         "https://staging.skephome.com/storage/${controller.completeList[index].image}"),
                                   ),
                                 ),

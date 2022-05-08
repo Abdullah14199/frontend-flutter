@@ -208,14 +208,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                     hintText: 'Mobile Number',
                     enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: constants.grey, width: 2.0),
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: const BorderSide(color: constants.grey, width: 1.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(width: 2, color: constants.grey),
-                        borderRadius: BorderRadius.circular(20)),
+                        borderSide: const BorderSide(width: 1, color: constants.grey),
+                        borderRadius: BorderRadius.circular(15)),
                     prefix: Padding(
                       padding: const EdgeInsets.only(left: 0, right: 5, top: 0),
                       child: CountryCodePicker(
@@ -254,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(
-                height: 490,
+                height: 350,
               ),
               const Padding(
                 padding: EdgeInsets.only(left: 15, right: 15),
