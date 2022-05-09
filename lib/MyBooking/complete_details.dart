@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:skep_home_pro/MyBooking/map_direction.dart';
 import 'package:skep_home_pro/MyBooking/support_center.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:skep_home_pro/controllers/complete_request_controller.dart';
@@ -26,16 +27,7 @@ class CompleteDetails extends StatefulWidget {
 }
 
 class _CompleteDetailsState extends State<CompleteDetails> {
-  GoogleMapController ? _googleMapController;
 
-  bool mapScreen = false ;
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _googleMapController!.dispose();
-    super.dispose();
-  }
 
   
 
@@ -90,7 +82,7 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: double.infinity,
-                        height: mapScreen == false ? MediaQuery.of(context).size.height * 0.45 : MediaQuery.of(context).size.height * 1.05,
+                        height:  MediaQuery.of(context).size.height * 0.45,
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -101,13 +93,16 @@ class _CompleteDetailsState extends State<CompleteDetails> {
                                 children: [
                                   Container(
                                     width: double.infinity,
-                                    height:mapScreen == false ? 230 : 650,
+                                    height: 230 ,
                                     child: Stack(
                                       children: [
                                         GoogleMap(
                                           onTap: (LatLng latLng){
                                             setState(() {
-                                              mapScreen != mapScreen ;
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => MapDirections()),
+                                              );
                                             });
                                           },
                                           mapType: MapType.normal,

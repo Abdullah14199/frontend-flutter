@@ -16,6 +16,16 @@ class constants {
   static const darkred = Color.fromRGBO(206, 7, 85, 1);
   static const lbny = Color.fromRGBO(240, 246, 253, 1);
 
+  static const dark_green = Color.fromRGBO(92, 172, 125, 1);
+  static const great_color = Color.fromRGBO(217, 174, 86, 1);
+  static const good_color = Color.fromRGBO(252, 167, 133, 1);
+  static const meh_color = Color.fromRGBO(250, 87,105, 1);
+  static const bad_color = Color.fromRGBO(198, 52, 92, 1);
+
+
+
+  static const googleMapApi = "AIzaSyCCHzYB_WUozqkw2mntxWDwzCAxLfKqZWM";
+
   static const listBuildCodeCountry = [
     "AF",
     "AX",

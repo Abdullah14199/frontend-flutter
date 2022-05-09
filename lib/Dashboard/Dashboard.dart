@@ -41,8 +41,8 @@ class Dashboard extends StatefulWidget {
   @override
   State<Dashboard> createState() => _DashboardState();
 }
-
-
+var idCleaner ;
+var idCleaner2 ;
 
 Future<UserModel> fetchData(context) async {
 
@@ -82,9 +82,15 @@ Future<UserModel> fetchData(context) async {
 
     var level_statues = jsonDecode(body);
     Level_statues = level_statues['user']['level_status'];
+    print(Level_statues);
 
     var selfie = jsonDecode(body);
     Selfie = selfie['user']['selfie'];
+
+    var id_cleaner = jsonDecode(body);
+    idCleaner = id_cleaner['user']['id'];
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    idCleaner2 = pref.setInt('idCleaner', idCleaner);
 
     return UserModel.fromJson(responseJson);
   } else {
@@ -139,8 +145,9 @@ class _DashboardState extends State<Dashboard> {
     print("sadasd ${token3}");
     return GetBuilder<VerifyedController>(
       init: VerifyedController(),
-      builder:(controller) {
+      builder:(controller){
         // controller.getVerifyed();
+
         return SafeArea(
           child: Scaffold(
             body: Center(
@@ -300,8 +307,8 @@ class _DashboardState extends State<Dashboard> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.all(Radius.circular(20)),
                                 ),
-                                child: const Text(
-                                  "   Great",
+                                child:  Text(
+                                  "   $Level_statues",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),

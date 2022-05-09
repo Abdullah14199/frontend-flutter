@@ -37,6 +37,9 @@ class CompleteRequestController extends GetxController {
   }
 
 
+
+
+
   void send(String message) {
     ChatModel model = ChatModel(
       booking_id:'$idBooking',
