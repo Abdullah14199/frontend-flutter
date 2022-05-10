@@ -79,6 +79,7 @@ Future<UserModel> fetchData(context) async {
 
     var level = jsonDecode(body);
     Level = level['user']['level'];
+    print(Level);
 
     var level_statues = jsonDecode(body);
     Level_statues = level_statues['user']['level_status'];
@@ -271,22 +272,23 @@ class _DashboardState extends State<Dashboard> {
                               height: 100,
                               child: IconButton(
                                 onPressed: () {},
-                                icon: Silver == true
+                                icon: Level == "one"
                                     ? Image.asset(
                                   "assets/images/silver_badge_img.png",
                                   width: 200,
                                   height: 100,
                                 )
-                                    : Gold == true
+                                    : Level == "two"
                                     ? Image.asset(
                                     "assets/images/gold_shield_img.png",
                                     width: 200,
                                     height: 69)
-                                    : Image.asset(
+                                    : Level == "three" ? Image.asset(
                                     "assets/images/bronz_badge_img.png",
                                     width: 200,
                                     height: 69
-                                ),
+                                ) : Image.asset(
+                                    "assets/images/bronz_badge_img.png"),
                               ),
                             ),
                           ),
@@ -317,10 +319,13 @@ class _DashboardState extends State<Dashboard> {
                           Positioned(
                             top: 70,
                             left: 150,
-                            child: const CircleAvatar(
+                            child:  CircleAvatar(
                               backgroundColor: Colors.white,
-                              backgroundImage:
-                              AssetImage("assets/images/ic_colored_great.PNG"),
+                              backgroundImage: Level_statues == "Awesome" ? AssetImage("assets/images/ic_colored_awesome.PNG") :
+                              Level_statues == "Great" ? AssetImage("assets/images/ic_colored_great.PNG") :
+                              Level_statues == "Good" ? AssetImage("assets/images/ic_colored_good.PNG") :
+                              Level_statues == "Meh" ? AssetImage("assets/images/ic_colored_meh.PNG") :
+                              Level_statues == "Bad" ? AssetImage("assets/images/ic_colored_bad.PNG") : AssetImage("assets/images/ic_colored_great.PNG"),
                               radius: 10,
                             ),
                           ),

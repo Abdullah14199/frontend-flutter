@@ -57,17 +57,17 @@ class _ratingScreenState extends State<ratingScreen> {
                       Container(
                           width: 40,
                           height: 60,
-                          child: Level_statues == "Awesome" ? Image.asset("assets/images/ic_colored_awesome.JPG") :
-                          Level_statues == "Great" ? Image.asset("assets/images/ic_great_rate.PNG") :
-                          Level_statues == "Good" ? Image.asset("assets/images/ic_colored_good.JPG") :
-                          Level_statues == "Meh" ? Image.asset("assets/images/ic_colored_meh.JPG") :
-                          Level_statues == "Bad" ? Image.asset("assets/images/ic_colored_bad.JPG") : Image.asset("assets/images/ic_great_rate.PNG")),
+                          child: Level_statues == "Awesome" ? Image.asset("assets/images/ic_colored_awesome.PNG") :
+                          Level_statues == "Great" ? Image.asset("assets/images/ic_colored_great.PNG") :
+                          Level_statues == "Good" ? Image.asset("assets/images/ic_colored_good.PNG") :
+                          Level_statues == "Meh" ? Image.asset("assets/images/ic_colored_meh.PNG") :
+                          Level_statues == "Bad" ? Image.asset("assets/images/ic_colored_bad.PNG") : Image.asset("assets/images/ic_great_rate.PNG")),
                       Text(controller.cleanerRatingList.isEmpty ?"No Customer Ratings" : "${controller.cleanerRatingList.length} Customer Ratings" , style: TextStyle(fontSize: 11 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: Colors.grey),),
                       SizedBox(height: 7,),
                       Row(
                         children: [
                           SizedBox(width: 40,),
-                          Text("Awesome" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: Colors.grey),) ,
+                          Text("Awesome" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: constants.dark_green),) ,
                           SizedBox(width: 40,),
                           Container(
                             width: 200,
@@ -75,8 +75,8 @@ class _ratingScreenState extends State<ratingScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               child: LinearProgressIndicator(
-                                value: controller.ratingModel!.ratingCount.awesome.toDouble(),
-                                valueColor: AlwaysStoppedAnimation<Color>(constants.yellow),
+                                value: controller.ratingModel!.ratingCount.awesome.toDouble() / 50,
+                                valueColor: AlwaysStoppedAnimation<Color>(constants.dark_green),
                                 backgroundColor: constants.grey,
                               ),
                             ),
@@ -85,22 +85,46 @@ class _ratingScreenState extends State<ratingScreen> {
                           Container(
                               width: 20,
                               height: 30,
-                              child: Image.asset("assets/images/ic_awesome_icon.PNG")),
+                              child: Image.asset("assets/images/ic_colored_awesome.PNG")),
                         ],
                       ),
                       Row(
                         children: [
                           SizedBox(width: 40,),
-                          Text("Good" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: Colors.grey),) ,
+                          Text("Great" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: constants.great_color),) ,
+                          SizedBox(width: 63,),
+                          Container(
+                            width: 200,
+                            height: 10,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              child: LinearProgressIndicator(
+                                value: controller.ratingModel!.ratingCount.great.toDouble() / 50,
+                                valueColor: AlwaysStoppedAnimation<Color>(constants.great_color),
+                                backgroundColor: constants.grey,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10,),
+                          Container(
+                              width: 20,
+                              height: 30,
+                              child: Image.asset("assets/images/ic_colored_great.PNG")),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 40,),
+                          Text("Good" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: constants.good_color),) ,
                           SizedBox(width: 65,),
                           Container(
                             width: 200,
                             height: 10,
-                            child: ClipRRect(
+                            child:  ClipRRect(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               child: LinearProgressIndicator(
-                                value: controller.ratingModel!.ratingCount.great.toDouble(),
-                                valueColor: AlwaysStoppedAnimation<Color>(constants.yellow),
+                                value: controller.ratingModel!.ratingCount.good.toDouble() / 50,
+                                valueColor: AlwaysStoppedAnimation<Color>(constants.good_color),
                                 backgroundColor: constants.grey,
                               ),
                             ),
@@ -109,13 +133,13 @@ class _ratingScreenState extends State<ratingScreen> {
                           Container(
                               width: 20,
                               height: 30,
-                              child: Image.asset("assets/images/ic_great_rate.PNG")),
+                              child: Image.asset("assets/images/ic_colored_good.PNG")),
                         ],
                       ),
                       Row(
                         children: [
                           SizedBox(width: 40,),
-                          Text("Meh" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: Colors.grey),) ,
+                          Text("Meh" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: constants.meh_color),) ,
                           SizedBox(width: 70,),
                           Container(
                             width: 200,
@@ -123,8 +147,8 @@ class _ratingScreenState extends State<ratingScreen> {
                             child:  ClipRRect(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               child: LinearProgressIndicator(
-                                value: controller.ratingModel!.ratingCount.good.toDouble(),
-                                valueColor: AlwaysStoppedAnimation<Color>(constants.yellow),
+                                value: controller.ratingModel!.ratingCount.meh.toDouble() / 50,
+                                valueColor: AlwaysStoppedAnimation<Color>(constants.meh_color),
                                 backgroundColor: constants.grey,
                               ),
                             ),
@@ -133,13 +157,13 @@ class _ratingScreenState extends State<ratingScreen> {
                           Container(
                               width: 20,
                               height: 30,
-                              child: Image.asset("assets/images/ic_good_rate.PNG")),
+                              child: Image.asset("assets/images/ic_colored_meh.PNG")),
                         ],
                       ),
                       Row(
                         children: [
                           SizedBox(width: 40,),
-                          Text("Bad" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: Colors.grey),) ,
+                          Text("Bad" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: constants.bad_color),) ,
                           SizedBox(width: 73,),
                           Container(
                             width: 200,
@@ -147,8 +171,8 @@ class _ratingScreenState extends State<ratingScreen> {
                             child:  ClipRRect(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               child: LinearProgressIndicator(
-                                value: controller.ratingModel!.ratingCount.meh.toDouble(),
-                                valueColor: AlwaysStoppedAnimation<Color>(constants.yellow),
+                                value: controller.ratingModel!.ratingCount.bad.toDouble() / 50,
+                                valueColor: AlwaysStoppedAnimation<Color>(constants.bad_color),
                                 backgroundColor: constants.grey,
                               ),
                             ),
@@ -157,31 +181,7 @@ class _ratingScreenState extends State<ratingScreen> {
                           Container(
                               width: 20,
                               height: 30,
-                              child: Image.asset("assets/images/ic_meh_rate.PNG")),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 40,),
-                          Text("Very Bad" ,  style: TextStyle(fontSize: 12 , fontFamily: 'Ubuntu' , fontWeight: FontWeight.bold , color: Colors.grey),) ,
-                          SizedBox(width: 46,),
-                          Container(
-                            width: 200,
-                            height: 10,
-                            child:  ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              child: LinearProgressIndicator(
-                                value: controller.ratingModel!.ratingCount.bad.toDouble(),
-                                valueColor: AlwaysStoppedAnimation<Color>(constants.yellow),
-                                backgroundColor: constants.grey,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10,),
-                          Container(
-                              width: 20,
-                              height: 30,
-                              child: Image.asset("assets/images/ic_bad_rate.PNG")),
+                              child: Image.asset("assets/images/ic_colored_bad.PNG")),
                         ],
                       ),
                       controller.cleanerRatingList.isEmpty ? Container(
@@ -239,7 +239,7 @@ class _ratingScreenState extends State<ratingScreen> {
                                                     child: Text(
                                                       "${controller.cleanerRatingList[index].date}",
                                                       style: TextStyle(
-                                                          color: Colors.grey,
+                                                          color: constants.grey,
                                                           fontSize: 12,
                                                           fontFamily: 'Ubuntu',
                                                           fontWeight:
@@ -257,7 +257,7 @@ class _ratingScreenState extends State<ratingScreen> {
                                               child: Text(
                                                 controller.cleanerRatingList[index].comment,
                                                 style: TextStyle(
-                                                    color: constants.darkgrey,
+                                                    color: Colors.grey,
                                                     fontSize: 16,
                                                     fontFamily: 'Ubuntu',
                                                     fontWeight: FontWeight.bold),

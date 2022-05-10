@@ -16,24 +16,62 @@ import '../Back_ground_check/back_ground_check.dart';
 var id;
 var homeOwnerPhoneReq;
 var homeOwnerUidReq;
+var value;
 
-class RequestsDetails extends StatelessWidget {
+class RequestsDetails extends StatefulWidget {
   RequestsDetails({Key? key, required this.scheduleBooking}) : super(key: key);
   ScheduleBooking scheduleBooking;
 
   @override
+  State<RequestsDetails> createState() => _RequestsDetailsState();
+}
+
+class _RequestsDetailsState extends State<RequestsDetails> {
+  late TextEditingController _controllerComment = TextEditingController();
+
+  bool isButtonActive = false;
+
+  bool isColorActiveBad = true;
+
+  bool isColorActiveMeh = true;
+
+  bool isColorActiveGood = true;
+
+  bool isColorActiveGreat = true;
+
+  bool isColorActiveAwesome = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controllerComment = TextEditingController();
+
+    _controllerComment.addListener(() {
+      final isButtonActive = _controllerComment.text.isNotEmpty;
+
+      setState(() => this.isButtonActive = isButtonActive);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controllerComment.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    id = scheduleBooking.id;
-    print("CCC${scheduleBooking.id}");
-
-
-    homeOwnerPhoneReq = scheduleBooking.homeownerPhone;
-    homeOwnerUidReq = scheduleBooking.firebaseUid;
+    id = widget.scheduleBooking.id;
+    print("CCC${widget.scheduleBooking.id}");
+    homeOwnerPhoneReq = widget.scheduleBooking.homeownerPhone;
+    homeOwnerUidReq = widget.scheduleBooking.firebaseUid;
 
     return GetBuilder<RequestDetailsController>(
       init: RequestDetailsController(),
       builder: (controller) {
-        controller.getRequestDetails(scheduleBooking.id);
+        controller.getRequestDetails(widget.scheduleBooking.id);
         return SafeArea(
           child: Scaffold(
             appBar: AppBar(
@@ -132,7 +170,14 @@ class RequestsDetails extends StatelessWidget {
                                           backgroundColor: constants.blue2,
                                           child: IconButton(
                                             onPressed: () {
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) => chatpage(email: "$EmailUser")),);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        chatpage(
+                                                            email:
+                                                                "$EmailUser")),
+                                              );
                                             },
                                             icon: Icon(Icons.chat,
                                                 color: Colors.white),
@@ -159,10 +204,10 @@ class RequestsDetails extends StatelessWidget {
                                         backgroundImage: NetworkImage(controller
                                                     .requestDetailsModel!
                                                     .serviceRequest
-                                                    .image !=
-                                                null
-                                            ? "https://staging.skephome.com/storage/${controller.requestDetailsModel!.serviceRequest.image}"
-                                            : "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"),
+                                                    .image ==
+                                                ""
+                                            ? "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"
+                                            : "https://staging.skephome.com/storage/${controller.requestDetailsModel!.serviceRequest.image}"),
                                       ),
                                     ),
                                     Column(
@@ -347,7 +392,8 @@ class RequestsDetails extends StatelessWidget {
                                                       onPressed: () {
                                                         controller
                                                             .postMarkAsStartRequest(
-                                                                scheduleBooking
+                                                                widget
+                                                                    .scheduleBooking
                                                                     .id,
                                                                 context);
                                                         Navigator.of(context)
@@ -401,7 +447,314 @@ class RequestsDetails extends StatelessWidget {
                                                 : controller.booking_statues ==
                                                         "scheduled"
                                                     ? ElevatedButton(
-                                                        onPressed: () {},
+                                                        onPressed: () {
+                                                          showModalBottomSheet(
+                                                            context: context,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            isScrollControlled:
+                                                                true,
+                                                            builder: (context) => Padding(padding: EdgeInsets.only(
+                                                                bottom: MediaQuery.of(context).viewInsets.bottom),
+                                                              child:
+                                                                  ConditionalBuilder(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              StatefulBuilder(
+                                                                                builder: (BuildContext context, StateSetter setState) {
+                                                                                  return Container(
+                                                                                    width: double.infinity,
+                                                                                    height: 400,
+                                                                                    decoration: const BoxDecoration(
+                                                                                      color: Colors.white,
+                                                                                      borderRadius: BorderRadius.only(
+                                                                                        topLeft: Radius.circular(50),
+                                                                                        topRight: Radius.circular(50),
+                                                                                      ),
+                                                                                    ),
+                                                                                    child: Column(
+                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                      children: [
+                                                                                        Center(
+                                                                                          child: Container(
+                                                                                            width: 150,
+                                                                                            height: 5,
+                                                                                            decoration: const BoxDecoration(
+                                                                                              color: constants.grey,
+                                                                                              borderRadius: BorderRadius.all(Radius.circular(2)),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.only(top: 8.0, left: 15.0, right: 15.0),
+                                                                                          child: Row(
+                                                                                            children: [
+                                                                                              Container(
+                                                                                                width: 55.0,
+                                                                                                height: 55.0,
+                                                                                                child: CircleAvatar(
+                                                                                                  backgroundColor: Colors.green,
+                                                                                                  foregroundColor: Colors.green,
+                                                                                                  backgroundImage: NetworkImage(controller.ratingUserModel!.data.image == null ? "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png" : "https://staging.skephome.com/storage/${controller.ratingUserModel!.data.image}"),
+                                                                                                ),
+                                                                                              ),
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left: 8.0),
+                                                                                                child: Column(
+                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                  children: [
+                                                                                                    Text(
+                                                                                                      "Completed",
+                                                                                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Ubuntu', color: constants.yellow),
+                                                                                                    ),
+                                                                                                    SizedBox(
+                                                                                                      height: 3,
+                                                                                                    ),
+                                                                                                    Text("Skep Pro", style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal, fontFamily: 'Ubuntu', color: Colors.black)),
+                                                                                                    SizedBox(
+                                                                                                      height: 3,
+                                                                                                    ),
+                                                                                                    Text("${controller.ratingUserModel!.data.fullName}", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Ubuntu', color: Colors.grey)),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                                                                                          child: Text(
+                                                                                            "Rate Your Home Owner",
+                                                                                            style: TextStyle(fontSize: 16, fontFamily: "Ubuntu", fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 14),
+                                                                                          child: Row(
+                                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                            children: [
+                                                                                              Column(
+                                                                                                children: [
+                                                                                                  GestureDetector(
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (isColorActiveBad == true) {
+                                                                                                          isColorActiveBad = false;
+                                                                                                          isColorActiveMeh = true;
+                                                                                                          isColorActiveGood = true;
+                                                                                                          isColorActiveGreat = true;
+                                                                                                          isColorActiveAwesome = true;
+                                                                                                          print(isColorActiveBad);
+                                                                                                        } else {
+                                                                                                          isColorActiveBad = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                      value = isColorActiveGood ? 0 : 1;
+                                                                                                      print("aaaaa $value");
+                                                                                                    },
+                                                                                                    child: CircleAvatar(
+                                                                                                      radius: 25.0,
+                                                                                                      child: Container(width: 30, height: 40, child: Image.asset("assets/images/ic_bad_rate.PNG")),
+                                                                                                      backgroundColor: isColorActiveBad ? constants.grey : constants.yellow,
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                  Text("bad")
+                                                                                                ],
+                                                                                              ),
+                                                                                              Column(
+                                                                                                children: [
+                                                                                                  GestureDetector(
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (isColorActiveMeh == true) {
+                                                                                                          isColorActiveMeh = false;
+                                                                                                          isColorActiveBad = true;
+                                                                                                          isColorActiveGood = true;
+                                                                                                          isColorActiveGreat = true;
+                                                                                                          isColorActiveAwesome = true;
+                                                                                                          print(isColorActiveMeh);
+                                                                                                        } else {
+                                                                                                          isColorActiveMeh = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                      value = isColorActiveGood ? 0 : 2;
+                                                                                                      print("aaaaa $value");
+                                                                                                    },
+                                                                                                    child: CircleAvatar(
+                                                                                                      radius: 25.0,
+                                                                                                      child: Container(width: 30, height: 40, child: Image.asset("assets/images/ic_meh_rate.PNG")),
+                                                                                                      backgroundColor: isColorActiveMeh ? constants.grey : constants.yellow,
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                  Text("meh")
+                                                                                                ],
+                                                                                              ),
+                                                                                              Column(
+                                                                                                children: [
+                                                                                                  GestureDetector(
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (isColorActiveGood == true) {
+                                                                                                          isColorActiveGood = false;
+                                                                                                          isColorActiveMeh = true;
+                                                                                                          isColorActiveBad = true;
+                                                                                                          isColorActiveGreat = true;
+                                                                                                          isColorActiveAwesome = true;
+                                                                                                          print(isColorActiveGood);
+                                                                                                        } else {
+                                                                                                          isColorActiveGood = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                      value = isColorActiveGood ? 0 : 3;
+                                                                                                      print("aaaaa $value");
+                                                                                                    },
+                                                                                                    child: CircleAvatar(
+                                                                                                      radius: 25.0,
+                                                                                                      child: Container(width: 30, height: 40, child: Image.asset("assets/images/ic_good_rate.PNG")),
+                                                                                                      backgroundColor: isColorActiveGood ? constants.grey : constants.yellow,
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                  Text("good")
+                                                                                                ],
+                                                                                              ),
+                                                                                              Column(
+                                                                                                children: [
+                                                                                                  GestureDetector(
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (isColorActiveGreat == true) {
+                                                                                                          isColorActiveGreat = false;
+                                                                                                          isColorActiveBad = true;
+                                                                                                          isColorActiveGood = true;
+                                                                                                          isColorActiveMeh = true;
+                                                                                                          isColorActiveAwesome = true;
+                                                                                                          print(isColorActiveGreat);
+                                                                                                        } else {
+                                                                                                          isColorActiveGreat = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                      value = isColorActiveGood ? 0 : 4;
+                                                                                                      print("aaaaa $value");
+                                                                                                    },
+                                                                                                    child: CircleAvatar(
+                                                                                                      radius: 25.0,
+                                                                                                      child: Container(width: 30, height: 40, child: Image.asset("assets/images/ic_great_rate.PNG")),
+                                                                                                      backgroundColor: isColorActiveGreat ? constants.grey : constants.yellow,
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                  Text("great")
+                                                                                                ],
+                                                                                              ),
+                                                                                              Column(
+                                                                                                children: [
+                                                                                                  GestureDetector(
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (isColorActiveAwesome == true) {
+                                                                                                          isColorActiveAwesome = false;
+                                                                                                          isColorActiveBad = true;
+                                                                                                          isColorActiveGood = true;
+                                                                                                          isColorActiveGreat = true;
+                                                                                                          isColorActiveMeh = true;
+                                                                                                          print(isColorActiveAwesome);
+                                                                                                        } else {
+                                                                                                          isColorActiveAwesome = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                      value = isColorActiveGood ? 0 : 5;
+                                                                                                      print("aaaaa $value");
+                                                                                                    },
+                                                                                                    child: CircleAvatar(
+                                                                                                      radius: 25.0,
+                                                                                                      child: Container(width: 30, height: 40, child: Image.asset("assets/images/ic_awesome_icon.PNG")),
+                                                                                                      backgroundColor: isColorActiveAwesome ? constants.grey : constants.yellow,
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                  Text("awesome")
+                                                                                                ],
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                                                                                          child: Text(
+                                                                                            "Comment :",
+                                                                                            style: TextStyle(fontSize: 16),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.all(8.0),
+                                                                                          child: TextFormField(
+                                                                                              controller: _controllerComment,
+                                                                                              maxLines: 5,
+                                                                                              minLines: 5,
+                                                                                              decoration: InputDecoration(
+                                                                                                  filled: true,
+                                                                                                  enabled: true,
+                                                                                                  contentPadding: EdgeInsets.only(left: 14, top: 4),
+                                                                                                  hintText: 'Please give us any feedback you have.',
+                                                                                                  hintStyle: TextStyle(fontSize: 14, color: constants.grey),
+                                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                                    borderSide: BorderSide(width: 1, color: Colors.black),
+                                                                                                    borderRadius: BorderRadius.circular(8),
+                                                                                                  ),
+                                                                                                  errorBorder: OutlineInputBorder(
+                                                                                                    borderSide: const BorderSide(color: Colors.red),
+                                                                                                    borderRadius: BorderRadius.circular(8),
+                                                                                                  ),
+                                                                                                  focusedErrorBorder: OutlineInputBorder(
+                                                                                                    borderSide: const BorderSide(color: Colors.red),
+                                                                                                    borderRadius: BorderRadius.circular(8),
+                                                                                                  ),
+                                                                                                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black), borderRadius: BorderRadius.circular(8))),
+                                                                                              onEditingComplete: () {
+                                                                                                setState(() {
+                                                                                                  FocusScope.of(context).nextFocus();
+                                                                                                });
+                                                                                              }),
+                                                                                        ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.only(top: 20.0, right: 10, left: 10),
+                                                                                          child: Container(
+                                                                                            width: double.infinity,
+                                                                                            height: 40,
+                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
+                                                                                            child: ElevatedButton(
+                                                                                                onPressed: isColorActiveBad == false || isColorActiveAwesome == false|| isColorActiveGreat== false || isColorActiveGood== false || isColorActiveMeh== false ? () {
+                                                                                                        setState(() {
+                                                                                                          isButtonActive = true;
+                                                                                                          isButtonActive = true;
+                                                                                                          isButtonActive = true;
+                                                                                                          isButtonActive = true;
+                                                                                                          isButtonActive = true;
+                                                                                                        });
+                                                                                                        controller.postRating(widget.scheduleBooking.id, _controllerComment.text, value);
+                                                                                                        _controllerComment.clear();
+                                                                                                        //Navigator.of(context).pop();
+                                                                                                      }
+                                                                                                    : null,
+                                                                                                child: Text("Submit")),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  );
+                                                                                },
+                                                                              ),
+                                                                      condition:
+                                                                          controller
+                                                                              .isLoading,
+                                                                      fallback:
+                                                                          (context) =>
+                                                                              Center(child: CircularProgressIndicator())),
+                                                            ),
+                                                          );
+                                                        },
                                                         child: Text("Schedule"),
                                                         style: ButtonStyle(
                                                           backgroundColor:
@@ -428,10 +781,10 @@ class RequestsDetails extends StatelessWidget {
                                                             ? ElevatedButton(
                                                                 onPressed: () {
                                                                   controller.postMarkAsCompleteRequest(
-                                                                      scheduleBooking
+                                                                      widget
+                                                                          .scheduleBooking
                                                                           .id,
                                                                       context);
-
                                                                   showModalBottomSheet(
                                                                     context:
                                                                         context,
@@ -531,8 +884,8 @@ class RequestsDetails extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) => CheckList(
-                                                      scheduleBooking:
-                                                          scheduleBooking.id,
+                                                      scheduleBooking: widget
+                                                          .scheduleBooking.id,
                                                     )),
                                           );
                                         },
@@ -553,7 +906,8 @@ class RequestsDetails extends StatelessWidget {
                                                         builder: (context) =>
                                                             CheckList(
                                                                 scheduleBooking:
-                                                                    scheduleBooking
+                                                                    widget
+                                                                        .scheduleBooking
                                                                         .id)),
                                                   );
                                                 },
@@ -572,7 +926,8 @@ class RequestsDetails extends StatelessWidget {
                                                             builder: (context) =>
                                                                 CheckList(
                                                                     scheduleBooking:
-                                                                        scheduleBooking
+                                                                        widget
+                                                                            .scheduleBooking
                                                                             .id)),
                                                       );
                                                     },
@@ -590,7 +945,8 @@ class RequestsDetails extends StatelessWidget {
                                                             MaterialPageRoute(
                                                                 builder: (context) => CheckList(
                                                                     scheduleBooking:
-                                                                        scheduleBooking
+                                                                        widget
+                                                                            .scheduleBooking
                                                                             .id)),
                                                           );
                                                         },
@@ -606,10 +962,10 @@ class RequestsDetails extends StatelessWidget {
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                    builder: (context) =>
-                                                                        CheckList(
-                                                                            scheduleBooking:
-                                                                                scheduleBooking.id)),
+                                                                    builder: (context) => CheckList(
+                                                                        scheduleBooking: widget
+                                                                            .scheduleBooking
+                                                                            .id)),
                                                               );
                                                             },
                                                             icon: Image.asset(
@@ -628,7 +984,7 @@ class RequestsDetails extends StatelessWidget {
                                                                     MaterialPageRoute(
                                                                         builder:
                                                                             (context) =>
-                                                                                CheckList(scheduleBooking: scheduleBooking.id)),
+                                                                                CheckList(scheduleBooking: widget.scheduleBooking.id)),
                                                                   );
                                                                 },
                                                                 icon:
@@ -665,8 +1021,9 @@ class RequestsDetails extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  scheduleBooking.placeInstructions != null
-                                      ? "${scheduleBooking.placeInstructions}"
+                                  widget.scheduleBooking.placeInstructions !=
+                                          null
+                                      ? "${widget.scheduleBooking.placeInstructions}"
                                       : "",
                                   style: TextStyle(
                                     fontSize: 14,
@@ -801,7 +1158,9 @@ class RequestsDetails extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
-                                    scheduleBooking.pets == 0 ? "No" : "Yes",
+                                    widget.scheduleBooking.pets == 0
+                                        ? "No"
+                                        : "Yes",
                                     style: TextStyle(
                                         color: constants.grey,
                                         fontWeight: FontWeight.normal,
@@ -1073,7 +1432,7 @@ class RequestsDetails extends StatelessWidget {
                                                                       onPressed:
                                                                           () {
                                                                         controller.postMarkAsCancelRequest(
-                                                                            scheduleBooking.id,
+                                                                            widget.scheduleBooking.id,
                                                                             context);
                                                                       },
                                                                     ),

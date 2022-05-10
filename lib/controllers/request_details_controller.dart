@@ -18,10 +18,12 @@ import 'package:skep_home_pro/notification/notification.dart';
 import '../Back_ground_check/back_ground_check.dart';
 import '../MyBooking/complete_details.dart';
 import '../models/chat_model.dart';
+import '../models/rating_user_model.dart';
 
 class RequestDetailsController extends GetxController {
   ScheduleBooking? scheduleBooking;
   RequestDetailsModel? requestDetailsModel;
+  RatingUserModel? ratingUserModel;
 
   bool isLoading = false;
   String booking_statues = "";
@@ -29,6 +31,7 @@ class RequestDetailsController extends GetxController {
 
   RequestDetailsController(){
     getData();
+    getCleanerRating();
   }
 
   List<ServiceRequest> serviceRequestList = [];
@@ -39,6 +42,8 @@ class RequestDetailsController extends GetxController {
   String jobId = "";
 
   ChatModel? chatModel;
+
+  bool color = true;
 
 
 
@@ -78,6 +83,70 @@ class RequestDetailsController extends GetxController {
 
   }
 
+  void postRating(int id , String comment ,int valueRating) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final response = await http.post(
+      Uri.parse('http://staging.skephome.com/api/Rating/StoreRating/$id'),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${pref.get('token3').toString()}',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(<String, String>{
+        'cleaner_rate': "$valueRating",
+        'cleaner_comment': comment,
+      }),
+    );
+
+    var body = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+     print(body);
+     print("done");
+      // then parse the JSON.
+    } else {
+      print(response.statusCode);
+
+      throw Exception('Failed to create album.');
+    }
+
+    update();
+  }
+
+
+
+  void getCleanerRating() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final response = await http.get(
+      Uri.parse('http://staging.skephome.com/api/Rating/GetClenaerRating/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': "Bearer ${pref.get('token3').toString()}"
+      },
+    );
+
+    var body = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      ratingUserModel = RatingUserModel.fromJson(body);
+
+      print(response.statusCode);
+
+      isLoading = true;
+
+      // then parse the JSON.
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+
+      print(response.statusCode);
+
+      throw Exception('Failed to create album.');
+    }
+
+    update();
+  }
 
 
   void getRequestDetails(int id) async {

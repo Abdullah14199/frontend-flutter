@@ -20,6 +20,8 @@ import '../controllers/google_map_viow_model.dart';
 import '../controllers/verifyed_controller.dart';
 import '../routes/routes.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -223,9 +225,10 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Container(
               child: Center(
                 child: SizedBox(
-                    child: Lottie.network(
-                        'https://assets9.lottiefiles.com/packages/lf20_B3VdZv.json',
-                        width: 120)),
+                    child: SpinKitCircle(
+                        color: Colors.white,
+                        size: 50.0,
+                    )),
               ),
             ),
           ),
