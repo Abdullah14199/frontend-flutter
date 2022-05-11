@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
@@ -18,6 +19,7 @@ import 'package:skep_home_pro/Login/login.dart';
 import 'package:skep_home_pro/MyBooking/schedule.dart';
 import 'package:skep_home_pro/Referral%20Program/referral_program.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
+import 'package:skep_home_pro/models/emailVerified.dart';
 import 'package:skep_home_pro/routes/routes.dart';
 import 'package:http/http.dart' as http;
 
@@ -43,6 +45,7 @@ class Dashboard extends StatefulWidget {
 }
 var idCleaner ;
 var idCleaner2 ;
+var EmailVeri ;
 
 Future<UserModel> fetchData(context) async {
 
@@ -87,6 +90,11 @@ Future<UserModel> fetchData(context) async {
 
     var selfie = jsonDecode(body);
     Selfie = selfie['user']['selfie'];
+
+    var emailVeri = jsonDecode(body);
+    EmailVeri = emailVeri['user']['email_verified'];
+    print(EmailVeri);
+
 
     var id_cleaner = jsonDecode(body);
     idCleaner = id_cleaner['user']['id'];
@@ -233,8 +241,8 @@ class _DashboardState extends State<Dashboard> {
                             top: 22,
                             left: 16,
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "https://staging.skephome.com/storage/${Selfie}"),
+                              backgroundImage: Selfie == "" ?  NetworkImage( 
+                                  "https://staging.skephome.com/storage/${Selfie}") : NetworkImage("https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"),
                               radius: 30,
                             ),
                           ),
@@ -364,17 +372,17 @@ class _DashboardState extends State<Dashboard> {
                           MaterialPageRoute(builder: (context) => const accountVerification()),
                         );
                       },
-                      trailing: controller.verifyed != false ? SizedBox() : Container( width : 7 , height: 20 ,child: Image.asset("assets/images/Ellipse 539.png")),
+                      trailing: EmailVeri  ? SizedBox() : Container( width : 7 , height: 20 ,child: Image.asset("assets/images/Ellipse 539.png")),
                       leading: Container(
                         width: 20,
                         height: 30,
                         child: Image.asset(
                           "assets/images/shield.png",
-                          color: controller.verifyed !=false ? constants.blue2 : Colors.red,
+                          color: EmailVeri  ? constants.blue2 : Colors.red,
                         ),
                       ),
                       title:  Text('Account verification',
-                          style: TextStyle(color: controller.verifyed != false ?  Colors.black : Colors.red , fontSize: 12)),
+                          style: TextStyle(color: EmailVeri ?  Colors.black : Colors.red , fontSize: 12)),
                     ),
                     Container(
                       width: double.infinity,
@@ -537,9 +545,9 @@ class _DashboardState extends State<Dashboard> {
                       height: 1,
                       color: constants.grey,
                     ),
-                    SizedBox(height: 70,),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
+                    SizedBox(height: 70.h,),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Text('Version 2.0.14.1' , style: TextStyle(color: constants.blue2),),
                     )
                   ],

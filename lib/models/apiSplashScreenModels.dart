@@ -10,7 +10,7 @@ class userModelSplash {
       });
   factory userModelSplash.fromJson(Map< String ,dynamic >json){
     return userModelSplash(
-        address: json['address'],
+        address: json['address']==null?"":json["address"],
         email: json['email'],
         first_name: json['first_name'],
         last_name: json['last_name'],

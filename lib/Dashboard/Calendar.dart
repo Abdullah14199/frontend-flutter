@@ -178,13 +178,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     calendarFormat: format,
                     onFormatChanged: (CalendarFormat _format) {
                       setState(() {
-                        format = _format;
+                        // format = _format;
                       });
                     },
                     onDaySelected: (DateTime selectDay, DateTime foucsDay) {
                       setState(() {
-                        selectedDay = selectDay;
-                        foucsedDay = foucsDay;
+                         selectedDay = selectDay;
+                         foucsedDay = foucsDay;
                       });
                     },
                     onPageChanged: (foucsWeek) => {print(foucsWeek)},

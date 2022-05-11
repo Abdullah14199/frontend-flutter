@@ -31,6 +31,8 @@ const kGoogleApiKey = "AIzaSyCCHzYB_WUozqkw2mntxWDwzCAxLfKqZWM";
 class _RegistrationState extends State<Registration> {
   DateTime selectedDate = DateTime.utc(1950);
 
+  bool isChecked = false ;
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -138,7 +140,6 @@ class _RegistrationState extends State<Registration> {
 
 
 
-
   Future<void> _handlePressButton() async {
     // show input autocomplete with selected mode
     // then get the Prediction selected
@@ -197,38 +198,152 @@ class _RegistrationState extends State<Registration> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Form(
-        autovalidateMode: AutovalidateMode.disabled,
-        key: formkey,
-        child: Stack(
-          children: [
-            const Positioned(
-              top: 0,
-              right: 15,
-              left: 15,
-              child: Text(
-                "Complete your Data.",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'Ubuntu',
-                  fontWeight: FontWeight.bold,
+      body: Padding(
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.top),
+        child: Form(
+          autovalidateMode: AutovalidateMode.disabled,
+          key: formkey,
+          child: Stack(
+            children: [
+              const Positioned(
+                top: 0,
+                right: 15,
+                left: 15,
+                child: Text(
+                  "Complete your Data.",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Ubuntu',
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              top: 40,
-              left: 15,
-              right: 220,
-              child: TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Required";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: InputDecoration(
-                    labelText: 'First name',
+              Positioned(
+                top: 40,
+                left: 15,
+                right: 220,
+                child: TextFormField(
+                    controller: _controllerFirstName,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  decoration: InputDecoration(
+                      labelText: 'First name',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                        BorderSide(width: 1, color: constants.grey),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: constants.blue2) ,
+                          borderRadius: BorderRadius.circular(15),),),
+                      onEditingComplete: () {
+                      setState(() {
+                         FocusScope.of(context).nextFocus();
+                      });}
+                ),
+              ),
+              Positioned(
+                top: 40,
+                left: 220,
+                right: 15,
+                child: TextFormField(
+                    controller: _controllerLastName,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Last name',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 1, color: constants.grey),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: constants.blue2),
+                        borderRadius: BorderRadius.circular(15)),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                    onEditingComplete: () {
+                      setState(() {
+                        FocusScope.of(context).nextFocus();
+                      });}
+                ),
+              ),
+              Positioned(
+                top: 130,
+                left: 15,
+                right: 15,
+                child: TextFormField(
+                    onEditingComplete: () {
+                      setState(() {
+                        FocusScope.of(context).nextFocus();
+                      });},
+                  validator: MultiValidator([
+                    EmailValidator(errorText: "Not A Valid Email"),
+                    RequiredValidator(errorText: "Required"),
+                  ]),
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 1, color: constants.grey),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: constants.blue2),
+                        borderRadius: BorderRadius.circular(15)),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  controller: _controllerEmail,
+                ),
+              ),
+              Positioned(
+                top: 220,
+                right: 15,
+                left: 15,
+                child: TextField(
+                  controller: _controllerDate,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                      icon: Icon(Icons.keyboard_arrow_down),
+                    ),
+                    fillColor: constants.grey,
+                    labelText: "${selectedDate.toLocal()}".split(' ')[0],
                     enabledBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(width: 3, color: constants.grey),
@@ -245,272 +360,193 @@ class _RegistrationState extends State<Registration> {
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             const BorderSide(width: 2, color: constants.grey),
-                        borderRadius: BorderRadius.circular(15))),
-                controller: _controllerFirstName,
-              ),
-            ),
-            Positioned(
-              top: 40,
-              left: 220,
-              right: 15,
-              child: TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Required";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: InputDecoration(
-                  labelText: 'Last name',
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 3, color: constants.grey),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: constants.grey),
-                      borderRadius: BorderRadius.circular(15)),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                controller: _controllerLastName,
-              ),
-            ),
-            Positioned(
-              top: 130,
-              left: 15,
-              right: 15,
-              child: TextFormField(
-                validator: MultiValidator([
-                  EmailValidator(errorText: "Not A Valid Email"),
-                  RequiredValidator(errorText: "Required"),
-                ]),
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 3, color: constants.grey),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: constants.grey),
-                      borderRadius: BorderRadius.circular(15)),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                controller: _controllerEmail,
-              ),
-            ),
-            Positioned(
-              top: 220,
-              right: 15,
-              left: 15,
-              child: TextField(
-                controller: _controllerDate,
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      _selectDate(context);
-                    },
-                    icon: Icon(Icons.keyboard_arrow_down),
-                  ),
-                  fillColor: constants.grey,
-                  labelText: "${selectedDate.toLocal()}".split(' ')[0],
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 3, color: constants.grey),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 2, color: constants.grey),
-                      borderRadius: BorderRadius.circular(15)),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 310,
-              left: 15,
-              right: 15,
-              child: TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Required";
-                  } else {
-                    return null;
-                  }
-                },
-                controller: _controllerAddress,
-                onTap: () async {
-                  await _handlePressButton();
-                },
-                // with some styling
-                decoration: InputDecoration(
-                  fillColor: constants.grey,
-                  labelText: "Address",
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 3, color: constants.grey),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 2, color: constants.grey),
-                    borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(15)),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              top: 400,
-              left: 15,
-              right: 15,
-              child: TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'Referral Code ( optional )',
+              Positioned(
+                top: 310,
+                left: 15,
+                right: 15,
+                child: TextFormField(
+                    onEditingComplete: () {
+                      setState(() {
+                        FocusScope.of(context).nextFocus();
+                      });},
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  controller: _controllerAddress,
+                  onTap: () async {
+                    await _handlePressButton();
+                  },
+                  // with some styling
+                  decoration: InputDecoration(
+                    fillColor: constants.grey,
+                    labelText: "Address",
                     enabledBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(width: 3, color: constants.grey),
                       borderRadius: BorderRadius.circular(15),
                     ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: constants.grey),
-                        borderRadius: BorderRadius.circular(15))),
-              ),
-            ),
-            const Positioned(
-              top: 665,
-              right: 15,
-              left: 15,
-              child: Text(
-                "By signing up you are ready to accept the",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Ubuntu',
-                    fontWeight: FontWeight.normal),
-              ),
-            ),
-            const Positioned(
-              top: 665,
-              right: 15,
-              left: 280,
-              child: Text(
-                "privacy policy",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Ubuntu',
-                    fontWeight: FontWeight.normal,
-                    color: constants.blue2),
-              ),
-            ),
-            const Positioned(
-              top: 680,
-              right: 15,
-              left: 15,
-              child: Text(
-                "&",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Ubuntu',
-                    fontWeight: FontWeight.normal),
-              ),
-            ),
-            const Positioned(
-              top: 680,
-              right: 15,
-              left: 28,
-              child: Text(
-                "terms & conditions",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Ubuntu',
-                    fontWeight: FontWeight.normal,
-                    color: constants.blue2),
-              ),
-            ),
-            Positioned(
-              top: 600,
-              left: 15,
-              right: 15,
-              child: Container(
-                width: double.infinity,
-                height: 50,
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: ElevatedButton.icon(
-                      icon: const Icon(Icons.arrow_back),
-                      label: const Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(constants.blue2),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                        bottomRight: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10)),
-                                    side: BorderSide(color: constants.blue2))),
-                      ),
-                      onPressed: () {
-                        if (_controllerFirstName.text.isEmpty ||
-                            _controllerLastName.text.isEmpty ||
-                            _controllerEmail.text.isEmpty ||
-                            _controllerAddress.text.isEmpty) {
-                          validate();
-                        } else {
-                          setState(() {
-                            _futureAlbum = createAlbum(
-                              _controllerFirstName.text,
-                              _controllerLastName.text,
-                              _controllerEmail.text,
-                              _controllerDate.text,
-                              _controllerAddress.text,
-                            );
-                          });
-                        }
-                      }),
+                      borderSide:
+                          const BorderSide(width: 2, color: constants.grey),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                 ),
               ),
-            )
-          ],
+              Positioned(
+                top: 400,
+                left: 15,
+                right: 15,
+                child: TextFormField(
+                    onEditingComplete: () {
+                      setState(() {
+                        FocusScope.of(context).nextFocus();
+                      });},
+                  decoration: InputDecoration(
+                      labelText: 'Referral Code ( optional )',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(width: 3, color: constants.grey),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: constants.grey),
+                          borderRadius: BorderRadius.circular(15))),
+                ),
+              ),
+              Positioned(
+                  top: 540,
+                  child: Checkbox(
+                checkColor: Colors.white,
+                value: isChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    isChecked = value!;
+                  });
+                  print(isChecked);
+                },
+              )),
+              const Positioned(
+                top:550,
+                right: 30,
+                left: 35,
+                child: Text(
+                  "By signing up you are ready to accept the",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.normal),
+                ),
+              ),
+              const Positioned(
+                top: 550,
+                right: 15,
+                left: 300,
+                child: Text(
+                  "privacy policy",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.normal,
+                      color: constants.blue2),
+                ),
+              ),
+              const Positioned(
+                top: 565,
+                right: 15,
+                left: 35,
+                child: Text(
+                  "&",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.normal),
+                ),
+              ),
+              const Positioned(
+                top: 565,
+                right: 15,
+                left: 45,
+                child: Text(
+                  "terms & conditions",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Ubuntu',
+                      fontWeight: FontWeight.normal,
+                      color: constants.blue2),
+                ),
+              ),
+              Positioned(
+                top: 580,
+                left: 15,
+                right: 15,
+                child: Container(
+                  width: double.infinity,
+                  height: 50,
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: ElevatedButton.icon(
+                        icon: const Icon(Icons.arrow_back),
+                        label: const Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(isChecked ? constants.blue2 : Colors.grey),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                   RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                          bottomRight: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10)),
+                                      side: BorderSide(color: isChecked  ? constants.blue2 : Colors.grey))),
+                        ),
+                        onPressed: isChecked  ? () {
+                          if (_controllerFirstName.text.isEmpty ||
+                              _controllerLastName.text.isEmpty ||
+                              _controllerEmail.text.isEmpty ||
+                              _controllerAddress.text.isEmpty) {
+                            validate();
+                          } else {
+                            setState(() {
+                              _futureAlbum = createAlbum(
+                                _controllerFirstName.text,
+                                _controllerLastName.text,
+                                _controllerEmail.text,
+                                _controllerDate.text,
+                                _controllerAddress.text,
+                              );
+                            });
+                          }
+                        } : null),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     ));

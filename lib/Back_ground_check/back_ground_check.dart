@@ -161,7 +161,7 @@ class _backGroundCheckState extends State<backGroundCheck> {
               )),
           Positioned(
             top: 190,
-            right: 380,
+            right: 360,
             left: 20,
             child: RoundCheckBox(
               onTap: (value) {
@@ -191,7 +191,7 @@ class _backGroundCheckState extends State<backGroundCheck> {
               )),
           Positioned(
             top: 190,
-            right: 295,
+            right: 275,
             left: 105,
             child: RoundCheckBox(
               onTap: (value) {
@@ -272,7 +272,7 @@ class _backGroundCheckState extends State<backGroundCheck> {
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
-                        width: 70,
+                        width: 60,
                       ),
                       Switch(
                           activeColor: Colors.greenAccent,
@@ -308,7 +308,7 @@ class _backGroundCheckState extends State<backGroundCheck> {
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
-                        width: 115,
+                        width: 105,
                       ),
                       Switch(
                           activeColor: Colors.greenAccent,

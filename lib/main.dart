@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:skep_home_pro/routes/routes.dart';
@@ -13,7 +14,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'Back_ground_check/back_ground_check.dart';
 import 'controllers/google_map_viow_model.dart';
 import 'controllers/verifyed_controller.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -38,7 +39,7 @@ Future<void> main() async{
   await Firebase.initializeApp(
     // options: const FirebaseOptions(
     //   apiKey: "XXX", // Your apiKey
-    //   appId: "1:389584921781:ios:fa10c18de8288c748b4afc", // Your appId
+    //   appId: "1:455546414239:ios:6b626376dc82aa82166eaa", // Your appId
     //   messagingSenderId: "XXX", // Your messagingSenderId
     //   projectId: "skephomecleaner", // Your projectId
     // ),
@@ -70,12 +71,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Skep Home',
-      initialBinding: Binding(),
-      debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.welcome,
-      getPages: AppRoutes.routes,
+    return ScreenUtilInit(
+      designSize: Size(414 , 895),
+      child: GetMaterialApp(
+        title: 'Skep Home',
+        initialBinding: Binding(),
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRoutes.welcome,
+        getPages: AppRoutes.routes,
+      ),
     );
   }
 }
