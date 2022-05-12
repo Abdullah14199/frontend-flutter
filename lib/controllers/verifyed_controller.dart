@@ -21,7 +21,7 @@ class VerifyedController extends GetxController {
   VerifyedModel? verifyedModel;
 
   bool verifyed = true;
-
+  bool isLoading = false;
 
   void getVerifyed() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -41,7 +41,7 @@ class VerifyedController extends GetxController {
       verifyedModel =  VerifyedModel.fromJson(body);
       verifyed = verifyedModel!.burgerMenuValid!;
       print(verifyed);
-
+      isLoading = true ;
 
 
       // then parse the JSON.

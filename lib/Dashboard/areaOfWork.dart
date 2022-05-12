@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Dashboard/service_request.dart';
 import 'package:skep_home_pro/constatns/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:skep_home_pro/controllers/AreaOfWorkController.dart';
 import 'package:skep_home_pro/models/allCitiesModel.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -25,6 +26,7 @@ class AreaOfWork extends StatefulWidget {
 
 class _AreaOfWorkState extends State<AreaOfWork> {
   final Completer<GoogleMapController> _controller = Completer();
+  final areaOfWorkController = Get.put(AreaOfWorkController());
 
   final controller = Get.find<GoogleMapViewModel>();
 
@@ -42,7 +44,8 @@ class _AreaOfWorkState extends State<AreaOfWork> {
     print(responseJson);
     var body = response.body;
     var read = jsonDecode(body);
-    // print(responseJson['AllCitys'][0]['region_lat_lng']);
+     print("ssssdsdsd$responseJson");
+
     return (responseJson['AllCitys'] as List)
         .map((p) => AllCity.fromJson(p))
         .toList();
@@ -54,10 +57,12 @@ class _AreaOfWorkState extends State<AreaOfWork> {
   void initState() {
     super.initState();
     level();
+    controller.myPolygon();
   }
 
   @override
   Widget build(BuildContext context) {
+    controller.myPolygon();
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -72,8 +77,7 @@ class _AreaOfWorkState extends State<AreaOfWork> {
               )
             ],
             iconTheme: const IconThemeData(color: Colors.black),
-            title: const Padding(
-              padding: EdgeInsets.only(left: 90),
+            title: Center(
               child: Text(
                 "Area of work",
                 style: TextStyle(
@@ -336,7 +340,10 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                       onTap: (value) {
                         controller.Etobicoke.value = value!;
                         EtobickoeVal = 0;
-                        print(EtobickoeVal);
+                        setState((){
+                          controller.Etobicoke.value ? idList.add(areaOfWorkController.allCity[0].id.toString()) : idList.remove(areaOfWorkController.allCity[0].id.toString());
+                          print("sssss");
+                        });
                         controller.myPolygon();
                       },
                       size: 30,
@@ -352,6 +359,10 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                       onTap: (value) {
                         controller.Mississauga.value = value!;
                         MississaugaVal = 1 ;
+                        setState((){
+                          controller.Mississauga.value ?  idList.add(areaOfWorkController.allCity[1].id.toString()) :  idList.remove(areaOfWorkController.allCity[1].id.toString()) ;
+                          print("sssss");
+                        });
                         controller.myPolygon();
                       },
                       size: 30,
@@ -367,6 +378,10 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                       onTap: (value) {
                         controller.Toronto.value = value!;
                         TorontoVal = 2 ;
+                        setState((){
+                          controller.Toronto.value ? idList.add(areaOfWorkController.allCity[2].id.toString()) : idList.remove(areaOfWorkController.allCity[2].id.toString());
+                          print("sssss");
+                        });
                         controller.myPolygon();
                       },
                       size: 30,
@@ -380,7 +395,10 @@ class _AreaOfWorkState extends State<AreaOfWork> {
                     left: 40,
                     right: 40,
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        print(idList);
+                        idList.isNotEmpty ? areaOfWorkController.SaveAreas() : areaOfWorkController.DeleteAreas();
+                      },
                       child: Container(
                         width: 80,
                         height: 40,
@@ -414,6 +432,8 @@ class _AreaOfWorkState extends State<AreaOfWork> {
 var EtobickoeVal ;
 var MississaugaVal ;
 var TorontoVal ;
+List<String> idList=[];
+
 
 bool Silver = false ;
 bool Gold = false ;

@@ -30,7 +30,7 @@ class Checklist {
     required this.title,
     required this.subTitle,
     required this.timer,
-    required this.progressbar,
+    //required this.progressbar,
     required this.hint,
     required  this.visable,
   });
@@ -39,7 +39,7 @@ class Checklist {
   String title;
   String subTitle;
   dynamic timer;
-  int progressbar;
+  //int progressbar;
   String hint;
   bool visable;
 
@@ -48,7 +48,7 @@ class Checklist {
     title: json["Title"],
     subTitle: json["SubTitle"],
     timer: json["timer"],
-    progressbar: json["progressbar"] == null ? null : json["progressbar"],
+    // progressbar: json["progressbar"] == 0 ? 0 : json["progressbar"],
     hint: json["Hint"],
     visable: json["Visable"],
   );
@@ -58,7 +58,7 @@ class Checklist {
     "Title": title,
     "SubTitle": subTitle,
     "timer": timer,
-    "progressbar": progressbar == null ? null : progressbar,
+   // "progressbar": progressbar == null ? null : progressbar,
     "Hint": hint,
     "Visable": visable,
   };

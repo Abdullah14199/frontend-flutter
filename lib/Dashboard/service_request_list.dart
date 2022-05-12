@@ -28,46 +28,52 @@ class _serviceRequestListState extends State<serviceRequestList> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        actions: <Widget>[
-          IconButton(
-            icon: Image.asset("assets/images/ring.png"),
-            onPressed: () {
-              // do something
-            },
-          )
-        ],
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-        ),
-        iconTheme: const IconThemeData(color: Colors.black),
-        title: Center(
-          child: Text(
-            "Service Request",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Ubuntu',
-            ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    buildTodayList()
+        child: GetBuilder<ServiceRequestListController>(
+          init: ServiceRequestListController(),
+          builder: (controller) {
+            controller.checkService();
+            return Scaffold(
+                backgroundColor: Colors.white,
+                appBar: AppBar(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Image.asset("assets/images/ring.png"),
+                      onPressed: () {
+                        // do something
+                      },
+                    )
                   ],
+                  leading: IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  ),
+                  iconTheme: const IconThemeData(color: Colors.black),
+                  title: Center(
+                    child: Text(
+                      "Service Request",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Ubuntu',
+                      ),
+                    ),
+                  ),
                 ),
-      )
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                     controller.checkList[0].visable == false ||  controller.checkList[1].visable == false || controller.checkList[2].visable == false ? buildServiceRequest() : buildTodayList()
+                    ],
+                  ),
+                )
+            ) ;
+          } ,
         )
     );
   }
@@ -609,6 +615,7 @@ class _serviceRequestListState extends State<serviceRequestList> {
     } ,
   );
 
+  //3ayza ttsl7
   Widget buildServiceRequest() => GetBuilder<ServiceRequestListController>(
     init: ServiceRequestListController(),
     builder: (controller) {
@@ -642,75 +649,71 @@ class _serviceRequestListState extends State<serviceRequestList> {
         body: SingleChildScrollView(
           child: Stack(
             children: [
-              Column(
-                children: [
-                  Positioned(
-                      left: 60,
-                      child: Image.asset("assets/images/service_request.png")),
-                  const Positioned(
-                    top: 280,
-                    left: 40,
-                    right: 40,
-                    child: Center(
-                      child: Text(
-                        "Skep Pro Services helps you find the best.",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Ubuntu',
-                        ),
-                      ),
+              Positioned(
+                  left: 60,
+                  child: Image.asset("assets/images/service_request.png")),
+              const Positioned(
+                top: 280,
+                left: 40,
+                right: 40,
+                child: Center(
+                  child: Text(
+                    "Skep Pro Services helps you find the best.",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Ubuntu',
                     ),
                   ),
-                  const Positioned(
-                    top: 298,
-                    left: 60,
-                    right: 60,
-                    child: Center(
-                      child: Text(
-                        "cleaning job opportunities near you by",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Ubuntu',
-                        ),
-                      ),
+                ),
+              ),
+              const Positioned(
+                top: 298,
+                left: 60,
+                right: 60,
+                child: Center(
+                  child: Text(
+                    "cleaning job opportunities near you by",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Ubuntu',
                     ),
                   ),
-                  const Positioned(
-                    top: 316,
-                    left: 60,
-                    right: 60,
-                    child: Center(
-                      child: Text(
-                        "connecting you to local homeowners.",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Ubuntu',
-                        ),
-                      ),
+                ),
+              ),
+              const Positioned(
+                top: 316,
+                left: 60,
+                right: 60,
+                child: Center(
+                  child: Text(
+                    "connecting you to local homeowners.",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Ubuntu',
                     ),
                   ),
-                  const SizedBox(
-                    height: 70,
+                ),
+              ),
+              const SizedBox(
+                height: 70,
+              ),
+              Positioned(
+                right: 14,
+                left: 14,
+                child: Container(
+                  width: double.infinity,
+                  height: 280,
+                  child: PageView(
+                    controller: _pageController,
+                    children: [
+                      _backgroundCheck('Background check', Colors.white),
+                      _page('Profile Picture', Colors.white),
+                    ],
                   ),
-                  Positioned(
-                    right: 14,
-                    left: 14,
-                    child: Container(
-                      width: double.infinity,
-                      height: 280,
-                      child: PageView(
-                        controller: _pageController,
-                        children: [
-                          _backgroundCheck('Background check', Colors.white),
-                          _page('Profile Picture', Colors.white),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
               Positioned(
                   top: 680,

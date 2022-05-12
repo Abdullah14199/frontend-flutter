@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -146,7 +147,7 @@ class _DashboardState extends State<Dashboard> {
   final List _pages = [
     TodaysList(),
     CalendarScreen(),
-    serviceRequestList(),
+    service_request(),
   ];
 
   @override
@@ -155,12 +156,15 @@ class _DashboardState extends State<Dashboard> {
     return GetBuilder<VerifyedController>(
       init: VerifyedController(),
       builder:(controller){
-        // controller.getVerifyed();
-
+        controller.getVerifyed();
         return SafeArea(
           child: Scaffold(
-            body: Center(
-              child: _pages.elementAt(currentIndex),
+            body: ConditionalBuilder(
+                builder: (context) => Center(
+                child: _pages.elementAt(currentIndex),
+              ),
+                condition: controller.isLoading,
+                fallback: (context) => Center(child: CircularProgressIndicator())
             ),
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: Colors.white,
@@ -372,17 +376,17 @@ class _DashboardState extends State<Dashboard> {
                           MaterialPageRoute(builder: (context) => const accountVerification()),
                         );
                       },
-                      trailing: EmailVeri  ? SizedBox() : Container( width : 7 , height: 20 ,child: Image.asset("assets/images/Ellipse 539.png")),
+                      trailing: EmailVeri == true  ? SizedBox() : Container( width : 7 , height: 20 ,child: Image.asset("assets/images/Ellipse 539.png")),
                       leading: Container(
                         width: 20,
                         height: 30,
                         child: Image.asset(
                           "assets/images/shield.png",
-                          color: EmailVeri  ? constants.blue2 : Colors.red,
+                          color: EmailVeri == true ? constants.blue2 : Colors.red,
                         ),
                       ),
                       title:  Text('Account verification',
-                          style: TextStyle(color: EmailVeri ?  Colors.black : Colors.red , fontSize: 12)),
+                          style: TextStyle(color: EmailVeri == true  ?  Colors.black : Colors.red , fontSize: 12)),
                     ),
                     Container(
                       width: double.infinity,
@@ -554,6 +558,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
+
           ),
         );
       }

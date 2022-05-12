@@ -24,6 +24,7 @@ class ServiceRequestListController extends GetxController {
   void onInit() {
     super.onInit();
     getServiceRequestList();
+    checkService();
   }
 
   ServiceRequestListModel? serviceRequestModel;
@@ -135,8 +136,9 @@ class ServiceRequestListController extends GetxController {
   }
 
   CheckListModels ? checkListModels ;
+  List<Checklist> checkList = [];
 
-  void checkService(context) async{
+  void checkService() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     final response =await http
         .get(Uri.parse('https://staging.skephome.com/api/ServiceRequest/CheckServiceRequest'),
@@ -148,10 +150,14 @@ class ServiceRequestListController extends GetxController {
     var body =response.body;
     var visiable = json.decode(body);
     print(visiable['Checklist'][0]["Visable"]);
+
     final responseJson = jsonDecode(response.body);
     if(response.statusCode == 200){
       print(responseJson);
       checkListModels =  CheckListModels.fromJson(responseJson);
+      checkListModels!.checklist.forEach((element) {
+        checkList.add(element);
+      });
 
     }else{
 
