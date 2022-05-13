@@ -36,6 +36,7 @@ Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = 'pk_test_51KqbfwGDR1ZdiamSz86HTHDjzviSxYqAz97ZaHhYfV9FaNJ3uOvhk8CaFubGmcUS9CJTdTsux2Gp9RI67p6tvQu6000mrhbiTk';
 
+  await GetStorage.init();
   await Firebase.initializeApp(
     // options: const FirebaseOptions(
     //   apiKey: "XXX", // Your apiKey

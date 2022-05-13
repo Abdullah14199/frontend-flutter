@@ -9,6 +9,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skep_home_pro/Back_ground_check/back_ground_check.dart';
 import 'package:skep_home_pro/MyBooking/schedule.dart';
@@ -53,6 +54,7 @@ Future<void> main() async {
 
   Stripe.publishableKey = 'pk_test_51KqbfwGDR1ZdiamSz86HTHDjzviSxYqAz97ZaHhYfV9FaNJ3uOvhk8CaFubGmcUS9CJTdTsux2Gp9RI67p6tvQu6000mrhbiTk';
 
+  await GetStorage.init();
 
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,

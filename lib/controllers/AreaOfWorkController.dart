@@ -88,6 +88,7 @@ class AreaOfWorkController extends GetxController {
 
 
   void SaveAreas() async {
+    data ={};
    // print("aaaaa a a a a  a ${idList}");
     for(int i=0;  i < idList.length;  i++){
       print("aaaaa a a a a  a eeeee${idList}");
@@ -122,6 +123,7 @@ class AreaOfWorkController extends GetxController {
   }
 
   void DeleteAreas() async {
+    data = {};
     for(int i=0;  i < idList.length;  i++){
       print("aaaaa a a a a  a eeeee${idList}");
       data.remove({
