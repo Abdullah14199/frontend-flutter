@@ -147,7 +147,7 @@ class _DashboardState extends State<Dashboard> {
   final List _pages = [
     TodaysList(),
     CalendarScreen(),
-    service_request(),
+    serviceRequestList(),
   ];
 
   @override
@@ -245,8 +245,8 @@ class _DashboardState extends State<Dashboard> {
                             top: 22,
                             left: 16,
                             child: CircleAvatar(
-                              backgroundImage: Selfie == "" ?  NetworkImage( 
-                                  "https://staging.skephome.com/storage/${Selfie}") : NetworkImage("https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png"),
+                              backgroundImage: Selfie == "" ?  NetworkImage("https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png") : NetworkImage(
+                                  "https://staging.skephome.com/storage/${Selfie}"),
                               radius: 30,
                             ),
                           ),

@@ -32,6 +32,7 @@ class ServiceRequestListController extends GetxController {
 
   bool verifyed = true;
   bool isLoading = false;
+  bool isLoadingCheck = false;
   var read;
 
   void getServiceRequestList() async {
@@ -138,6 +139,10 @@ class ServiceRequestListController extends GetxController {
   CheckListModels ? checkListModels ;
   List<Checklist> checkList = [];
 
+  var backcheck ;
+  var areacheck ;
+  var profilecheck ;
+
   void checkService() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     final response =await http
@@ -149,21 +154,28 @@ class ServiceRequestListController extends GetxController {
 
     var body =response.body;
     var visiable = json.decode(body);
-    print(visiable['Checklist'][0]["Visable"]);
+
+    backcheck = visiable['Checklist'][0]["Visable"] ;
+    areacheck = visiable['Checklist'][1]["Visable"] ;
+    profilecheck = visiable['Checklist'][2]["Visable"] ;
 
     final responseJson = jsonDecode(response.body);
     if(response.statusCode == 200){
       print(responseJson);
-      checkListModels =  CheckListModels.fromJson(responseJson);
-      checkListModels!.checklist.forEach((element) {
-        checkList.add(element);
-      });
+
+      isLoadingCheck =true;
+
+      // checkListModels =  CheckListModels.fromJson(responseJson);
+      // checkListModels!.checklist.forEach((element) {
+      //   checkList.add(element);
+      // });
 
     }else{
 
       print(response.statusCode);
       throw Exception('Failed to load album');
     }
+    update();
   }
 
   void createAlbum() async {
@@ -238,7 +250,8 @@ class ServiceRequestListController extends GetxController {
 
 
   Future<userProfileModel> editUserData(File? image) async {
-    String basicAuth = 'Bearer $token';
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String basicAuth = 'Bearer ${pref.get('token3').toString()}';
     var uri = Uri.parse("http://staging.skephome.com/api/User/UpdateProfile");
     var request = http.MultipartRequest("POST", uri);
     request.headers['Authorization'] = basicAuth;
@@ -267,11 +280,12 @@ class ServiceRequestListController extends GetxController {
 
 
   void postCertn() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     final response = await http.post(
       Uri.parse('https://staging.skephome.com/api/Auth/CertnID/$IDInfo'),
       headers: <String, String>{
         'Accept': 'application/json',
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${pref.get('token3').toString()}'
       },
       body: jsonEncode(<String , String>{
         'certn_id': IDCertn,
@@ -294,9 +308,10 @@ class ServiceRequestListController extends GetxController {
 
 
   Future<UserModel> getDataUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     final response = await http.get(
         Uri.parse('http://staging.skephome.com/api/User/MyProfile'),
-        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+        headers: {HttpHeaders.authorizationHeader: 'Bearer ${pref.get('token3').toString()}'});
     if (response.statusCode == 200) {
       var body = response.body;
 
